@@ -23,6 +23,8 @@ paging-compose  = "1.0.0-alpha19"
 coroutines = "1.7.2"
 animated-bar= "1.0.0"
 room = "2.5.2"
+appcompat = "1.6.1"
+material = "1.9.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -59,6 +61,8 @@ animated-navigation-bar = {group = "com.exyte", name = "animated-navigation-bar"
 room-database-runtime = {group = "androidx.room", name = "room-runtime", version.ref = "room"}
 room-database-compiler = {group = "androidx.room", name = "room-compiler", version.ref = "room"}
 room-database-ktx = {group = "androidx.room", name = "room-ktx", version.ref = "room"}
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

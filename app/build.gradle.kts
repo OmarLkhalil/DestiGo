@@ -14,40 +14,57 @@ android {
         applicationId = "com.mobilebreakero.destigo"
         minSdk = 24
         targetSdk = 33
-        versionCode = 1
+        versionCode = 11
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
     }
-
     buildTypes {
-        release {
-            isMinifyEnabled = false
+        getByName("release") {
+
+            isMinifyEnabled = true
+            isShrinkResources = true
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
+
+    configurations {
+        implementation {
+            resolutionStrategy.failOnVersionConflict()
+        }
+    }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
+
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.4.4"
     }
-    packaging {
+
+    kapt {
+        correctErrorTypes = true
+    }
+
+    with(packagingOptions) {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes.add("META-INF/gradle/incremental.annotation.processors")
+            excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+            excludes.add("META-INF/LICENSE.txt")
         }
     }
 }
@@ -69,4 +86,19 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
+    implementation(libs.navigation.compose)
+    implementation(libs.compose.material)
+    implementation(libs.compose.ui.util)
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    implementation(libs.google.gson)
+    implementation(libs.animated.navigation.bar)
+    implementation(libs.room.database.runtime)
+    kapt(libs.room.database.compiler)
+    implementation(libs.room.database.ktx)
+
 }

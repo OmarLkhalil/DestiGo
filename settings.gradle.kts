@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "DestiGo"
 include(":app")
- 
+include(":ui:welcome")

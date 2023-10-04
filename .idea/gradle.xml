@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/ui" />
             <option value="$PROJECT_DIR$/ui/auth" />
             <option value="$PROJECT_DIR$/ui/home" />
+            <option value="$PROJECT_DIR$/ui/welcome" />
           </set>
         </option>
       </GradleProjectSettings>

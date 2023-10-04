@@ -7,5 +7,6 @@ plugins {
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.androidlibrary) apply false
     alias(libs.plugins.kotlinParcelize) apply false
+    alias(libs.plugins.firebase) apply false
 }
 true // Needed to make the Suppress annotation work for the plugins block

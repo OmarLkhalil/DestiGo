@@ -23,6 +23,11 @@ paging-compose  = "1.0.0-alpha19"
 coroutines = "1.7.2"
 animated-bar= "1.0.0"
 room = "2.5.2"
+appcompat = "1.6.1"
+material = "1.9.0"
+firebase = "32.3.1"
+google = "4.3.15"
+analytics = "17.5.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -59,6 +64,12 @@ animated-navigation-bar = {group = "com.exyte", name = "animated-navigation-bar"
 room-database-runtime = {group = "androidx.room", name = "room-runtime", version.ref = "room"}
 room-database-compiler = {group = "androidx.room", name = "room-compiler", version.ref = "room"}
 room-database-ktx = {group = "androidx.room", name = "room-ktx", version.ref = "room"}
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase"}
+firebase-product = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "analytics"}
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx"}
+firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version = "22.1.2" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -67,5 +78,6 @@ kotlinKapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 androidlibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinParcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinparcelize" }
+firebase = { id = "com.google.gms.google-services", version.ref = "google" }
 
 [bundles]

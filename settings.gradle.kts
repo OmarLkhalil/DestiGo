@@ -15,4 +15,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "DestiGo"
 include(":app")
- 
+include(":ui:auth")
+include(":core:domain")
+include(":core:data")
+include(":ui:home")

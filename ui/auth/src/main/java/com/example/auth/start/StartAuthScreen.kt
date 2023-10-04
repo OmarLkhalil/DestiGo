@@ -1,5 +1,6 @@
 package com.example.auth.start
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,25 +9,29 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.auth.R
-import com.example.auth.content.AuthButton
+import com.example.auth.components.AuthButton
 
 @Composable
 fun StartAuthScreen(navController: NavController) {
-    Box (
+    Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        Column (
+        Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -49,18 +54,43 @@ fun StartAuthScreen(navController: NavController) {
                         "community of fellow travelersaring, Enjoying Life",
                 color = Color(0xffB3B3B3),
                 fontSize = 14.sp,
+                textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(horizontal = 30.dp, vertical = 12.dp)
             )
+
+            Spacer(modifier = Modifier.height(22.dp))
+
             AuthButton(
                 onClick = { navController.navigate(route = "LoginScreen") },
                 text = "Login",
-                textColor = Color.Black
+                textColor = Color.Black,
+                modifier = Modifier
+                    .width(290.dp)
+                    .height(45.dp)
+                    .clip(shape = RoundedCornerShape(10.dp))
+                    .padding(horizontal = 20.dp, vertical = 2.dp),
+                border = BorderStroke(1.dp, Color(0xff4F80FF))
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
             AuthButton(
                 onClick = { navController.navigate(route = "SignUpScreen") },
+                text = "Sign Up",
                 buttonColor = Color(0xff4F80FF),
-                text = "Sign Up"
+                modifier = Modifier
+                    .width(290.dp)
+                    .height(45.dp)
+                    .clip(shape = RoundedCornerShape(10.dp))
+                    .padding(horizontal = 20.dp, vertical = 2.dp),
+            )
+            Spacer(modifier = Modifier.height(33.dp))
+
+            Text(
+                text = "Continue as Guest",
+                color = Color(0xffB3B3B3),
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold
             )
         }
     }

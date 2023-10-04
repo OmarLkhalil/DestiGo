@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:236121183205:android:16af806d79ade5fbfb950c",
         "android_client_info": {
-          "package_name": "com.mobilebreakero.destigo"
+          "package_name": "com.mobilebreakero.common_ui"
         }
       },
       "oauth_client": [],

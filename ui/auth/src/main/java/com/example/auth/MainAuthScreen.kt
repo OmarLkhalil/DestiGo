@@ -7,11 +7,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.auth.login.LoginScreen
 import com.example.auth.signup.SignUpScreen
 import com.example.auth.start.StartAuthScreen
-import com.example.data.viewmodels.AuthViewModel
-import com.example.domain.util.Resource
 import com.example.home.HomeScreen
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.mobilebreakero.common_ui.viewmodels.AuthViewModel
 
 @Composable
 fun MainAuthScreen(

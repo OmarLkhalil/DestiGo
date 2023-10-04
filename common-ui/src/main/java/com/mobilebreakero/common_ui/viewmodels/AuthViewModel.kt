@@ -1,4 +1,4 @@
-package com.example.data.viewmodels
+package com.mobilebreakero.common_ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

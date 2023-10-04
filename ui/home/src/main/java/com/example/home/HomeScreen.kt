@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.example.data.viewmodels.AuthViewModel
+import com.mobilebreakero.common_ui.viewmodels.AuthViewModel
 
 @Composable
 fun HomeScreen(viewModel: AuthViewModel?, navController: NavController) {

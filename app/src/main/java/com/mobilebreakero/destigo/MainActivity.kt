@@ -9,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.auth.MainAuthScreen
-import com.example.data.viewmodels.AuthViewModel
+import com.mobilebreakero.common_ui.viewmodels.AuthViewModel
 import com.mobilebreakero.destigo.ui.theme.DestiGoTheme
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -3,12 +3,13 @@ plugins {
     alias(libs.plugins.androidlibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinKapt)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.firebase)
+    alias(libs.plugins.hilt)
 }
 
+
 android {
-    namespace = "com.example.data"
+    namespace = "com.mobilebreakero.common_ui"
     compileSdk = 33
 
     defaultConfig {
@@ -37,17 +38,17 @@ android {
 }
 
 dependencies {
+    implementation(project(mapOf("path" to ":core:domain")))
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(project(mapOf("path" to ":core:domain")))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
     // firebase
-    implementation(libs.firebase.bom)
+    implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.product)
     implementation(libs.firebase.auth)
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))

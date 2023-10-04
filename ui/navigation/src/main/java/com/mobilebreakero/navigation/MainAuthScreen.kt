@@ -14,8 +14,8 @@ import com.google.firebase.ktx.Firebase
 import com.mobilebreakero.auth.login.LoginScreen
 import com.mobilebreakero.auth.start.StartAuthScreen
 import com.mobilebreakero.common_ui.viewmodels.AuthViewModel
-import com.mobilebreakero.home.HomeScreen
-import com.mobilebreakero.signup.SignUpScreen
+import com.example.home.HomeScreen
+import com.example.auth.signup.SignUpScreen
 import com.google.accompanist.navigation.animation.composable
 import com.mobilebreakero.welcome.WelcomeScreen
 
@@ -26,6 +26,7 @@ private const val TransitionDuration = 600
 fun MainNavHost(
     startDestination: Boolean,
     viewModel: AuthViewModel,
+    //signUpViewModel: SignUpViewModel?
 ) {
     val navController = rememberAnimatedNavController()
 

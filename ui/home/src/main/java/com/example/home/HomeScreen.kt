@@ -1,4 +1,4 @@
-package com.mobilebreakero.home
+package com.example.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,7 +25,7 @@ fun HomeScreen(viewModel: AuthViewModel?, navController: NavController) {
             Button(
                 onClick = {
                     viewModel?.logout()
-                    navController.navigate("LoginScreen") {
+                    navController.navigate("StartAuthScreen") {
                         popUpTo("HomeScreen") { inclusive = true }
                     }
                 }

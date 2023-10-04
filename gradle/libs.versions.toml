@@ -73,6 +73,7 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-product = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "analytics"}
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx"}
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version = "22.1.2" }
+firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version = "24.8.1" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

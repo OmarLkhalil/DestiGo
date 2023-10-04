@@ -1,5 +1,6 @@
 package com.mobilebreakero.auth.login
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,7 +29,7 @@ import androidx.navigation.NavController
 import com.example.domain.util.Resource
 import com.mobilebreakero.auth.components.AuthButton
 import com.mobilebreakero.auth.components.AuthContent
-import com.mobilebreakero.auth.components.AuthTextField
+import com.example.auth.components.AuthTextField
 import com.mobilebreakero.auth.components.ShowToast
 import com.mobilebreakero.common_ui.viewmodels.AuthViewModel
 
@@ -81,6 +82,7 @@ fun LoginScreen (
                 when (it) {
                     is Resource.Failure -> {
                         ShowToast(message = it.exception.message.toString(), snackbarHostState)
+                        Log.e("Login", it.exception.message.toString())
                     }
                     is Resource.Loading -> {
                         CircularProgressIndicator(

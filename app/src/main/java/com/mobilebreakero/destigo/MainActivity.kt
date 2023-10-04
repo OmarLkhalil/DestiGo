@@ -18,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val authViewModel by viewModels<AuthViewModel>()
+//    private val signUpViewModel by viewModels<SignUpViewModel>()
 
     private val FIRST_LAUNCH_PREFS = "FirstLaunchPrefs"
     private val FIRST_LAUNCH_KEY = "FirstLaunch"

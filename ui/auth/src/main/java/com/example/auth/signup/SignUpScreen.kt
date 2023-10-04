@@ -1,4 +1,4 @@
-package com.mobilebreakero.signup
+package com.example.auth.signup
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
@@ -28,12 +28,13 @@ import androidx.navigation.NavController
 import com.example.domain.util.Resource
 import com.mobilebreakero.auth.components.AuthButton
 import com.mobilebreakero.auth.components.AuthContent
-import com.mobilebreakero.auth.components.AuthTextField
+import com.example.auth.components.AuthTextField
 import com.mobilebreakero.auth.components.ShowToast
+import com.mobilebreakero.common_ui.viewmodels.AuthViewModel
 
 @Composable
 fun SignUpScreen (
-    viewModel: com.mobilebreakero.common_ui.viewmodels.AuthViewModel?,
+    viewModel: AuthViewModel?,
     navController: NavController
 )  {
 

@@ -51,7 +51,11 @@ dependencies {
     implementation(libs.firebase.product)
     implementation(libs.firebase.auth)
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation("com.google.firebase:firebase-database:20.2.2")
+    implementation("com.google.firebase:firebase-firestore:24.8.1")
+    implementation("com.google.firebase:firebase-firestore-ktx")
 
+    
     // hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)

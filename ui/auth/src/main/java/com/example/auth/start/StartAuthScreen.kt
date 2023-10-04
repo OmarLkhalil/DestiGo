@@ -1,4 +1,4 @@
-package com.example.auth.start
+package com.mobilebreakero.auth.start
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.auth.R
-import com.example.auth.components.AuthButton
+import com.mobilebreakero.auth.components.AuthButton
 
 @Composable
 fun StartAuthScreen(navController: NavController) {

@@ -1,5 +1,6 @@
 package com.mobilebreakero.common_ui.viewmodels
 
+import androidx.annotation.AnyThread
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.repo.AuthRepository
@@ -31,18 +32,21 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    @AnyThread
     fun loginUser(email: String, password: String) = viewModelScope.launch {
         _loginFlow.value = Resource.Loading
         val result = repository.login(email, password)
         _loginFlow.value = result
     }
 
+    @AnyThread
     fun signupUser(name: String, email: String, password: String) = viewModelScope.launch {
         _signupFlow.value = Resource.Loading
         val result = repository.signup(name, email, password)
         _signupFlow.value = result
     }
 
+    @AnyThread
     fun logout() {
         repository.logout()
         _loginFlow.value = null

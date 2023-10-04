@@ -67,6 +67,7 @@ dependencies {
     implementation(project(mapOf("path" to ":core:data")))
     implementation(project(mapOf("path" to ":core:domain")))
     implementation(project(mapOf("path" to ":ui:auth")))
+    implementation(project(mapOf("path" to ":ui:navigation")))
     implementation(project(mapOf("path" to ":common-ui")))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
@@ -75,6 +76,8 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
+
+    implementation(libs.accompanist.navigationAnimation)
 
     // hilt
     implementation(libs.hilt.android)

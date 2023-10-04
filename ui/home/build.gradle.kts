@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.home"
+    namespace = "com.mobilebreakero.home"
     compileSdk = 33
 
     defaultConfig {
@@ -54,6 +54,8 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(libs.accompanist.navigationAnimation)
+
     implementation(project(mapOf("path" to ":core:data")))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

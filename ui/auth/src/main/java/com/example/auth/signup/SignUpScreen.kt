@@ -1,4 +1,4 @@
-package com.example.auth.signup
+package com.mobilebreakero.signup
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
@@ -25,11 +25,11 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.auth.components.AuthButton
-import com.example.auth.components.AuthContent
-import com.example.auth.components.AuthTextField
-import com.example.auth.components.ShowToast
 import com.example.domain.util.Resource
+import com.mobilebreakero.auth.components.AuthButton
+import com.mobilebreakero.auth.components.AuthContent
+import com.mobilebreakero.auth.components.AuthTextField
+import com.mobilebreakero.auth.components.ShowToast
 
 @Composable
 fun SignUpScreen (

@@ -1,13 +1,18 @@
 package com.mobilebreakero.welcome
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
+import com.mobilebreakero.welcome.components.WelcomePager
 
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(navController: NavController){
 
-    Column {
-        Text("Welcome Screen")
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        WelcomePager(navController = navController)
     }
 }

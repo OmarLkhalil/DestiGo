@@ -1,4 +1,4 @@
-package com.example.auth.components
+package com.mobilebreakero.auth.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Spacer

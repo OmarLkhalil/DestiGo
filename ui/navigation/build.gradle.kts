@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.auth"
+    namespace = "com.mobilebreakero.navigation"
     compileSdk = 33
 
     defaultConfig {
@@ -59,6 +59,8 @@ dependencies {
     implementation(libs.material3)
     implementation(project(mapOf("path" to ":core:domain")))
     implementation(project(mapOf("path" to ":ui:home")))
+    implementation(project(mapOf("path" to ":ui:auth")))
+    implementation(project(mapOf("path" to ":ui:welcome")))
     implementation(project(mapOf("path" to ":core:data")))
     implementation(project(mapOf("path" to ":common-ui")))
     testImplementation(libs.junit)
@@ -84,4 +86,6 @@ dependencies {
     implementation(libs.hilt.navigation)
     implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
+
+
 }

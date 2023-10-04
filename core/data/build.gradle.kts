@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.data"
+    namespace = "com.mobilebreakero.data"
     compileSdk = 33
 
     defaultConfig {

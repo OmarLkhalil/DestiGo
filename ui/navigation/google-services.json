@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "155013614979",
-    "project_id": "destigo-c2512",
-    "storage_bucket": "destigo-c2512.appspot.com"
+    "project_number": "236121183205",
+    "project_id": "destigo-84de1",
+    "storage_bucket": "destigo-84de1.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:155013614979:android:3b65b7e373253307613ab6",
+        "mobilesdk_app_id": "1:236121183205:android:16af806d79ade5fbfb950c",
         "android_client_info": {
-          "package_name": "com.mobilebreakero.data"
+          "package_name": "com.mobilebreakero.navigation"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCv6LIbxjRtBl7HL8qfa_cA9euQOzOE4Es"
+          "current_key": "AIzaSyB7n1nj6mHCGMT7xwdzGffnjsvmHaWZkfU"
         }
       ],
       "services": {

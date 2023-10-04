@@ -1,4 +1,4 @@
-package com.example.auth.components
+package com.mobilebreakero.auth.components
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable

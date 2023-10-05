@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.auth"
+    namespace = "com.mobilebreakero.auth"
     compileSdk = 33
 
     defaultConfig {

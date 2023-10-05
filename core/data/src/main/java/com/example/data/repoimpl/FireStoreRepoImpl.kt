@@ -4,7 +4,7 @@ import com.example.domain.model.AppUser
 import com.example.domain.repo.FireStoreRepo
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
-import com.mobilebreakero.domain.util.getCollection
+import com.example.domain.util.getCollection
 
 class FireStoreRepoImpl : FireStoreRepo {
     override fun addUserToFireStore(

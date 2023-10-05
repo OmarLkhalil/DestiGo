@@ -1,8 +1,9 @@
-package com.mobilebreakero.domain.util
+package com.example.domain.util
 
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
@@ -38,45 +39,53 @@ fun getCollection (collectionName:String): CollectionReference {
     return  db.collection(collectionName)
 }
 
-fun sendEmail(email: String) {
+fun sendEmail(email: String, context: Context){
     FirebaseAuth.getInstance().sendPasswordResetEmail(email)
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Log.d("sendEmail", "Email sent.")
+                Log.e("sendEmail", "Email sent.")
+                mToast(context = context)
+            } else {
+                Log.e("sendEmail", "Email not sent.")
             }
         }
 }
 
-fun sendMessage(context: Context) {
-
-    val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-        override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-            // تم التحقق بنجاح
-            // يمكنك تنفيذ الإجراءات اللازمة هنا، مثل تسجيل الدخول
-            Log.e("SendCode", "Success")
-        }
-
-        override fun onVerificationFailed(exception: FirebaseException) {
-            // فشل التحقق
-            // يمكنك تنفيذ الإجراءات اللازمة هنا للتعامل مع الخطأ
-            Log.e("SendCode", exception.message.toString())
-        }
-
-        override fun onCodeSent(
-            verificationId: String,
-            token: PhoneAuthProvider.ForceResendingToken
-        ) {
-            // تم إرسال رمز التحقق بنجاح
-            // يمكنك تخزين `verificationId` لاستخدامه في التحقق من رمز التحقق لاحقًا
-        }
-    }
-
-    val auth = Firebase.auth
-    val options = PhoneAuthOptions.newBuilder(auth)
-        .setPhoneNumber("+201066660496") // Phone number to verify
-        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-        .setActivity(context as Activity) // Activity (for callback binding)
-        .setCallbacks(callbacks)
-        .build()
-    PhoneAuthProvider.verifyPhoneNumber(options)
+private fun mToast(context: Context){
+    Toast.makeText(context, "This is a Sample Toast", Toast.LENGTH_LONG).show()
 }
+
+//fun sendMessage(context: Context) {
+//
+//    val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+//        override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+//            // تم التحقق بنجاح
+//            // يمكنك تنفيذ الإجراءات اللازمة هنا، مثل تسجيل الدخول
+//            Log.e("SendCode", "Success")
+//        }
+//
+//        override fun onVerificationFailed(exception: FirebaseException) {
+//            // فشل التحقق
+//            // يمكنك تنفيذ الإجراءات اللازمة هنا للتعامل مع الخطأ
+//            Log.e("SendCode", exception.message.toString())
+//        }
+//
+//        override fun onCodeSent(
+//            verificationId: String,
+//            token: PhoneAuthProvider.ForceResendingToken
+//        ) {
+//            Log.e("SendCode", "Success11")
+//            // تم إرسال رمز التحقق بنجاح
+//            // يمكنك تخزين `verificationId` لاستخدامه في التحقق من رمز التحقق لاحقًا
+//        }
+//    }
+//
+//    val auth = Firebase.auth
+//    val options = PhoneAuthOptions.newBuilder(auth)
+//        .setPhoneNumber("+201002841160") // Phone number to verify
+//        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+//        .setActivity(context as Activity) // Activity (for callback binding)
+//        .setCallbacks(callbacks)
+//        .build()
+//    PhoneAuthProvider.verifyPhoneNumber(options)
+//}

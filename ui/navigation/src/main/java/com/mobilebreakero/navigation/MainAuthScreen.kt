@@ -12,6 +12,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.example.auth.login.LoginScreen
+import com.example.auth.reset.ResetPasswordScreen
 import com.mobilebreakero.auth.start.StartAuthScreen
 import com.mobilebreakero.common_ui.viewmodels.AuthViewModel
 import com.example.home.HomeScreen
@@ -65,6 +66,9 @@ fun MainNavHost(
         }
         composable(route = "HomeScreen") {
             HomeScreen(viewModel, navController = navController)
+        }
+        composable(route = "ResetPasswordScreen") {
+            ResetPasswordScreen(navController)
         }
     }
 }

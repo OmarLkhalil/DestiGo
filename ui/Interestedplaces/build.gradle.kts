@@ -2,13 +2,10 @@
 plugins {
     alias(libs.plugins.androidlibrary)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.kotlinKapt)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.firebase)
 }
 
 android {
-    namespace = "com.mobilebreakero.data"
+    namespace = "com.mobilebreakero.interestedplaces"
     compileSdk = 33
 
     defaultConfig {
@@ -39,26 +36,19 @@ android {
 dependencies {
 
     implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(project(mapOf("path" to ":core:domain")))
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.activity.compose)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.ui)
+    implementation(libs.ui.graphics)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation(libs.navigation.compose)
 
-    // firebase
-    implementation(libs.firebase.bom)
-    implementation(libs.firebase.product)
-    implementation(libs.firebase.auth)
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
-    implementation("com.google.firebase:firebase-database:20.2.2")
-    implementation("com.google.firebase:firebase-firestore:24.8.1")
-    implementation("com.google.firebase:firebase-firestore-ktx")
+    // Coil
 
-
-    // hilt
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.navigation)
-    implementation(libs.hilt.navigation.compose)
-    kapt(libs.hilt.android.compiler)
+    implementation(libs.coil.compose)
 }

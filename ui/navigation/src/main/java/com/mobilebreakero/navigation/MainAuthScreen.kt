@@ -15,8 +15,9 @@ import com.mobilebreakero.auth.login.LoginScreen
 import com.mobilebreakero.auth.start.StartAuthScreen
 import com.mobilebreakero.common_ui.viewmodels.AuthViewModel
 import com.mobilebreakero.home.HomeScreen
-import com.mobilebreakero.signup.SignUpScreen
 import com.google.accompanist.navigation.animation.composable
+import com.mobilebreakero.auth.signup.SignUpScreen
+import com.mobilebreakero.interestedplaces.InterestedPlacesScreen
 import com.mobilebreakero.welcome.WelcomeScreen
 
 private const val TransitionDuration = 600
@@ -48,11 +49,9 @@ fun MainNavHost(
             )
         }
     ) {
-
         composable(route = "WelcomeScreen") {
             WelcomeScreen(navController = navController)
         }
-
         composable(route = "StartAuthScreen") {
             StartAuthScreen(navController = navController)
         }
@@ -64,6 +63,9 @@ fun MainNavHost(
         }
         composable(route = "HomeScreen") {
             HomeScreen(viewModel, navController = navController)
+        }
+        composable(route = "InterestedPlacesScreen") {
+            InterestedPlacesScreen()
         }
     }
 }

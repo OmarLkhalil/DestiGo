@@ -60,6 +60,7 @@ dependencies {
     implementation(project(mapOf("path" to ":core:domain")))
     implementation(project(mapOf("path" to ":ui:home")))
     implementation(project(mapOf("path" to ":ui:auth")))
+    implementation(project(mapOf("path" to ":ui:Interestedplaces")))
     implementation(project(mapOf("path" to ":ui:welcome")))
     implementation(project(mapOf("path" to ":core:data")))
     implementation(project(mapOf("path" to ":common-ui")))

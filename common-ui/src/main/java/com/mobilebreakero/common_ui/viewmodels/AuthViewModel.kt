@@ -3,9 +3,9 @@ package com.mobilebreakero.common_ui.viewmodels
 import androidx.annotation.AnyThread
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.repo.AuthRepository
-import com.example.domain.util.Resource
 import com.google.firebase.auth.FirebaseUser
+import com.mobilebreakero.domain.repo.AuthRepository
+import com.mobilebreakero.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

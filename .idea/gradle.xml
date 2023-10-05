@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/core/data" />
             <option value="$PROJECT_DIR$/core/domain" />
             <option value="$PROJECT_DIR$/ui" />
+            <option value="$PROJECT_DIR$/ui/Interestedplaces" />
             <option value="$PROJECT_DIR$/ui/auth" />
             <option value="$PROJECT_DIR$/ui/home" />
             <option value="$PROJECT_DIR$/ui/navigation" />

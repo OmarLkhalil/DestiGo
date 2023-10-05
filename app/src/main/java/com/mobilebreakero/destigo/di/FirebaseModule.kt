@@ -1,8 +1,10 @@
 package com.mobilebreakero.destigo.di
 
-import com.example.data.repoimpl.AuthRepositoryImpl
-import com.example.domain.repo.AuthRepository
 import com.google.firebase.auth.FirebaseAuth
+import com.mobilebreakero.data.repoimpl.AuthRepositoryImpl
+import com.mobilebreakero.data.repoimpl.FireStoreRepoImpl
+import com.mobilebreakero.domain.repo.AuthRepository
+import com.mobilebreakero.domain.repo.FireStoreRepo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,4 +19,9 @@ object FirebaseModule {
 
     @Provides
     fun providesAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl
+
+    @Provides
+    fun provideFireStoreRepo(): FireStoreRepo {
+        return FireStoreRepoImpl()
+    }
 }

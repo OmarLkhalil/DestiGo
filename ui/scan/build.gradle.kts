@@ -2,13 +2,10 @@
 plugins {
     alias(libs.plugins.androidlibrary)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.kotlinKapt)
-    alias(libs.plugins.firebase)
-    alias(libs.plugins.hilt)
 }
 
 android {
-    namespace = "com.mobilebreakero.navigation"
+    namespace = "com.mobilebreakero.scan"
     compileSdk = 33
 
     defaultConfig {
@@ -57,39 +54,12 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
-    implementation(project(mapOf("path" to ":core:domain")))
-    implementation(project(mapOf("path" to ":ui:home")))
-    implementation(project(mapOf("path" to ":ui:profile")))
-    implementation(project(mapOf("path" to ":ui:scan")))
-    implementation(project(mapOf("path" to ":ui:trips")))
-    implementation(project(mapOf("path" to ":ui:auth")))
-    implementation(project(mapOf("path" to ":ui:Interestedplaces")))
-    implementation(project(mapOf("path" to ":ui:welcome")))
-    implementation(project(mapOf("path" to ":core:data")))
-    implementation(project(mapOf("path" to ":common-ui")))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.ui.test.junit4)
-    debugImplementation(libs.ui.tooling)
-    debugImplementation(libs.ui.test.manifest)
-    implementation(libs.accompanist.navigationAnimation)
-
-    // navigation
     implementation(libs.navigation.compose)
 
-    // firebase
-    implementation(libs.firebase.bom)
-    implementation(libs.firebase.product)
-    implementation(libs.firebase.auth)
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    // Coil
 
-    // hilt
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.navigation)
-    implementation(libs.hilt.navigation.compose)
-    kapt(libs.hilt.android.compiler)
-
-
+    implementation(libs.coil.compose)
 }

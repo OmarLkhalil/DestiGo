@@ -2,6 +2,7 @@ package com.mobilebreakero.auth.start
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -90,7 +91,10 @@ fun StartAuthScreen(navController: NavController) {
                 text = "Continue as Guest",
                 color = Color(0xffB3B3B3),
                 fontSize = 14.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.clickable {
+                    navController.navigate(route = "HomeScreen")
+                }
             )
         }
     }

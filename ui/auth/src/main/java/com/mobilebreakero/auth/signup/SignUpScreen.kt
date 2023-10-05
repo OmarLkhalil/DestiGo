@@ -90,7 +90,7 @@ fun SignUpScreen (
                 }
                 is Resource.Success -> {
                     LaunchedEffect(Unit) {
-                        navController.navigate("InterestedPlacesScreen") {
+                        navController.navigate("HomeScreen") {
                             popUpTo("SignUpScreen") { inclusive = true }
                         }
                     }

@@ -66,7 +66,13 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(project(mapOf("path" to ":core:data")))
     implementation(project(mapOf("path" to ":core:domain")))
+    implementation(project(mapOf("path" to ":ui:home")))
+    implementation(project(mapOf("path" to ":ui:profile")))
+    implementation(project(mapOf("path" to ":ui:scan")))
+    implementation(project(mapOf("path" to ":ui:trips")))
     implementation(project(mapOf("path" to ":ui:auth")))
+    implementation(project(mapOf("path" to ":ui:Interestedplaces")))
+    implementation(project(mapOf("path" to ":ui:welcome")))
     implementation(project(mapOf("path" to ":ui:navigation")))
     implementation(project(mapOf("path" to ":common-ui")))
     testImplementation(libs.junit)
@@ -78,6 +84,7 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
 
     implementation(libs.accompanist.navigationAnimation)
+    implementation(libs.animated.navigation.bar)
 
     // hilt
     implementation(libs.hilt.android)

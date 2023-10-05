@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.firebase.auth.ktx.auth
@@ -18,6 +19,9 @@ import com.mobilebreakero.home.HomeScreen
 import com.google.accompanist.navigation.animation.composable
 import com.mobilebreakero.auth.signup.SignUpScreen
 import com.mobilebreakero.interestedplaces.InterestedPlacesScreen
+import com.mobilebreakero.profile.ProfileScreen
+import com.mobilebreakero.scan.ScanScreen
+import com.mobilebreakero.trips.TripsScreen
 import com.mobilebreakero.welcome.WelcomeScreen
 
 private const val TransitionDuration = 600
@@ -28,6 +32,7 @@ fun MainNavHost(
     startDestination: Boolean,
     viewModel: AuthViewModel,
 ) {
+
     val navController = rememberAnimatedNavController()
 
     AnimatedNavHost(
@@ -62,13 +67,23 @@ fun MainNavHost(
             LoginScreen(viewModel, navController = navController)
         }
         composable(route = "HomeScreen") {
-            HomeScreen(viewModel, navController = navController)
+            HomeScreen(navController = navController)
         }
         composable(route = "InterestedPlacesScreen") {
             InterestedPlacesScreen()
         }
+        composable(route = "ScanScreen") {
+            ScanScreen()
+        }
+        composable(route = "ProfileScreen") {
+            ProfileScreen()
+        }
+        composable(route = "TripsScreen") {
+            TripsScreen()
+        }
     }
 }
+
 
 private fun getStart(): String {
 

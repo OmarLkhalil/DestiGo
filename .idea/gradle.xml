@@ -21,6 +21,9 @@
             <option value="$PROJECT_DIR$/ui/auth" />
             <option value="$PROJECT_DIR$/ui/home" />
             <option value="$PROJECT_DIR$/ui/navigation" />
+            <option value="$PROJECT_DIR$/ui/profile" />
+            <option value="$PROJECT_DIR$/ui/scan" />
+            <option value="$PROJECT_DIR$/ui/trips" />
             <option value="$PROJECT_DIR$/ui/welcome" />
           </set>
         </option>

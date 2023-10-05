@@ -28,6 +28,7 @@ class MainActivity : ComponentActivity() {
         val prefs = getSharedPreferences(FIRST_LAUNCH_PREFS, Context.MODE_PRIVATE)
         val isFirstLaunch = prefs.getBoolean(FIRST_LAUNCH_KEY, true)
 
+
         setContent {
             DestiGoTheme {
                 Surface(

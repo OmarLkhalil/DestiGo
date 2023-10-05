@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.auth.R
-import com.mobilebreakero.auth.components.AuthButton
+import com.example.auth.components.AuthButton
 
 @Composable
 fun StartAuthScreen(navController: NavController) {

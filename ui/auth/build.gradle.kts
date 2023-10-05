@@ -70,6 +70,7 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
     implementation(libs.accompanist.navigationAnimation)
 
+
     // navigation
     implementation(libs.navigation.compose)
 

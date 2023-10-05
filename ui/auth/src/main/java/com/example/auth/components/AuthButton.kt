@@ -1,4 +1,4 @@
-package com.mobilebreakero.auth.components
+package com.example.auth.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.Button

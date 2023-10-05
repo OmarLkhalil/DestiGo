@@ -26,7 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.domain.util.Resource
-import com.mobilebreakero.auth.components.AuthButton
+import com.example.auth.components.AuthButton
 import com.mobilebreakero.auth.components.AuthContent
 import com.example.auth.components.AuthTextField
 import com.mobilebreakero.auth.components.ShowToast

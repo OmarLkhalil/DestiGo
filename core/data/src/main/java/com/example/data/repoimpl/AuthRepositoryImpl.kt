@@ -6,9 +6,9 @@ import com.example.domain.repo.AuthRepository
 import com.example.domain.repo.FireStoreRepo
 import com.example.domain.util.DataUtils
 import com.example.domain.util.Resource
-import com.example.domain.util.await
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.mobilebreakero.domain.util.await
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(

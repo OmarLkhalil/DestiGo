@@ -1,4 +1,4 @@
-package com.mobilebreakero.auth.components
+package com.example.auth.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width

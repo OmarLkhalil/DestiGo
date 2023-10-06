@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val prefs = getSharedPreferences(FIRST_LAUNCH_PREFS, Context.MODE_PRIVATE)
+        val prefs = getSharedPreferences(FIRST_LAUNCH_PREFS, MODE_PRIVATE)
         val isFirstLaunch = prefs.getBoolean(FIRST_LAUNCH_KEY, true)
 
 

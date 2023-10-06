@@ -32,8 +32,8 @@ fun CustomButtonForButtonNav(item: Destinations, isSelected: Boolean, onClick: (
     ) {
         Icon(
             painter = painterResource(id = item.icon),
-            contentDescription = item.title,
-            tint = if (isSelected) Color(0xFF4F80FF) else Color.DarkGray,
+            contentDescription = item.route,
+            tint = if (isSelected) Color(0xFF4F80FF) else Color.DarkGray.copy(alpha = 0.5f),
             modifier = Modifier.size(30.dp)
         )
         if (isSelected) {
@@ -44,10 +44,10 @@ fun CustomButtonForButtonNav(item: Destinations, isSelected: Boolean, onClick: (
             )
         }
         Text(
-            text = item.title,
+            text = item.route,
             fontSize = 14.sp,
             style = TextStyle(fontWeight = Bold),
-            color = if (isSelected) Color(0xFF4F80FF) else Color.DarkGray,
+            color = if (isSelected) Color(0xFF4F80FF) else Color.DarkGray.copy(alpha = 0.5f),
             modifier = Modifier.padding(top = 4.dp)
         )
     }

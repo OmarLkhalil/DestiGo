@@ -93,7 +93,7 @@ fun StartAuthScreen(navController: NavController) {
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.clickable {
-                    navController.navigate(route = "HomeScreen")
+                    navController.navigate(route = "Home")
                 }
             )
         }

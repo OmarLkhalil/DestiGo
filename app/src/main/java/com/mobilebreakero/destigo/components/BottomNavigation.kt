@@ -36,14 +36,14 @@ fun BottomNavigation(navController: NavController) {
     val Barcolor = Color(0xFFF2F5FF)
 
     val routeNames = listOf(
-        Destinations.Scan.route,
-        Destinations.Home.route,
-        Destinations.Trips.route,
-        Destinations.Profile.route
+        "Scan",
+        "Home",
+        "Trips",
+        "Profile"
     )
 
     var selectedIndex by remember {
-        mutableStateOf(2)
+        mutableStateOf(1)
     }
 
     LaunchedEffect(currentRoute) {
@@ -74,11 +74,7 @@ fun BottomNavigation(navController: NavController) {
                         onClick = {
                             selectedIndex = index
                             navController.navigate(item.route) {
-                                navController.graph.startDestinationRoute?.let {
-                                    popUpTo(it) {
-                                        saveState = true
-                                    }
-                                }
+
                                 launchSingleTop = true
                             }
                         }

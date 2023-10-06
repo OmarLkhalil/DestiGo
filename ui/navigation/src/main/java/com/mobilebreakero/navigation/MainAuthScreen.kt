@@ -7,17 +7,16 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.accompanist.navigation.animation.composable
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.mobilebreakero.auth.login.LoginScreen
+import com.mobilebreakero.auth.signup.SignUpScreen
 import com.mobilebreakero.auth.start.StartAuthScreen
 import com.mobilebreakero.common_ui.viewmodels.AuthViewModel
 import com.mobilebreakero.home.HomeScreen
-import com.google.accompanist.navigation.animation.composable
-import com.mobilebreakero.auth.signup.SignUpScreen
 import com.mobilebreakero.interestedplaces.InterestedPlacesScreen
 import com.mobilebreakero.profile.ProfileScreen
 import com.mobilebreakero.scan.ScanScreen
@@ -31,9 +30,9 @@ private const val TransitionDuration = 600
 fun MainNavHost(
     startDestination: Boolean,
     viewModel: AuthViewModel,
+    navController: NavHostController
 ) {
 
-    val navController = rememberAnimatedNavController()
 
     AnimatedNavHost(
         modifier = Modifier,
@@ -66,19 +65,19 @@ fun MainNavHost(
         composable(route = "LoginScreen") {
             LoginScreen(viewModel, navController = navController)
         }
-        composable(route = "HomeScreen") {
+        composable(route = "Home") {
             HomeScreen(navController = navController)
         }
         composable(route = "InterestedPlacesScreen") {
             InterestedPlacesScreen()
         }
-        composable(route = "ScanScreen") {
+        composable(route = "Scan") {
             ScanScreen()
         }
-        composable(route = "ProfileScreen") {
+        composable(route = "Profile") {
             ProfileScreen()
         }
-        composable(route = "TripsScreen") {
+        composable(route = "Trips") {
             TripsScreen()
         }
     }
@@ -91,6 +90,6 @@ private fun getStart(): String {
     return if (firebaseUser == null) {
         "StartAuthScreen"
     } else {
-        "HomeScreen"
+        "Home"
     }
 }

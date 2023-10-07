@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.accompanist.navigationAnimation)
+    implementation(libs.animated.navigation.bar)
 
     implementation(project(mapOf("path" to ":core:data")))
     testImplementation(libs.junit)

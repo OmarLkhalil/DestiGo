@@ -13,7 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.mobilebreakero.common_ui.viewmodels.AuthViewModel
-import com.mobilebreakero.destigo.components.BottomNavigation
+import com.mobilebreakero.home.components.BottomNavigation
 import com.mobilebreakero.destigo.ui.theme.DestiGoTheme
 import com.mobilebreakero.navigation.MainNavHost
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,6 +46,7 @@ class MainActivity : ComponentActivity() {
                     Box(modifier = Modifier.padding(pv)) {
                         MainNavHost(
                             startDestination = isFirstLaunch,
+
                             viewModel = authViewModel,
                             navController
                         )

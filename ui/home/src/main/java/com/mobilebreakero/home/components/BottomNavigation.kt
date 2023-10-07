@@ -1,4 +1,4 @@
-package com.mobilebreakero.destigo.components
+package com.mobilebreakero.home.components
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background

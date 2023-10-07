@@ -29,6 +29,7 @@ import androidx.navigation.NavController
 import com.mobilebreakero.auth.components.AuthButton
 import com.mobilebreakero.auth.components.AuthContent
 import com.mobilebreakero.auth.components.AuthTextField
+import com.mobilebreakero.auth.components.PasswordTextField
 import com.mobilebreakero.auth.components.ShowToast
 import com.mobilebreakero.common_ui.viewmodels.AuthViewModel
 import com.mobilebreakero.domain.util.Resource
@@ -56,10 +57,8 @@ fun LoginScreen (
                 label = "Email"
             )
             var passwordText by remember { mutableStateOf("") }
-            AuthTextField(
-                text = passwordText,
+            PasswordTextField(
                 onValueChange = { passwordText = it },
-                label = "Password"
             )
             Spacer(modifier = Modifier.height(20.dp))
             AuthButton(

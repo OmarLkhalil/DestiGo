@@ -1,4 +1,4 @@
-package com.mobilebreakero.destigo.components
+package com.mobilebreakero.home.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

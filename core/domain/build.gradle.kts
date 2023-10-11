@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.androidlibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinKapt)
-    alias(libs.plugins.firebase)
 }
 
 android {
@@ -45,9 +44,7 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation(libs.firebase.firestore.ktx)
 
-    // firebase
-    implementation(libs.firebase.bom)
-    implementation(libs.firebase.product)
     implementation(libs.firebase.auth)
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+
 }

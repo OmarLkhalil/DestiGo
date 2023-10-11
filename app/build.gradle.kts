@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinKapt)
-    alias(libs.plugins.firebase)
     alias(libs.plugins.hilt)
 }
 
@@ -75,6 +74,7 @@ dependencies {
     implementation(project(mapOf("path" to ":ui:welcome")))
     implementation(project(mapOf("path" to ":ui:navigation")))
     implementation(project(mapOf("path" to ":common-ui")))
+    implementation(libs.firebase.firestore.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

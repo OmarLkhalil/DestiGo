@@ -1,4 +1,4 @@
-package com.mobilebreakero.auth.components
+package com.mobilebreakero.auth.ui.common.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -73,13 +73,16 @@ fun PasswordTextField(
 ) {
     var password by rememberSaveable { mutableStateOf("") }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    var isPasswordError by remember { mutableStateOf(false) }
 
     TextField(
         value = password,
         onValueChange = {
             password = it
             onValueChange(it)
+            isPasswordError = it.isEmpty()
         },
+        isError = isPasswordError,
         label = { Text("Password") },
         modifier = Modifier
             .width(360.dp)
@@ -106,15 +109,23 @@ fun PasswordTextField(
         trailingIcon = {
             val image = if (passwordVisible)
                 painterResource(R.drawable.visible)
-                else painterResource(id = R.drawable.visiblty)
+            else painterResource(id = R.drawable.visiblty)
 
             val description = if (passwordVisible) "Hide password" else "Show password"
 
             IconButton(onClick = { passwordVisible = !passwordVisible }) {
                 Icon(painter = image, description)
             }
+
+            if (isPasswordError) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_error),
+                    contentDescription = "Error",
+                    tint = Color.Red
+                )
+                Text("Field cannot be empty", color = Color.Red)
+            }
         },
         maxLines = 1
     )
-
 }

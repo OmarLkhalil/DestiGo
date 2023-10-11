@@ -10,12 +10,20 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.mobilebreakero.auth.login.LoginScreen
-import com.mobilebreakero.auth.signup.SignUpScreen
-import com.mobilebreakero.auth.start.StartAuthScreen
-import com.mobilebreakero.common_ui.viewmodels.AuthViewModel
+import com.mobilebreakero.auth.ui.login.screens.LoginScreen
+import com.mobilebreakero.auth.ui.signup.screens.SignUpScreen
+import com.mobilebreakero.auth.ui.start.screen.StartAuthScreen
+import com.mobilebreakero.auth.ui.verification.EmailVerificationScreen
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.WELCOME_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.START_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.INTERESTED_PLACES_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SIGN_IN_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SIGN_UP_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SCAN_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.EMAIL_VERIFICATION_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PROFILE_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.TRIPS_SCREEN
 import com.mobilebreakero.home.HomeScreen
 import com.mobilebreakero.interestedplaces.InterestedPlacesScreen
 import com.mobilebreakero.profile.ProfileScreen
@@ -29,15 +37,13 @@ private const val TransitionDuration = 600
 @Composable
 fun MainNavHost(
     startDestination: Boolean,
-    viewModel: AuthViewModel,
     navController: NavHostController
 ) {
-
 
     AnimatedNavHost(
         modifier = Modifier,
         navController = navController,
-        startDestination = if(startDestination) "WelcomeScreen" else getStart(),
+        startDestination = if(startDestination) WELCOME_SCREEN else START_SCREEN,
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentScope.SlideDirection.Left,
@@ -53,43 +59,35 @@ fun MainNavHost(
             )
         }
     ) {
-        composable(route = "WelcomeScreen") {
+        composable(route = WELCOME_SCREEN) {
             WelcomeScreen(navController = navController)
         }
-        composable(route = "StartAuthScreen") {
+        composable(route = START_SCREEN) {
             StartAuthScreen(navController = navController)
         }
-        composable(route = "SignUpScreen") {
-            SignUpScreen(viewModel, navController = navController)
+        composable(route = EMAIL_VERIFICATION_SCREEN) {
+            EmailVerificationScreen(navController = navController)
         }
-        composable(route = "LoginScreen") {
-            LoginScreen(viewModel, navController = navController)
+        composable(route = SIGN_UP_SCREEN) {
+            SignUpScreen(navController = navController)
         }
-        composable(route = "Home") {
+        composable(route = SIGN_IN_SCREEN) {
+            LoginScreen()
+        }
+        composable(route = HOME_SCREEN) {
             HomeScreen(navController = navController)
         }
-        composable(route = "InterestedPlacesScreen") {
+        composable(route = INTERESTED_PLACES_SCREEN) {
             InterestedPlacesScreen()
         }
-        composable(route = "Scan") {
+        composable(route = SCAN_SCREEN) {
             ScanScreen()
         }
-        composable(route = "Profile") {
+        composable(route = PROFILE_SCREEN) {
             ProfileScreen()
         }
-        composable(route = "Trips") {
+        composable(route = TRIPS_SCREEN) {
             TripsScreen()
         }
-    }
-}
-
-
-private fun getStart(): String {
-
-    val firebaseUser = Firebase.auth.currentUser
-    return if (firebaseUser == null) {
-        "StartAuthScreen"
-    } else {
-        "Home"
     }
 }

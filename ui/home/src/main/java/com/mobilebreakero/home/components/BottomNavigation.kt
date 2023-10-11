@@ -20,6 +20,10 @@ import com.exyte.animatednavbar.AnimatedNavigationBar
 import com.exyte.animatednavbar.animation.balltrajectory.Straight
 import com.exyte.animatednavbar.animation.indendshape.Height
 import com.exyte.animatednavbar.animation.indendshape.shapeCornerRadius
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PROFILE_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SCAN_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.TRIPS_SCREEN
 
 @Composable
 fun BottomNavigation(navController: NavController) {
@@ -36,10 +40,10 @@ fun BottomNavigation(navController: NavController) {
     val Barcolor = Color(0xFFF2F5FF)
 
     val routeNames = listOf(
-        "Scan",
-        "Home",
-        "Trips",
-        "Profile"
+        SCAN_SCREEN,
+        HOME_SCREEN,
+        TRIPS_SCREEN,
+        PROFILE_SCREEN
     )
 
     var selectedIndex by remember {

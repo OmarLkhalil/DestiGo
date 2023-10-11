@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.androidlibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinKapt)
-    alias(libs.plugins.firebase)
     alias(libs.plugins.hilt)
 }
 
@@ -74,8 +73,6 @@ dependencies {
     implementation(libs.navigation.compose)
 
     // firebase
-    implementation(libs.firebase.bom)
-    implementation(libs.firebase.product)
     implementation(libs.firebase.auth)
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
 

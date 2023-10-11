@@ -11,8 +11,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.navigation.NavController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.mobilebreakero.common_ui.viewmodels.AuthViewModel
+import com.mobilebreakero.auth.ui.common.components.MainViewModel
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.EMAIL_VERIFICATION_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.START_SCREEN
 import com.mobilebreakero.home.components.BottomNavigation
 import com.mobilebreakero.destigo.ui.theme.DestiGoTheme
 import com.mobilebreakero.navigation.MainNavHost
@@ -21,10 +27,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val authViewModel by viewModels<AuthViewModel>()
 
     private val FIRST_LAUNCH_PREFS = "FirstLaunchPrefs"
     private val FIRST_LAUNCH_KEY = "FirstLaunch"
+    private val viewModel by viewModels<MainViewModel>()
 
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,12 +52,10 @@ class MainActivity : ComponentActivity() {
                     Box(modifier = Modifier.padding(pv)) {
                         MainNavHost(
                             startDestination = isFirstLaunch,
-
-                            viewModel = authViewModel,
                             navController
                         )
+                        AuthState(navController)
                     }
-
                 }
             }
         }
@@ -62,4 +66,21 @@ class MainActivity : ComponentActivity() {
             editor.apply()
         }
     }
+
+    @Composable
+    private fun AuthState(
+        navController: NavController
+    ) {
+        val isUserSignedOut = viewModel.getAuthState().collectAsState().value
+        if (isUserSignedOut) {
+            navController.navigate(START_SCREEN)
+        } else {
+            if (viewModel.isEmailVerified) {
+                navController.navigate(HOME_SCREEN)
+            } else {
+                navController.navigate(EMAIL_VERIFICATION_SCREEN)
+            }
+        }
+    }
+
 }

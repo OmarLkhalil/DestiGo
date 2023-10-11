@@ -1,10 +1,10 @@
 package com.mobilebreakero.destigo.di
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.mobilebreakero.data.repoimpl.AuthRepositoryImpl
-import com.mobilebreakero.data.repoimpl.FireStoreRepoImpl
 import com.mobilebreakero.domain.repo.AuthRepository
-import com.mobilebreakero.domain.repo.FireStoreRepo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,13 +15,9 @@ import dagger.hilt.components.SingletonComponent
 object FirebaseModule {
 
     @Provides
-    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+    fun provideFirebaseAuth() = Firebase.auth
 
     @Provides
-    fun providesAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl
+    fun providesAuthRepository(auth: FirebaseAuth): AuthRepository = AuthRepositoryImpl(auth)
 
-    @Provides
-    fun provideFireStoreRepo(): FireStoreRepo {
-        return FireStoreRepoImpl()
-    }
 }

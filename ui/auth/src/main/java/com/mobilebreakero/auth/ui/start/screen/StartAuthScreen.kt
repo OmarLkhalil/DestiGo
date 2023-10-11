@@ -1,4 +1,4 @@
-package com.mobilebreakero.auth.start
+package com.mobilebreakero.auth.ui.start.screen
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -23,12 +23,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.auth.R
-import com.mobilebreakero.auth.components.AuthButton
+import com.mobilebreakero.auth.ui.common.components.AuthButton
+import com.mobilebreakero.auth.ui.start.StartViewModel
+import com.mobilebreakero.auth.ui.start.components.SignInAnon
 
 @Composable
-fun StartAuthScreen(navController: NavController) {
+fun StartAuthScreen(viewModel: StartViewModel = hiltViewModel(), navController: NavController) {
+
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -87,15 +92,18 @@ fun StartAuthScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(33.dp))
 
+
             Text(
                 text = "Continue as Guest",
                 color = Color(0xffB3B3B3),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.clickable {
+                    viewModel.signInAnnonymously()
                     navController.navigate(route = "Home")
                 }
             )
+            SignInAnon()
         }
     }
 }

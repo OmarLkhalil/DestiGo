@@ -46,6 +46,9 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+    implementation(libs.google.gson)
+    implementation(libs.retrofit)
+
     // firebase
     implementation(libs.firebase.bom)
     implementation(libs.firebase.product)

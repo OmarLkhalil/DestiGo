@@ -81,9 +81,9 @@ fun SignUpScreen (
 
         authResource?.value?.let {
             when (it) {
-                is Resource.Failure -> {
-                    ShowToast(message = it.exception.message.toString(), snackbarHostState)
-                    Log.e("Sign Up", it.exception.message.toString())
+                is Resource.Error -> {
+                    ShowToast(message = it.message.toString(), snackbarHostState)
+                    Log.e("Sign Up", it.message.toString())
                 }
                 is Resource.Loading -> {
                     CircularProgressIndicator()

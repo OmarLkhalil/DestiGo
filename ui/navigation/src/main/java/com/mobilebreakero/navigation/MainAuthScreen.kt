@@ -8,11 +8,13 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import com.example.auth.login.LoginScreen
+import com.example.search.screen.SearchScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.mobilebreakero.auth.login.LoginScreen
+import com.mobilebreakero.auth.reset.ResetPasswordScreen
 import com.mobilebreakero.auth.signup.SignUpScreen
 import com.mobilebreakero.auth.start.StartAuthScreen
 import com.mobilebreakero.common_ui.viewmodels.AuthViewModel
@@ -66,7 +68,10 @@ fun MainNavHost(
             LoginScreen(viewModel, navController = navController)
         }
         composable(route = "Home") {
-            HomeScreen(navController = navController)
+            HomeScreen(viewModel, navController = navController)
+        }
+        composable(route = "ResetPasswordScreen") {
+            ResetPasswordScreen(navController)
         }
         composable(route = "InterestedPlacesScreen") {
             InterestedPlacesScreen()
@@ -80,6 +85,9 @@ fun MainNavHost(
         composable(route = "Trips") {
             TripsScreen()
         }
+        composable(route = "SearchScreen") {
+            SearchScreen()
+        }
     }
 }
 
@@ -90,6 +98,6 @@ private fun getStart(): String {
     return if (firebaseUser == null) {
         "StartAuthScreen"
     } else {
-        "Home"
+        "SearchScreen"
     }
 }

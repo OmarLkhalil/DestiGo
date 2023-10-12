@@ -67,6 +67,7 @@ dependencies {
     implementation(project(mapOf("path" to ":ui:welcome")))
     implementation(project(mapOf("path" to ":core:data")))
     implementation(project(mapOf("path" to ":common-ui")))
+    implementation(project(mapOf("path" to ":ui:search")))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

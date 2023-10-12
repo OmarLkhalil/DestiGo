@@ -45,6 +45,12 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation(libs.firebase.firestore.ktx)
 
+    implementation(libs.google.gson)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.navigation)
+    kapt(libs.hilt.android.compiler)
+
     // firebase
     implementation(libs.firebase.bom)
     implementation(libs.firebase.product)

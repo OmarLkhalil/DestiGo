@@ -23,6 +23,7 @@
             <option value="$PROJECT_DIR$/ui/navigation" />
             <option value="$PROJECT_DIR$/ui/profile" />
             <option value="$PROJECT_DIR$/ui/scan" />
+            <option value="$PROJECT_DIR$/ui/search" />
             <option value="$PROJECT_DIR$/ui/trips" />
             <option value="$PROJECT_DIR$/ui/welcome" />
           </set>

@@ -1,27 +1,20 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.androidlibrary)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.kotlinKapt)
-    alias(libs.plugins.firebase)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlinKapt)
 }
 
 android {
-    namespace = "com.mobilebreakero.destigo"
+    namespace = "com.example.search"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.mobilebreakero.destigo"
         minSdk = 24
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -63,18 +56,6 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
-    implementation(libs.firebase.auth.ktx)
-    implementation(project(mapOf("path" to ":core:data")))
-    implementation(project(mapOf("path" to ":core:domain")))
-    implementation(project(mapOf("path" to ":ui:home")))
-    implementation(project(mapOf("path" to ":ui:profile")))
-    implementation(project(mapOf("path" to ":ui:scan")))
-    implementation(project(mapOf("path" to ":ui:trips")))
-    implementation(project(mapOf("path" to ":ui:auth")))
-    implementation(project(mapOf("path" to ":ui:Interestedplaces")))
-    implementation(project(mapOf("path" to ":ui:welcome")))
-    implementation(project(mapOf("path" to ":ui:navigation")))
-    implementation(project(mapOf("path" to ":common-ui")))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -82,19 +63,14 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
-
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.gson)
-
     implementation(libs.accompanist.navigationAnimation)
-    implementation(libs.animated.navigation.bar)
+
+    implementation(project(mapOf("path" to ":core:data")))
+    implementation(project(mapOf("path" to ":core:domain")))
 
     // hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)
     implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
-
-    implementation(libs.firebase.auth)
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
 }

@@ -1,7 +1,8 @@
-package com.mobilebreakero.auth.login
+package com.example.auth.login
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -24,7 +26,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.mobilebreakero.auth.components.AuthButton
 import com.mobilebreakero.auth.components.AuthContent
@@ -33,7 +38,6 @@ import com.mobilebreakero.auth.components.ShowToast
 import com.mobilebreakero.common_ui.viewmodels.AuthViewModel
 import com.mobilebreakero.domain.util.Resource
 
-
 @Composable
 fun LoginScreen (
     viewModel: AuthViewModel?,
@@ -41,6 +45,7 @@ fun LoginScreen (
 ) {
 
     val authResource = viewModel?.loginFlow?.collectAsState()
+    val context = LocalContext.current
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -73,18 +78,28 @@ fun LoginScreen (
                     .padding(horizontal = 20.dp, vertical = 2.dp),
                 border = BorderStroke(1.dp, Color(0xff4F80FF))
             )
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(
+                text = "Forget Password?",
+                color = Color(0xffB3B3B3),
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(start = 220.dp)
+                    .clickable {
+                        navController.navigate(route = "ResetPasswordScreen")
+                    }
+            )
         }
         val snackbarHostState = remember { SnackbarHostState() }
-
         authResource?.value?.let {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 when (it) {
-                    is Resource.Failure -> {
-                        ShowToast(message = it.exception.message.toString(), snackbarHostState)
-                        Log.e("Login", it.exception.message.toString())
+                    is Resource.Error -> {
+                        ShowToast(message = it.message.toString(), snackbarHostState)
+                        Log.e("Login", it.message.toString())
                     }
                     is Resource.Loading -> {
                         CircularProgressIndicator(
@@ -96,7 +111,7 @@ fun LoginScreen (
                     }
                     is Resource.Success -> {
                         LaunchedEffect(Unit) {
-                            navController.navigate("InterestedPlacesScreen") {
+                            navController.navigate("Home") {
                                 popUpTo("LoginScreen") { inclusive = true }
                             }
                         }

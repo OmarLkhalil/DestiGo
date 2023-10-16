@@ -29,6 +29,7 @@ material = "1.9.0"
 firebase = "32.3.1"
 google = "4.3.15"
 analytics = "17.5.0"
+constraintlayout = "2.1.4"
 
 [libraries]
 accompanist-navigationAnimation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist" }
@@ -74,6 +75,7 @@ firebase-product = { group = "com.google.firebase", name = "firebase-analytics",
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx"}
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version = "22.1.2" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version = "24.8.1" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

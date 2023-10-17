@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilebreakero.domain.repo.ReloadUserResponse
 import com.mobilebreakero.domain.repo.SignOutResponse
-import com.mobilebreakero.domain.usecase.AuthUseCase
+import com.mobilebreakero.domain.usecase.auth.AuthUseCase
 import com.mobilebreakero.domain.util.Response.Success
 import com.mobilebreakero.domain.util.Response.Loading
 import dagger.hilt.android.lifecycle.HiltViewModel

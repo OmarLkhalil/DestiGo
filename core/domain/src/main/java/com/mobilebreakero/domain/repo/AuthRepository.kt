@@ -12,6 +12,8 @@ typealias SignOutResponse = Response<Boolean>
 typealias SendEmailVerificationResponse = Response<Boolean>
 typealias SendPasswordResetEmailResponse = Response<Boolean>
 typealias ReloadUserResponse = Response<Boolean>
+typealias ResetPasswordResponse = Response<Boolean>
+typealias SendResetPasswordResponse = Response<Boolean>
 
 
 interface AuthRepository {
@@ -25,5 +27,6 @@ interface AuthRepository {
     suspend fun signOut(): SignOutResponse
     suspend fun reloadFirebaseUser(): ReloadUserResponse
     suspend fun sendPasswordResetEmail(email: String): SendPasswordResetEmailResponse
-
+    suspend fun resetPassword(password: String): ResetPasswordResponse
+    suspend fun sendResetPassword(email: String, confirmationCode: Int): SendResetPasswordResponse
 }

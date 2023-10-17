@@ -1,4 +1,4 @@
-package com.mobilebreakero.domain.usecase
+package com.mobilebreakero.domain.usecase.auth
 
 import com.mobilebreakero.domain.repo.AuthRepository
 

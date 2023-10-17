@@ -75,6 +75,8 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx"}
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version = "22.1.2" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version = "24.8.1" }
 
+javaMail = { group = "com.sun.mail", name = "android-mail", version = "1.6.0" }
+javaActivation = { group = "com.sun.mail", name = "android-activation", version = "1.6.0" }
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

@@ -61,4 +61,8 @@ dependencies {
     implementation(libs.hilt.navigation)
     implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
+
+    //Javamail for Smtp
+    implementation(libs.javaMail)
+    implementation(libs.javaActivation)
 }

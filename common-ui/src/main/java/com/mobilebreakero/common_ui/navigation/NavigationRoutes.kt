@@ -15,6 +15,9 @@ object NavigationRoutes {
     const val TRIPS_SCREEN = "Trips"
     const val SCAN_SCREEN = "Scan"
     const val EMAIL_VERIFICATION_SCREEN = "emailVerification"
-    const val RESET_PASSWORD = "resetPassword"
+    const val SEND_CONFIRMATION_CODE = "sendConfirmationCode"
+    const val CHOOSE_NEW_PASSWORD = "chooseNewPassword"
+    const val PASSWORD_UPDATED_SUCCESSFULLY = "passwordUpdated"
+    const val CONFIRM_CODE_SENT = "confirmCode"
 
 }

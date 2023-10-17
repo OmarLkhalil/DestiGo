@@ -1,21 +1,33 @@
 package com.mobilebreakero.data.repoimpl
 
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
-import com.mobilebreakero.domain.model.AppUser
-import com.mobilebreakero.domain.repo.FireStoreRepo
-import com.mobilebreakero.domain.util.getCollection
+import com.google.firebase.firestore.CollectionReference
+import com.mobilebreakero.domain.repo.FireStoreRepository
+import com.mobilebreakero.domain.repo.addUserResponse
+import com.mobilebreakero.domain.repo.updateUserResponse
+import com.mobilebreakero.domain.repo.userResponse
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class FireStoreRepoImpl : FireStoreRepo {
-    override fun addUserToFireStore(
-        user: AppUser,
-        onSuccessListener: OnSuccessListener<Void>,
-        onFailureListener: OnFailureListener
-    ) {
-        val userCollection = getCollection(AppUser.COLLECTION_NAME)
-        val userDoc = userCollection.document(user.id!!)
-        userDoc.set(user)
-            .addOnSuccessListener(onSuccessListener)
-            .addOnFailureListener(onFailureListener)
+@Singleton
+class FireStoreRepoImpl @Inject constructor(
+    private val usersRef: CollectionReference
+) : FireStoreRepository {
+
+    override suspend fun getUsers(): Flow<userResponse> {
+        TODO("Not yet implemented")
     }
+
+    override suspend fun getUserById(id: String): userResponse {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun addUser(email: String, username: String): addUserResponse {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateUser(id: String): updateUserResponse {
+        TODO("Not yet implemented")
+    }
+
 }

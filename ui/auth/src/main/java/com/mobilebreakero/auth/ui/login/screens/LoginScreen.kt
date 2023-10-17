@@ -6,11 +6,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import com.mobilebreakero.auth.ui.login.components.SignInWithEmailAndPasswordScreenContent
 
 
 @Composable
-fun LoginScreen () {
+fun LoginScreen (navController: NavController) {
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -18,7 +19,7 @@ fun LoginScreen () {
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            SignInWithEmailAndPasswordScreenContent()
+            SignInWithEmailAndPasswordScreenContent(navController = navController)
         }
     }
 }

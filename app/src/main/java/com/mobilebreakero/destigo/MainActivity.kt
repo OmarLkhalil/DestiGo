@@ -18,6 +18,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.mobilebreakero.auth.ui.common.components.MainViewModel
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.EMAIL_VERIFICATION_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.INTERESTED_PLACES_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.START_SCREEN
 import com.mobilebreakero.home.components.BottomNavigation
 import com.mobilebreakero.destigo.ui.theme.DestiGoTheme
@@ -73,7 +74,7 @@ class MainActivity : ComponentActivity() {
     ) {
         val isUserSignedOut = viewModel.getAuthState().collectAsState().value
         if (isUserSignedOut) {
-            navController.navigate(START_SCREEN)
+            navController.navigate(INTERESTED_PLACES_SCREEN)
         } else {
             if (viewModel.isEmailVerified) {
                 navController.navigate(HOME_SCREEN)

@@ -1,4 +1,4 @@
-package com.mobilebreakero.domain.usecase
+package com.mobilebreakero.domain.usecase.auth
 
 data class AuthUseCase(
     val currentUser: CurrentUser,
@@ -9,5 +9,7 @@ data class AuthUseCase(
     val signOut: SignOut,
     val reloadUser: ReloadUser,
     val sendPasswordResetEmail: SendPasswordResetEmail,
-    val sendEmailVerification: SendEmailVerification
+    val sendEmailVerification: SendEmailVerification,
+    val updatePassword: UpdatePassword,
+    val resetPassword: RestPassword
 )

@@ -1,4 +1,4 @@
-package com.mobilebreakero.auth.ui.verification.components
+package com.mobilebreakero.auth.ui.passwordreset.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
@@ -25,27 +27,33 @@ import androidx.navigation.NavController
 import com.example.auth.R
 import com.mobilebreakero.auth.ui.common.components.AuthButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mobilebreakero.auth.ui.common.components.AuthTextField
 import com.mobilebreakero.auth.ui.signup.components.SendEmailVerification
 import com.mobilebreakero.auth.ui.common.components.MainViewModel
+import com.mobilebreakero.auth.ui.passwordreset.PasswordResetViewModel
 import com.mobilebreakero.auth.ui.signup.SignUpViewModel
+import com.mobilebreakero.auth.ui.verification.components.ReloadUser
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
-import com.mobilebreakero.common_ui.navigation.NavigationRoutes.INTERESTED_PLACES_SCREEN
 import com.mobilebreakero.domain.util.Utils.Companion.showMessage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+
 @Composable
-fun EmailVerificationScreenContent(
+fun ConfirmTheConfirmationCodeScreenContent(
     navController: NavController,
-    sendvirIficationViewModel: SignUpViewModel = hiltViewModel(),
-    viewModel: MainViewModel = hiltViewModel()
 ) {
+
+    var confirmationCode by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -58,16 +66,18 @@ fun EmailVerificationScreenContent(
             contentScale = ContentScale.FillBounds,
             contentDescription = "Confirmation"
         )
+
         Spacer(modifier = Modifier.height(22.dp))
+
         Text(
-            text = "Confirm your email",
+            text = "Confirmation Code",
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold
         )
 
         Text(
-            text = "We have sent a message to your email address. \n" +
-                    "Please follow it and confirm your email to continue.",
+            text = "We sent a confirmation code \n" +
+                    "to your email",
             color = Color(0xffB3B3B3),
             fontSize = 14.sp,
             textAlign = TextAlign.Center,
@@ -77,17 +87,27 @@ fun EmailVerificationScreenContent(
 
         Spacer(modifier = Modifier.height(22.dp))
 
+        ConfirmationCodeTextField(
+            otpText = confirmationCode,
+            onOtpTextChange = { value, otpInputFilled ->
+                confirmationCode = value
+            }
+        )
+
+        Spacer(modifier = Modifier.height(33.dp))
+
+        val context = LocalContext.current
         AuthButton(
             onClick = {
-                viewModel.reloadUser()
+                CheckConfirmationCode(confirmationCode.toInt(), context, navController)
             },
-            text = "I confirmed my email",
             buttonColor = Color(0xff4F80FF),
-            modifier = Modifier
-                .width(290.dp)
-                .height(45.dp)
-                .clip(shape = RoundedCornerShape(10.dp))
-                .padding(horizontal = 20.dp, vertical = 2.dp),
+            text = "Submit", modifier = Modifier
+                .shadow(elevation = 0.dp, shape = CircleShape)
+                .width(270.dp)
+                .height(50.dp)
+                .wrapContentHeight()
+                .padding(horizontal = 20.dp, vertical = 2.dp)
         )
 
         Spacer(modifier = Modifier.height(33.dp))
@@ -98,38 +118,9 @@ fun EmailVerificationScreenContent(
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.clickable {
-                viewModel.signOut()
                 navController.navigate(route = "StartAuthScreen")
             }
         )
-
-        Spacer(modifier = Modifier.height(33.dp))
-        val coroutineScope = rememberCoroutineScope()
-
-        Text(
-            text = "Send email again",
-            color = Color(0xffB3B3B3),
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.clickable {
-                coroutineScope.launch {
-                    delay(1000)
-                    sendvirIficationViewModel.sendEmailVerification()
-                }
-            }
-        )
-
     }
 
-    val context = LocalContext.current
-
-    ReloadUser(
-        navigateToProfileScreen = {
-            if (viewModel.isEmailVerified) {
-                navController.navigate(INTERESTED_PLACES_SCREEN)
-            } else {
-                showMessage(context, "Email is not verified yet")
-            }
-        }
-    )
 }

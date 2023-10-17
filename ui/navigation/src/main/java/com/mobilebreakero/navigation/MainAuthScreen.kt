@@ -11,9 +11,15 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.mobilebreakero.auth.ui.login.screens.LoginScreen
+import com.mobilebreakero.auth.ui.passwordreset.screens.ChooseNewPasswordScreen
+import com.mobilebreakero.auth.ui.passwordreset.screens.ConfirmTheConfirmationCodeScreen
+import com.mobilebreakero.auth.ui.passwordreset.screens.PasswordUpdatedSuccessfullyScreen
+import com.mobilebreakero.auth.ui.passwordreset.screens.SendConfirmationCodeScreen
 import com.mobilebreakero.auth.ui.signup.screens.SignUpScreen
 import com.mobilebreakero.auth.ui.start.screen.StartAuthScreen
 import com.mobilebreakero.auth.ui.verification.EmailVerificationScreen
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CHOOSE_NEW_PASSWORD
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CONFIRM_CODE_SENT
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.WELCOME_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.START_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.INTERESTED_PLACES_SCREEN
@@ -22,10 +28,12 @@ import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SIGN_UP_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SCAN_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.EMAIL_VERIFICATION_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PASSWORD_UPDATED_SUCCESSFULLY
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PROFILE_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SEND_CONFIRMATION_CODE
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.TRIPS_SCREEN
 import com.mobilebreakero.home.HomeScreen
-import com.mobilebreakero.interestedplaces.InterestedPlacesScreen
+import com.mobilebreakero.interestedplaces.screen.InterestedPlacesScreen
 import com.mobilebreakero.profile.ProfileScreen
 import com.mobilebreakero.scan.ScanScreen
 import com.mobilebreakero.trips.TripsScreen
@@ -43,7 +51,7 @@ fun MainNavHost(
     AnimatedNavHost(
         modifier = Modifier,
         navController = navController,
-        startDestination = if(startDestination) WELCOME_SCREEN else START_SCREEN,
+        startDestination = if (startDestination) WELCOME_SCREEN else START_SCREEN,
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentScope.SlideDirection.Left,
@@ -72,7 +80,7 @@ fun MainNavHost(
             SignUpScreen(navController = navController)
         }
         composable(route = SIGN_IN_SCREEN) {
-            LoginScreen()
+            LoginScreen(navController = navController)
         }
         composable(route = HOME_SCREEN) {
             HomeScreen(navController = navController)
@@ -88,6 +96,18 @@ fun MainNavHost(
         }
         composable(route = TRIPS_SCREEN) {
             TripsScreen()
+        }
+        composable(route = SEND_CONFIRMATION_CODE) {
+            SendConfirmationCodeScreen(navController = navController)
+        }
+        composable(route = CHOOSE_NEW_PASSWORD) {
+            ChooseNewPasswordScreen(navController = navController)
+        }
+        composable(route = PASSWORD_UPDATED_SUCCESSFULLY) {
+            PasswordUpdatedSuccessfullyScreen(navController = navController)
+        }
+        composable(route = CONFIRM_CODE_SENT) {
+            ConfirmTheConfirmationCodeScreen(navController = navController)
         }
     }
 }

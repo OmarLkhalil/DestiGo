@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilebreakero.domain.repo.SendEmailVerificationResponse
 import com.mobilebreakero.domain.repo.SignUpResponse
-import com.mobilebreakero.domain.usecase.AuthUseCase
+import com.mobilebreakero.domain.usecase.auth.AuthUseCase
 import com.mobilebreakero.domain.util.Response.Loading
 import com.mobilebreakero.domain.util.Response.Success
 import dagger.hilt.android.lifecycle.HiltViewModel

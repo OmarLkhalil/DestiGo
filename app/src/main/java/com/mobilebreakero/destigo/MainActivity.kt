@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
     ) {
         val isUserSignedOut = viewModel.getAuthState().collectAsState().value
         if (isUserSignedOut) {
-            navController.navigate(INTERESTED_PLACES_SCREEN)
+            navController.navigate(START_SCREEN)
         } else {
             if (viewModel.isEmailVerified) {
                 navController.navigate(HOME_SCREEN)

@@ -90,8 +90,8 @@ fun StartAuthScreen(viewModel: StartViewModel = hiltViewModel(), navController: 
                     .clip(shape = RoundedCornerShape(10.dp))
                     .padding(horizontal = 20.dp, vertical = 2.dp),
             )
-            Spacer(modifier = Modifier.height(33.dp))
 
+            Spacer(modifier = Modifier.height(33.dp))
 
             Text(
                 text = "Continue as Guest",

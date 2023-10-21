@@ -8,8 +8,8 @@ import com.mobilebreakero.domain.util.Resource
 class SearchResultRepoImpl(
     private val apiServices: ApiServices
 ) : SearchResultRepo {
-//    override suspend fun getResult(text: String?, type: String?): Resource<List<ResultsItem?>> {
-override suspend fun getResult(text: String?, type: String?): Resource<List<ResultsItem?>> {
+    //    override suspend fun getResult(text: String?, type: String?): Resource<List<ResultsItem?>> {
+    override suspend fun getResult(text: String?, type: String?): Resource<List<ResultsItem?>> {
         return try {
             val response = apiServices.getSearchResult(
                 searchText = text!!,

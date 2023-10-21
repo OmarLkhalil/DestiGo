@@ -10,9 +10,9 @@ interface ApiServices {
 
     @GET("search?")
     suspend fun getSearchResult(
-        @Query("k") apiKey: String = API_KEY,
-        @Query("q") searchText: String,
-        @Query("t") searchType: String,
-        @Query("l") searchLanguage: String
-    ): Response<SearchResult?>
+        @Query("key") apiKey: String = API_KEY,
+        @Query("searchQuery") searchText: String,
+        @Query("category") searchType: String,
+        @Query("language") searchLanguage: String
+    ):Response<SearchResult?>
 }

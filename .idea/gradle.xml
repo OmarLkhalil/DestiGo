@@ -23,17 +23,12 @@
             <option value="$PROJECT_DIR$/ui/navigation" />
             <option value="$PROJECT_DIR$/ui/profile" />
             <option value="$PROJECT_DIR$/ui/scan" />
+            <option value="$PROJECT_DIR$/ui/search" />
             <option value="$PROJECT_DIR$/ui/testing" />
             <option value="$PROJECT_DIR$/ui/trips" />
             <option value="$PROJECT_DIR$/ui/welcome" />
           </set>
         </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="testRunner" value="GRADLE" />
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="jbr-17" />
       </GradleProjectSettings>
     </option>
   </component>

@@ -13,11 +13,13 @@ object NavigationRoutes {
     const val PROFILE_SCREEN = "Profile"
     const val INTERESTED_PLACES_SCREEN = "InterestedPlacesScreen"
     const val TRIPS_SCREEN = "Trips"
+    const val PLAN_CHECK_LIST = "PlanCheckList"
     const val SCAN_SCREEN = "Scan"
     const val EMAIL_VERIFICATION_SCREEN = "emailVerification"
     const val SEND_CONFIRMATION_CODE = "sendConfirmationCode"
     const val CHOOSE_NEW_PASSWORD = "chooseNewPassword"
     const val PASSWORD_UPDATED_SUCCESSFULLY = "passwordUpdated"
     const val CONFIRM_CODE_SENT = "confirmCode"
+    const val SEARCH_SCREEN = "searchScreen"
 
 }

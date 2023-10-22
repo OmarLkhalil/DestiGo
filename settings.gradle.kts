@@ -3,13 +3,16 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven { url = uri("https://jitpack.io") }
     }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
+        maven { url = uri("https://jitpack.io") }
         mavenCentral()
+
     }
 }
 
@@ -27,3 +30,4 @@ include(":ui:scan")
 include(":ui:profile")
 include(":ui:trips")
 include(":ui:testing")
+include(":ui:search")

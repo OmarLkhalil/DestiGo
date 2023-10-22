@@ -1,7 +1,11 @@
 package com.mobilebreakero.destigo.di
 
+import com.mobilebreakero.data.remote.TripApi
+import com.mobilebreakero.data.repoimpl.SearchResultRepoImpl
 import com.mobilebreakero.domain.repo.AuthRepository
 import com.mobilebreakero.domain.repo.FireStoreRepository
+import com.mobilebreakero.domain.repo.SearchResultRepo
+import com.mobilebreakero.domain.usecase.SearchResultUseCase
 import com.mobilebreakero.domain.usecase.auth.AuthUseCase
 import com.mobilebreakero.domain.usecase.auth.CurrentUser
 import com.mobilebreakero.domain.usecase.auth.GetAuthState
@@ -52,4 +56,14 @@ object AppModule {
         getUsers = GetUsers(repo),
         updateUser = UpdateUser(repo)
     )
+
+    @Provides
+    fun provideSearchRepo(api: TripApi): SearchResultRepo {
+        return SearchResultRepoImpl(api)
+    }
+
+    @Provides
+    fun provideSearchUseCase(repo: SearchResultRepo): SearchResultUseCase {
+        return SearchResultUseCase(repo)
+    }
 }

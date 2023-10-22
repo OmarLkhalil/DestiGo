@@ -29,14 +29,18 @@ import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SCAN_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.EMAIL_VERIFICATION_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PASSWORD_UPDATED_SUCCESSFULLY
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PLAN_CHECK_LIST
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PROFILE_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SEARCH_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SEND_CONFIRMATION_CODE
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.TRIPS_SCREEN
 import com.mobilebreakero.home.HomeScreen
 import com.mobilebreakero.interestedplaces.screen.InterestedPlacesScreen
 import com.mobilebreakero.profile.ProfileScreen
 import com.mobilebreakero.scan.ScanScreen
-import com.mobilebreakero.trips.TripsScreen
+import com.mobilebreakero.search.screen.SearchScreen
+import com.mobilebreakero.trips.plan.PlanScreen
+import com.mobilebreakero.trips.planchecklist.PlanCheckListScreen
 import com.mobilebreakero.welcome.WelcomeScreen
 
 private const val TransitionDuration = 600
@@ -44,14 +48,13 @@ private const val TransitionDuration = 600
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainNavHost(
-    startDestination: Boolean,
-    navController: NavHostController
+    navController: NavHostController,
+    startDestination: String,
 ) {
-
     AnimatedNavHost(
         modifier = Modifier,
         navController = navController,
-        startDestination = if (startDestination) WELCOME_SCREEN else START_SCREEN,
+        startDestination = startDestination ,
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentScope.SlideDirection.Left,
@@ -94,9 +97,6 @@ fun MainNavHost(
         composable(route = PROFILE_SCREEN) {
             ProfileScreen()
         }
-        composable(route = TRIPS_SCREEN) {
-            TripsScreen()
-        }
         composable(route = SEND_CONFIRMATION_CODE) {
             SendConfirmationCodeScreen(navController = navController)
         }
@@ -108,6 +108,15 @@ fun MainNavHost(
         }
         composable(route = CONFIRM_CODE_SENT) {
             ConfirmTheConfirmationCodeScreen(navController = navController)
+        }
+        composable(route = SEARCH_SCREEN) {
+            SearchScreen()
+        }
+        composable(route = TRIPS_SCREEN) {
+            PlanScreen(navController = navController)
+        }
+        composable(route = PLAN_CHECK_LIST) {
+            PlanCheckListScreen()
         }
     }
 }

@@ -29,6 +29,7 @@ fun VerticalGrid() {
 
     val selectedItems = remember { mutableStateListOf<InterestsItem>() }
     val context = LocalContext.current
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
     ) {
@@ -59,6 +60,5 @@ fun VerticalGrid() {
         )
     }
 }
-
 
 data class InterestsItem(val icon: Int, val title: String, var isSelected: Boolean = false)

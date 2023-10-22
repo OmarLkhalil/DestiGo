@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.androidApplication)
@@ -25,6 +27,7 @@ android {
 
     buildTypes {
         release {
+
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -41,6 +44,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -86,6 +90,9 @@ dependencies {
     implementation(libs.accompanist.navigationAnimation)
     implementation(libs.animated.navigation.bar)
 
+
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
     // hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)

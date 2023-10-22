@@ -1,3 +1,4 @@
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.androidlibrary)
@@ -20,6 +21,7 @@ android {
 
     buildTypes {
         release {
+
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -55,6 +57,9 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:24.8.1")
     implementation("com.google.firebase:firebase-firestore-ktx")
 
+
+    implementation(libs.google.gson)
+    implementation(libs.retrofit)
 
     // hilt
     implementation(libs.hilt.android)

@@ -1,10 +1,7 @@
 package com.mobilebreakero.trips.plan
 
 
-import androidx.compose.animation.expandHorizontally
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,19 +17,15 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,16 +37,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.TRIPS_SCREEN
-import com.mobilebreakero.trips.R
 import com.mobilebreakero.trips.commaon.CreateTripButton
-import kotlin.math.round
+enum class TripFilter{
+    STUDY,
+    BUSINESS,
+    VACATION,
+    OTHER
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,7 +57,7 @@ fun CreateTripScreen(
     navController: NavController
 ) {
     var visitMyBros by remember { mutableStateOf("") }
-    var selected by remember { mutableStateOf(false) }
+    var selected by remember { mutableStateOf<TripFilter?>(null) }
     var direcrions by remember { mutableStateOf("") }
     var date by remember { mutableStateOf("") }
     Column(
@@ -137,38 +133,17 @@ fun CreateTripScreen(
             horizontalArrangement = Arrangement.SpaceBetween
 
         ){
-            FilterChip(
-                modifier = Modifier.size(width = 100.dp, height = 35.dp).padding(4.dp),
-                onClick = { selected = !selected },
-                label = {
-                    Text("Study",
-                        modifier = Modifier)
-                },
-                selected = selected)
-            FilterChip(
-                modifier = Modifier.size(width = 100.dp, height = 35.dp).padding(4.dp),
-                onClick = { selected = !selected },
-                label = {
-                    Text("Study",
-                        modifier = Modifier)
-                },
-                selected = selected)
-            FilterChip(
-                modifier = Modifier.size(width = 100.dp, height = 35.dp).padding(4.dp),
-                onClick = { selected = !selected },
-                label = {
-                    Text("Study",
-                        modifier = Modifier)
-                },
-                selected = selected)
-            FilterChip(
-                modifier = Modifier.size(width = 100.dp, height = 35.dp).padding(4.dp),
-                onClick = { selected = !selected },
-                label = {
-                    Text("Study",
-                        modifier = Modifier)
-                },
-                selected = selected)
+
+            TripFilter.values().forEach { reason->
+                FilterChip(
+                    modifier = Modifier.size(width = 100.dp, height = 35.dp).padding(4.dp),
+                    onClick = { selected = reason },
+                    label = {
+                        Text(reason.name,
+                            modifier = Modifier)
+                    },
+                    selected = reason == selected)
+            }
         }
         Text(
             text = "Where? ",

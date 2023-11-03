@@ -13,6 +13,7 @@ object NavigationRoutes {
     const val PROFILE_SCREEN = "Profile"
     const val INTERESTED_PLACES_SCREEN = "InterestedPlacesScreen"
     const val TRIPS_SCREEN = "Trips"
+    const val CREATE_TRIP = "CreateTrip"
     const val PLAN_CHECK_LIST = "PlanCheckList"
     const val SCAN_SCREEN = "Scan"
     const val EMAIL_VERIFICATION_SCREEN = "emailVerification"

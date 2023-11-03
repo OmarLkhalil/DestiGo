@@ -18,14 +18,6 @@ fun TripsScreen(){
         modifier = Modifier
             .fillMaxSize()
     ) {
-        AndroidView(
-            factory = { context ->
-                val view = LayoutInflater.from(context).inflate(R.layout.fragment_plan, null, false)
 
-                view
-            },
-            update = {
-            }
-        )
     }
 }

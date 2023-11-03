@@ -1,43 +1,43 @@
 package com.mobilebreakero.trips.plan
 
-import android.view.LayoutInflater
-import android.view.View
-import android.widget.Button
+
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.mobilebreakero.trips.R
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CREATE_TRIP
+import com.mobilebreakero.trips.commaon.CreateTripButton
 
 @Composable
 fun PlanScreen(
     navController: NavController
-){
-    val buttonNext = remember { mutableStateOf<Button?>(null) }
+) {
 
     Column(
         modifier = Modifier
             .fillMaxSize()
+        , horizontalAlignment = CenterHorizontally
+        , verticalArrangement = Arrangement.Center
     ) {
-        AndroidView(
-            factory = { context ->
-                val view = LayoutInflater.from(context).inflate(R.layout.fragment_plan, null, false)
-                val button = view.findViewById<Button>(R.id.btn_next)
-                buttonNext.value = button
-                view
-            },
-            update = {
-            }
-
+        Text(text = "There's no Trips saved",
+            fontSize = 34.sp,
+            fontWeight = FontWeight.Bold )
+        Spacer(modifier = Modifier.height(140.dp))
+        CreateTripButton(text = "Create a Trip Plan ",
+            buttonColor = Color(0xff4F80FF),
+            modifier = Modifier.align(CenterHorizontally).height(50.dp).width(300.dp),
+            onClick = {navController.navigate(CREATE_TRIP)}
         )
-    }
-
-    buttonNext.value?.setOnClickListener {
-        navController.navigate("PlanCheckList")
     }
 }

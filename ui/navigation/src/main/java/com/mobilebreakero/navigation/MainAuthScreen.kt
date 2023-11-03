@@ -20,6 +20,7 @@ import com.mobilebreakero.auth.ui.start.screen.StartAuthScreen
 import com.mobilebreakero.auth.ui.verification.EmailVerificationScreen
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CHOOSE_NEW_PASSWORD
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CONFIRM_CODE_SENT
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CREATE_TRIP
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.WELCOME_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.START_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.INTERESTED_PLACES_SCREEN
@@ -39,6 +40,7 @@ import com.mobilebreakero.interestedplaces.screen.InterestedPlacesScreen
 import com.mobilebreakero.profile.ProfileScreen
 import com.mobilebreakero.scan.ScanScreen
 import com.mobilebreakero.search.screen.SearchScreen
+import com.mobilebreakero.trips.plan.CreateTripScreen
 import com.mobilebreakero.trips.plan.PlanScreen
 import com.mobilebreakero.trips.planchecklist.PlanCheckListScreen
 import com.mobilebreakero.welcome.WelcomeScreen
@@ -115,8 +117,11 @@ fun MainNavHost(
         composable(route = TRIPS_SCREEN) {
             PlanScreen(navController = navController)
         }
+        composable(route = CREATE_TRIP){
+            CreateTripScreen(navController = navController)
+        }
         composable(route = PLAN_CHECK_LIST) {
-            PlanCheckListScreen()
+            PlanCheckListScreen(navController = navController)
         }
     }
 }

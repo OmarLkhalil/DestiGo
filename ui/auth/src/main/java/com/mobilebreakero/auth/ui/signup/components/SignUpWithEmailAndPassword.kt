@@ -1,5 +1,6 @@
 package com.mobilebreakero.auth.ui.signup.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,9 +24,10 @@ import com.mobilebreakero.auth.ui.common.components.AuthContent
 import com.mobilebreakero.auth.ui.common.components.AuthTextField
 import com.mobilebreakero.auth.ui.common.components.PasswordTextField
 import com.mobilebreakero.auth.ui.signup.SignUpViewModel
-import com.mobilebreakero.domain.util.Utils.Companion.showMessage
-import kotlinx.coroutines.delay
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.EMAIL_VERIFICATION_SCREEN
+import com.mobilebreakero.domain.model.AppUser
+import com.mobilebreakero.domain.util.DataUtils
+import com.mobilebreakero.domain.util.Utils.Companion.showMessage
 
 @Composable
 fun SignUpWithEmailAndPassword(
@@ -59,9 +61,12 @@ fun SignUpWithEmailAndPassword(
     AuthButton(
         onClick = {
             viewModel.signUpWithEmailAndPassword(
+                name = usernameText,
                 email = emailText,
                 password = passwordText,
             )
+            DataUtils.user = AppUser(name = usernameText, email = emailText)
+            Log.e("Click2", "A7A")
         },
         buttonColor = Color(0xff4F80FF),
         text = "Sign Up",

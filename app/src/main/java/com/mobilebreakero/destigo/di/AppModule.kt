@@ -4,6 +4,7 @@ import com.mobilebreakero.data.remote.TripApi
 import com.mobilebreakero.data.repoimpl.SearchResultRepoImpl
 import com.mobilebreakero.domain.repo.AuthRepository
 import com.mobilebreakero.domain.repo.FireStoreRepository
+import com.mobilebreakero.domain.repo.PostsRepo
 import com.mobilebreakero.domain.repo.SearchResultRepo
 import com.mobilebreakero.domain.usecase.SearchResultUseCase
 import com.mobilebreakero.domain.usecase.auth.AuthUseCase
@@ -13,8 +14,8 @@ import com.mobilebreakero.domain.usecase.auth.ReloadUser
 import com.mobilebreakero.domain.usecase.auth.RestPassword
 import com.mobilebreakero.domain.usecase.auth.SendEmailVerification
 import com.mobilebreakero.domain.usecase.auth.SendPasswordResetEmail
-import com.mobilebreakero.domain.usecase.auth.SignInWithEmailAndPassword
 import com.mobilebreakero.domain.usecase.auth.SignInAnnonymously
+import com.mobilebreakero.domain.usecase.auth.SignInWithEmailAndPassword
 import com.mobilebreakero.domain.usecase.auth.SignOut
 import com.mobilebreakero.domain.usecase.auth.SignUpWithEmailAndPassword
 import com.mobilebreakero.domain.usecase.auth.UpdatePassword
@@ -22,6 +23,8 @@ import com.mobilebreakero.domain.usecase.firestore.AddUser
 import com.mobilebreakero.domain.usecase.firestore.FireStoreUseCase
 import com.mobilebreakero.domain.usecase.firestore.GetUsers
 import com.mobilebreakero.domain.usecase.firestore.UpdateUser
+import com.mobilebreakero.domain.usecase.firestore.post.AddPostUseCase
+import com.mobilebreakero.domain.usecase.firestore.post.PostUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -55,6 +58,13 @@ object AppModule {
         addUser = AddUser(repo),
         getUsers = GetUsers(repo),
         updateUser = UpdateUser(repo)
+    )
+
+    @Provides
+    fun providePostUseCase(
+        repo: PostsRepo
+    ) = PostUseCase (
+        addPost = AddPostUseCase(repo = repo)
     )
 
     @Provides

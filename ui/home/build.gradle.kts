@@ -57,7 +57,12 @@ dependencies {
     implementation(libs.accompanist.navigationAnimation)
     implementation(libs.animated.navigation.bar)
 
+    implementation(libs.firebase.auth)
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+
     implementation(project(mapOf("path" to ":core:data")))
+    implementation(project(mapOf("path" to ":core:domain")))
+    implementation(libs.filament.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -1,13 +1,17 @@
 package com.mobilebreakero.data.repoimpl
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
+import com.mobilebreakero.domain.model.AppUser
 import com.mobilebreakero.domain.repo.AuthRepository
+import com.mobilebreakero.domain.repo.FireStoreRepository
 import com.mobilebreakero.domain.repo.ReloadUserResponse
 import com.mobilebreakero.domain.repo.ResetPasswordResponse
 import com.mobilebreakero.domain.repo.SendResetPasswordResponse
-import com.mobilebreakero.domain.util.Response.Success
+import com.mobilebreakero.domain.util.DataUtils
 import com.mobilebreakero.domain.util.Response.Failure
+import com.mobilebreakero.domain.util.Response.Success
 import com.mobilebreakero.domain.util.await
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,10 +19,11 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Properties
 import javax.inject.Inject
 import javax.inject.Singleton
-import java.util.Properties
 import javax.mail.Message
 import javax.mail.Session
 import javax.mail.internet.InternetAddress
@@ -26,7 +31,8 @@ import javax.mail.internet.MimeMessage
 
 @Singleton
 class AuthRepositoryImpl @Inject constructor(
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val repository: FireStoreRepository
 ) : AuthRepository {
 
     override val currentUser get() = auth.currentUser
@@ -82,12 +88,24 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun signUpWithEmailAndPassword(
+        name: String,
         email: String,
         password: String
     ) = try {
-        auth.createUserWithEmailAndPassword(email, password).await()
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                //show error message
+                task.exception!!.localizedMessage?.let { Log.e("Error create user", it) }
+            } else {
+                CoroutineScope(Dispatchers.IO).launch {
+                    createFireStoreUser(task.result.user?.uid, name = name, email = email)
+                }
+            }
+        }.await()
+        Log.e("Success12", "DocumentSnapshot successfully written!")
         Success(true)
     } catch (e: Exception) {
+        Log.e("Failed12", "Error writing document", e)
         Failure(e)
     }
 
@@ -156,4 +174,18 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
+    private suspend fun createFireStoreUser(uid: String?, name: String?, email: String?) {
+        val user = AppUser(
+            id = uid,
+            name = name,
+            email = email
+        )
+        repository.addUser(user, onSuccessListener = {
+            Log.e("Zozza", "Zozza added")
+            DataUtils.user = user
+            Log.e("Zozza", DataUtils.user?.name!! ?: "A7A")
+        }) {
+
+        }
+    }
 }

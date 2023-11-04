@@ -1,5 +1,6 @@
 package com.mobilebreakero.search.screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -76,6 +77,7 @@ fun SearchScreen(
                     radius = 10000,
                     language = "en"
                 )
+                Log.e("Click", "A7A")
             }
         }) {
             Text(text = "Search")

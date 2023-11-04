@@ -17,6 +17,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.mobilebreakero.auth.ui.common.components.MainViewModel
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.EMAIL_VERIFICATION_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SEARCH_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.START_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.WELCOME_SCREEN
 import com.mobilebreakero.destigo.ui.theme.DestiGoTheme
@@ -44,7 +45,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberAnimatedNavController()
 
                 val startDestination = if (isFirstLaunch) {
-                    WELCOME_SCREEN
+                    SEARCH_SCREEN
                 } else {
                     authState()
                 }
@@ -70,12 +71,12 @@ class MainActivity : ComponentActivity() {
     private fun authState() : String {
         val isUserSignedOut = viewModel.getAuthState().collectAsState().value
         return if (isUserSignedOut) {
-            START_SCREEN
+            SEARCH_SCREEN
         } else {
             if (viewModel.isEmailVerified) {
-                HOME_SCREEN
+                SEARCH_SCREEN
             } else {
-                HOME_SCREEN
+                SEARCH_SCREEN
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.mobilebreakero.destigo.di
 
+import com.mobilebreakero.data.mapper.PlacesMapper
 import com.mobilebreakero.data.remote.TripApi
 import com.mobilebreakero.data.repoimpl.SearchResultRepoImpl
 import com.mobilebreakero.domain.repo.AuthRepository
@@ -58,8 +59,8 @@ object AppModule {
     )
 
     @Provides
-    fun provideSearchRepo(api: TripApi): SearchResultRepo {
-        return SearchResultRepoImpl(api)
+    fun provideSearchRepo(api: TripApi, placesMapper: PlacesMapper): SearchResultRepo {
+        return SearchResultRepoImpl(api, placesMapper)
     }
 
     @Provides

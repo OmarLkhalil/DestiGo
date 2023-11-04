@@ -18,13 +18,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.mobilebreakero.auth.ui.common.components.AuthButton
+import com.mobilebreakero.common_ui.components.AuthButton
 import com.mobilebreakero.auth.ui.common.components.AuthContent
 import com.mobilebreakero.auth.ui.common.components.AuthTextField
 import com.mobilebreakero.auth.ui.common.components.PasswordTextField
 import com.mobilebreakero.auth.ui.signup.SignUpViewModel
 import com.mobilebreakero.domain.util.Utils.Companion.showMessage
-import kotlinx.coroutines.delay
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.EMAIL_VERIFICATION_SCREEN
 
 @Composable

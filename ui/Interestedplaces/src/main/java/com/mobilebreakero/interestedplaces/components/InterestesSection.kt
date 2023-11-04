@@ -1,5 +1,6 @@
 package com.mobilebreakero.interestedplaces.components
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -31,10 +33,11 @@ fun InterestsSection(
     title: String,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    isChoosed: Boolean = false
+    isSelected: Boolean
 ) {
 
-    val isSelected =  remember { mutableStateOf(isChoosed) }
+    val isItemSelected = remember { mutableStateOf(isSelected) }
+    val context = LocalContext.current
 
     Card(
         modifier = modifier
@@ -43,15 +46,31 @@ fun InterestsSection(
             .padding(6.dp, 12.dp),
         shape = RoundedCornerShape(15.dp),
     ) {
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .clickable {
-                onClick()
-            }) {
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable {
+                    if (selectedItemsList.size < 3) {
+                        onClick()
+                        isItemSelected.value = !isItemSelected.value
+                    } else {
+                        isItemSelected.value = false
+                        Toast.makeText(
+                            context,
+                            "You can only choose 3 interests",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+        ) {
             Image(
-                painter = painterResource(id = painter), contentDescription = contentDescription,
-                contentScale = ContentScale.FillBounds, modifier = Modifier.fillMaxSize()
+                painter = painterResource(id = painter),
+                contentDescription = contentDescription,
+                contentScale = ContentScale.FillBounds,
+                modifier = Modifier.fillMaxSize()
             )
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -61,14 +80,16 @@ fun InterestsSection(
                 Text(title, style = TextStyle(color = Color.White, fontSize = 20.sp))
             }
 
-            val imageRes = if (isSelected.value) {
+            val imageRes = if (isItemSelected.value) {
                 painterResource(id = R.drawable.filledchoosed)
             } else {
                 painterResource(id = R.drawable.outlinedchoose)
             }
 
             Image(
-                painter = imageRes, contentDescription = "choose", modifier = Modifier
+                painter = imageRes,
+                contentDescription = "choose",
+                modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .size(30.dp)
             )

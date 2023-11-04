@@ -1,9 +1,11 @@
 package com.mobilebreakero.domain.util
 
-import com.mobilebreakero.domain.model.SearchModel
+import androidx.paging.Pager
+import com.mobilebreakero.domain.model.PlaceItem
+
 
 data class SearchState(
     val isLoading: Boolean = false,
-    val items: SearchModel ? = null,
+    val items: Pager<Int, PlaceItem>? = null,
     val error: String = ""
 )

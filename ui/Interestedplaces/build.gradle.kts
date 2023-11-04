@@ -2,6 +2,8 @@
 plugins {
     alias(libs.plugins.androidlibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlinKapt)
 }
 
 android {
@@ -58,9 +60,25 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation(libs.navigation.compose)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.ui.test.junit4)
+    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
+    implementation(libs.accompanist.navigationAnimation)
 
-    // Coil
+    implementation(project(mapOf("path" to ":core:data")))
+    implementation(project(mapOf("path" to ":core:domain")))
+    implementation(project(mapOf("path" to ":common-ui")))
 
-    implementation(libs.coil.compose)
+    // google
+    implementation(libs.google.services)
+    implementation(libs.google.location)
+    // hilt
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation)
+    implementation(libs.hilt.navigation.compose)
+    kapt(libs.hilt.android.compiler)
+
+    implementation(libs.paging.compose)
+    implementation(libs.paging)
 }

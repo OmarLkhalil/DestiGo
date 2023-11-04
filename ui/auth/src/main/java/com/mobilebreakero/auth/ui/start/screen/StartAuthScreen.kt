@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.auth.R
-import com.mobilebreakero.auth.ui.common.components.AuthButton
+import com.mobilebreakero.common_ui.components.AuthButton
 import com.mobilebreakero.auth.ui.start.StartViewModel
 import com.mobilebreakero.auth.ui.start.components.SignInAnon
 

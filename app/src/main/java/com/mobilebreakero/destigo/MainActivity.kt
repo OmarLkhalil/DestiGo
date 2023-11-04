@@ -1,6 +1,8 @@
 package com.mobilebreakero.destigo
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,10 +15,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.mobilebreakero.auth.ui.common.components.MainViewModel
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.EMAIL_VERIFICATION_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.INTERESTED_PLACES_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SEARCH_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.START_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.WELCOME_SCREEN
 import com.mobilebreakero.destigo.ui.theme.DestiGoTheme
@@ -29,6 +35,7 @@ class MainActivity : ComponentActivity() {
 
     private val FIRST_LAUNCH_PREFS = "FirstLaunchPrefs"
     private val FIRST_LAUNCH_KEY = "FirstLaunch"
+    private val REQUEST_LOCATION_PERMISSION = 129
     private val viewModel by viewModels<MainViewModel>()
 
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
@@ -44,7 +51,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberAnimatedNavController()
 
                 val startDestination = if (isFirstLaunch) {
-                    WELCOME_SCREEN
+                    INTERESTED_PLACES_SCREEN
                 } else {
                     authState()
                 }
@@ -63,19 +70,35 @@ class MainActivity : ComponentActivity() {
             val editor = prefs.edit()
             editor.putBoolean(FIRST_LAUNCH_KEY, false)
             editor.apply()
+            requestPermission()
+        } else{
+            checkPermission()
         }
+    }
+
+    private fun requestPermission() {
+        val permission = Manifest.permission.ACCESS_FINE_LOCATION
+
+        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(permission), REQUEST_LOCATION_PERMISSION)
+        }
+    }
+
+    private fun checkPermission() : Boolean {
+        val permission = Manifest.permission.ACCESS_FINE_LOCATION
+        return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
     }
 
     @Composable
     private fun authState() : String {
         val isUserSignedOut = viewModel.getAuthState().collectAsState().value
         return if (isUserSignedOut) {
-            START_SCREEN
+            SEARCH_SCREEN
         } else {
             if (viewModel.isEmailVerified) {
-                HOME_SCREEN
+                SEARCH_SCREEN
             } else {
-                HOME_SCREEN
+                SEARCH_SCREEN
             }
         }
     }

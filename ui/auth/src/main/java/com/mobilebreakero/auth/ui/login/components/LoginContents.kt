@@ -20,7 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.mobilebreakero.auth.ui.common.components.AuthButton
+import com.mobilebreakero.common_ui.components.AuthButton
 import com.mobilebreakero.auth.ui.common.components.AuthContent
 import com.mobilebreakero.auth.ui.common.components.AuthTextField
 import com.mobilebreakero.auth.ui.common.components.PasswordTextField

@@ -24,6 +24,9 @@ object FirebaseModule {
     fun providesAuthRepository(auth: FirebaseAuth): AuthRepository = AuthRepositoryImpl(auth)
 
     @Provides
+    fun provideFireStore() = FirebaseFirestore.getInstance()
+
+    @Provides
     fun providesFireStoreRepository(fireStore: FirebaseFirestore): FireStoreRepository =
         FireStoreRepoImpl(fireStore.collection("users"))
 }

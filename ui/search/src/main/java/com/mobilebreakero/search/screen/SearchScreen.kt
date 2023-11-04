@@ -1,5 +1,6 @@
 package com.mobilebreakero.search.screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,7 +23,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilebreakero.search.SearchViewModel
 import com.mobilebreakero.search.components.MapView
 import com.mobilebreakero.search.components.SearchResultsList
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import androidx.paging.compose.collectAsLazyPagingItems
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,8 +35,9 @@ fun SearchScreen(
 ) {
     var searchText by remember { mutableStateOf("") }
     var searchType by remember { mutableStateOf("") }
+    val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 
-    val coroutineScope = rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope { ioDispatcher }
 
     var selectedLocation by remember { mutableStateOf("") }
 
@@ -70,7 +75,7 @@ fun SearchScreen(
         Button(onClick = {
             coroutineScope.launch {
                 searchViewModel.getSearchResultStream(
-                    location = selectedLocation,
+                    location = "30.046934647400306,31.289929524064064",
                     keyword = searchText,
                     type = searchType,
                     radius = 10000,
@@ -82,7 +87,6 @@ fun SearchScreen(
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-        SearchResultsList(searchResults = searchViewModel.search.items?.results)
-
+        SearchResultsList()
     }
 }

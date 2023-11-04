@@ -59,6 +59,7 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.google.gson)
+    implementation(libs.paging.compose)
 
     implementation(libs.firebase.auth)
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))

@@ -1,6 +1,9 @@
 package com.mobilebreakero.domain.usecase
 
-import com.mobilebreakero.domain.model.SearchModel
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import com.mobilebreakero.domain.model.PlaceItem
+import com.mobilebreakero.domain.pagingsource.PlacesPagingSource
 import com.mobilebreakero.domain.repo.SearchResultRepo
 import com.mobilebreakero.domain.util.Response
 import com.mobilebreakero.domain.util.Response.Failure
@@ -18,19 +21,25 @@ class SearchResultUseCase @Inject constructor(private val searchResultRepo: Sear
         type: String,
         language: String,
         keyword: String
-    ): Flow<Response<SearchModel>> = flow {
-        emit(Loading)
-        when (val response = searchResultRepo.getResult(location, radius, type, language, keyword)) {
-            is Success -> {
-                emit(Success(response.data))
-            }
-
-            is Failure -> {
-                emit(Failure(response.e))
-            }
-            else -> {
-
-            }
+    ): Flow<Response<Pager<Int, PlaceItem>>> = flow {
+        try {
+            emit(Loading)
+            val getPlaces = Pager(
+                config = PagingConfig(pageSize = 10),
+                pagingSourceFactory = {
+                    PlacesPagingSource(
+                        searchResultRepo,
+                        location,
+                        radius,
+                        type,
+                        language,
+                        keyword
+                    )
+                }
+            )
+            emit(Success(getPlaces))
+        } catch (e: Exception) {
+            emit(Failure(e))
         }
     }
 }

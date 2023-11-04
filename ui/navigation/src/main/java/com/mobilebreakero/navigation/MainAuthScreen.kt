@@ -89,7 +89,7 @@ fun MainNavHost(
             HomeScreen(navController = navController)
         }
         composable(route = INTERESTED_PLACES_SCREEN) {
-            InterestedPlacesScreen()
+            InterestedPlacesScreen(navController = navController)
         }
         composable(route = SCAN_SCREEN) {
             ScanScreen()

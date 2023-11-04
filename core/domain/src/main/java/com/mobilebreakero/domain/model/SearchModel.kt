@@ -1,16 +1,25 @@
 package com.mobilebreakero.domain.model
 
-data class SearchModel(
-    val results: List<Place>,
+
+data class PlacesModel(
+    val places: List<PlaceItem> = emptyList(),
     val status: String,
-    val errorMessage: String?,
+    val page: Long = 0L,
+    val totalPage: Int = 0,
+    val totalResults: Int = 0
 )
 
-data class Place(
-    val name: String,
-    val vicinity: String,
-    )
+data class PlaceItem(
+    val icon: String? = null,
+    val name: String? = null,
+    val vicinity: String? = null,
+    val photos: List<PhotoItem?>? = null,
+    val placeId: String? = null
+)
 
-data class Photo(
-    val photo: String,
+data class PhotosItem(
+    val photoReference: String? = null,
+    val width: Int? = null,
+    val htmlAttributions: List<String?>? = null,
+    val height: Int? = null
 )

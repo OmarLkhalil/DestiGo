@@ -1,15 +1,26 @@
 package com.mobilebreakero.search.components
 
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
-import com.mobilebreakero.domain.model.Place
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.mobilebreakero.domain.model.PlaceItem
+import com.mobilebreakero.search.SearchViewModel
 
 @Composable
-fun SearchResultsList(searchResults: List<Place?>?) {
+fun SearchResultsList(
+    viewModel: SearchViewModel = hiltViewModel(),
+) {
+
+    val items = viewModel.searchItems.value.items?.flow?.collectAsLazyPagingItems()
     LazyColumn {
-        items(searchResults?.size ?: 0) { index ->
-            searchResults?.get(index)?.let { searchResult ->
-                SearchResultItem(searchResult)
+        if (items != null) {
+            items(items.itemCount) { index->
+                SearchResultItem(
+                    item = items,
+                    itemIndex = index
+                )
             }
         }
     }

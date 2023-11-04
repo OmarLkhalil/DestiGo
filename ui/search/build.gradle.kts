@@ -67,12 +67,25 @@ dependencies {
 
     implementation(project(mapOf("path" to ":core:data")))
     implementation(project(mapOf("path" to ":core:domain")))
+    implementation(project(mapOf("path" to ":common-ui")))
 
     // google
     implementation(libs.google.services)
     // hilt
+
+    implementation(libs.lifecycle.viewmodel)
+    implementation(libs.coil.compose)
+    implementation(libs.compose.ui.util)
+    implementation(libs.navigation.compose)
+    implementation(libs.compose.material)
+    implementation(libs.retrofit)
+    implementation(libs.google.gson)
+    implementation(libs.retrofit.gson)
+    implementation(libs.coroutines)
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)
-    implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
+    implementation(libs.paging.compose)
+    implementation(libs.paging)
+    implementation(libs.hilt.navigation.compose)
 }

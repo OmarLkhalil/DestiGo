@@ -5,6 +5,7 @@ import com.mobilebreakero.data.remote.TripApi
 import com.mobilebreakero.data.repoimpl.SearchResultRepoImpl
 import com.mobilebreakero.domain.repo.AuthRepository
 import com.mobilebreakero.domain.repo.FireStoreRepository
+import com.mobilebreakero.domain.repo.PostsRepo
 import com.mobilebreakero.domain.repo.SearchResultRepo
 import com.mobilebreakero.domain.usecase.SearchResultUseCase
 import com.mobilebreakero.domain.usecase.auth.AuthUseCase
@@ -23,6 +24,8 @@ import com.mobilebreakero.domain.usecase.firestore.AddUser
 import com.mobilebreakero.domain.usecase.firestore.FireStoreUseCase
 import com.mobilebreakero.domain.usecase.firestore.GetUsers
 import com.mobilebreakero.domain.usecase.firestore.UpdateUser
+import com.mobilebreakero.domain.usecase.firestore.post.AddPostUseCase
+import com.mobilebreakero.domain.usecase.firestore.post.PostUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -58,10 +61,17 @@ object AppModule {
         updateUser = UpdateUser(repo)
     )
 
+
     @Provides
     fun provideSearchRepo(api: TripApi, placesMapper: PlacesMapper): SearchResultRepo {
         return SearchResultRepoImpl(api, placesMapper)
     }
+    @Provides
+    fun providePostUseCase(
+        repo: PostsRepo
+    ) = PostUseCase (
+        addPost = AddPostUseCase(repo = repo)
+    )
 
     @Provides
     fun provideSearchUseCase(repo: SearchResultRepo): SearchResultUseCase {

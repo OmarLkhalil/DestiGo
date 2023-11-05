@@ -58,6 +58,7 @@ fun SignUpWithEmailAndPassword(
     AuthButton(
         onClick = {
             viewModel.signUpWithEmailAndPassword(
+                name = usernameText,
                 email = emailText,
                 password = passwordText,
             )

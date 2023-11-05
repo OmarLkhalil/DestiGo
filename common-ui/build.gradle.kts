@@ -71,6 +71,7 @@ dependencies {
 
     implementation(libs.accompanist.navigationAnimation)
 
+    implementation(libs.coil.compose)
     // hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)

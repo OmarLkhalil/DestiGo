@@ -1,5 +1,6 @@
 package com.mobilebreakero.auth.ui.signup
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -25,9 +26,9 @@ class SignUpViewModel @Inject constructor(
     var sendEmailVerificationResponse by mutableStateOf<SendEmailVerificationResponse>(Success(false))
         private set
 
-    fun signUpWithEmailAndPassword(email: String, password: String) = viewModelScope.launch {
+    fun signUpWithEmailAndPassword(name: String, email: String, password: String) = viewModelScope.launch {
         signUpResponse = Loading
-        signUpResponse = useCase.signUpWithEmailAndPassword(email, password)
+        signUpResponse = useCase.signUpWithEmailAndPassword(name, email, password)
     }
 
     fun sendEmailVerification() = viewModelScope.launch {

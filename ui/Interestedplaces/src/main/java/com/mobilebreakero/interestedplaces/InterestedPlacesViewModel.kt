@@ -21,7 +21,6 @@ class InterestedPlacesViewModel @Inject constructor(private val useCase: SearchR
     val searchItems: State<SearchState>
         get() = search
 
-
     fun getSearchResultStream(
         location: String,
         radius: Int,

@@ -1,6 +1,5 @@
 package com.mobilebreakero.search.screen
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +25,6 @@ import com.mobilebreakero.search.components.SearchResultsList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import androidx.paging.compose.collectAsLazyPagingItems
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

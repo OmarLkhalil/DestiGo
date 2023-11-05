@@ -23,7 +23,7 @@ interface AuthRepository {
     suspend fun signInAnonymously(): SignInResponse
     suspend fun sendEmailVerification(): SendEmailVerificationResponse
     suspend fun signInWithEmailAndPassword(email: String, password: String): SignInResponse
-    suspend fun signUpWithEmailAndPassword(email: String, password: String): SignUpResponse
+    suspend fun signUpWithEmailAndPassword(name: String, email: String, password: String): SignUpResponse
     suspend fun signOut(): SignOutResponse
     suspend fun reloadFirebaseUser(): ReloadUserResponse
     suspend fun sendPasswordResetEmail(email: String): SendPasswordResetEmailResponse

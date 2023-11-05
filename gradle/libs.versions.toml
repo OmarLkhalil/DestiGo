@@ -82,6 +82,7 @@ javaMail = { group = "com.sun.mail", name = "android-mail", version = "1.6.0" }
 javaActivation = { group = "com.sun.mail", name = "android-activation", version = "1.6.0" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 google-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "google-location" }
+filament-android = { group = "com.google.ar.sceneform", name = "filament-android", version = "1.17.1" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

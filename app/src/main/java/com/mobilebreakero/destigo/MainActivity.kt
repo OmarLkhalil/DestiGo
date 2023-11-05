@@ -93,12 +93,12 @@ class MainActivity : ComponentActivity() {
     private fun authState() : String {
         val isUserSignedOut = viewModel.getAuthState().collectAsState().value
         return if (isUserSignedOut) {
-            SEARCH_SCREEN
+            HOME_SCREEN
         } else {
             if (viewModel.isEmailVerified) {
-                SEARCH_SCREEN
+                HOME_SCREEN
             } else {
-                SEARCH_SCREEN
+                HOME_SCREEN
             }
         }
     }

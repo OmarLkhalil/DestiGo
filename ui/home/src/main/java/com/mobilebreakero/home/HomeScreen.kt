@@ -1,26 +1,60 @@
 package com.mobilebreakero.home
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.mobilebreakero.domain.util.DataUtils
+import com.mobilebreakero.home.components.AddButtonDesign
+import com.mobilebreakero.home.components.ForYouItem
+import com.mobilebreakero.home.components.PostItem
+import com.mobilebreakero.home.components.TitleText
+import com.mobilebreakero.home.components.TopScreenImage
 
 @Composable
 fun HomeScreen(navController: NavController) {
 
-    Column(
+    val user = DataUtils.user
+    val firebaseUser = Firebase.auth.currentUser
+
+    Box(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        for(i in 0..20){
-            Text("HomeScreen $i")
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            TopScreenImage(
+                user = user?.name ?: firebaseUser?.displayName.toString(),
+                navController = navController
+            )
+            TitleText(text = "For You")
+            LazyRow{
+                items(5) {
+                    ForYouItem()
+                }
+            }
+            TitleText(text = "Travellers Posts")
+            LazyColumn(
+                modifier = Modifier.wrapContentHeight()
+            ) {
+                items(2) {
+                    PostItem("500")
+                }
+            }
         }
     }
+    AddButtonDesign(navController = navController)
 }
-
-

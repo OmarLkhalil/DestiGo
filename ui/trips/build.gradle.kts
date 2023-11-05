@@ -61,6 +61,7 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.navigation.compose)
+    implementation(project(mapOf("path" to ":common-ui")))
 
     // Coil
 

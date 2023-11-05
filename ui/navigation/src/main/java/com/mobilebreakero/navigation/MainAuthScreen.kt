@@ -20,27 +20,29 @@ import com.mobilebreakero.auth.ui.start.screen.StartAuthScreen
 import com.mobilebreakero.auth.ui.verification.EmailVerificationScreen
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CHOOSE_NEW_PASSWORD
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CONFIRM_CODE_SENT
-import com.mobilebreakero.common_ui.navigation.NavigationRoutes.WELCOME_SCREEN
-import com.mobilebreakero.common_ui.navigation.NavigationRoutes.START_SCREEN
-import com.mobilebreakero.common_ui.navigation.NavigationRoutes.INTERESTED_PLACES_SCREEN
-import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SIGN_IN_SCREEN
-import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SIGN_UP_SCREEN
-import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SCAN_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CREATE_TRIP
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.EMAIL_VERIFICATION_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.INTERESTED_PLACES_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PASSWORD_UPDATED_SUCCESSFULLY
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PLAN_CHECK_LIST
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PROFILE_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SCAN_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SEARCH_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SEND_CONFIRMATION_CODE
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SIGN_IN_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SIGN_UP_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.START_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.TRIPS_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.WELCOME_SCREEN
 import com.mobilebreakero.home.HomeScreen
 import com.mobilebreakero.interestedplaces.screen.InterestedPlacesScreen
-import com.mobilebreakero.profile.ProfileScreen
+import com.mobilebreakero.profile.screen.ProfileScreen
 import com.mobilebreakero.scan.ScanScreen
 import com.mobilebreakero.search.screen.SearchScreen
-import com.mobilebreakero.trips.plan.PlanScreen
-import com.mobilebreakero.trips.planchecklist.PlanCheckListScreen
+import com.mobilebreakero.trips.screens.plan.CreateTripScreen
+import com.mobilebreakero.trips.screens.plan.PlanScreen
+import com.mobilebreakero.trips.screens.planchecklist.PlanCheckListScreen
 import com.mobilebreakero.welcome.WelcomeScreen
 
 private const val TransitionDuration = 600
@@ -54,7 +56,7 @@ fun MainNavHost(
     AnimatedNavHost(
         modifier = Modifier,
         navController = navController,
-        startDestination = startDestination ,
+        startDestination = startDestination,
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentScope.SlideDirection.Left,
@@ -115,8 +117,11 @@ fun MainNavHost(
         composable(route = TRIPS_SCREEN) {
             PlanScreen(navController = navController)
         }
+        composable(route = CREATE_TRIP) {
+            CreateTripScreen(navController = navController)
+        }
         composable(route = PLAN_CHECK_LIST) {
-            PlanCheckListScreen()
+            PlanCheckListScreen(navController = navController)
         }
     }
 }

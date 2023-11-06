@@ -8,3 +8,10 @@ class GetUsers (
     suspend operator fun invoke() =
         repo.getUsers()
 }
+
+class GetUserById (
+    private val repo: FireStoreRepository
+) {
+    suspend operator fun invoke(id: String) =
+        repo.getUserById(id)
+}

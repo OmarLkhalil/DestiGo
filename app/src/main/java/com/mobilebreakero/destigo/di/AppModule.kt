@@ -15,13 +15,14 @@ import com.mobilebreakero.domain.usecase.auth.ReloadUser
 import com.mobilebreakero.domain.usecase.auth.RestPassword
 import com.mobilebreakero.domain.usecase.auth.SendEmailVerification
 import com.mobilebreakero.domain.usecase.auth.SendPasswordResetEmail
-import com.mobilebreakero.domain.usecase.auth.SignInWithEmailAndPassword
 import com.mobilebreakero.domain.usecase.auth.SignInAnnonymously
+import com.mobilebreakero.domain.usecase.auth.SignInWithEmailAndPassword
 import com.mobilebreakero.domain.usecase.auth.SignOut
 import com.mobilebreakero.domain.usecase.auth.SignUpWithEmailAndPassword
 import com.mobilebreakero.domain.usecase.auth.UpdatePassword
 import com.mobilebreakero.domain.usecase.firestore.AddUser
 import com.mobilebreakero.domain.usecase.firestore.FireStoreUseCase
+import com.mobilebreakero.domain.usecase.firestore.GetUserById
 import com.mobilebreakero.domain.usecase.firestore.GetUsers
 import com.mobilebreakero.domain.usecase.firestore.UpdateUser
 import com.mobilebreakero.domain.usecase.firestore.post.AddPostUseCase
@@ -57,6 +58,7 @@ object AppModule {
         repo: FireStoreRepository
     ) = FireStoreUseCase(
         addUser = AddUser(repo),
+        getUserByID = GetUserById(repo),
         getUsers = GetUsers(repo),
         updateUser = UpdateUser(repo)
     )

@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.mobilebreakero.home"
+    namespace = "com.example.addpost"
     compileSdk = 33
 
     defaultConfig {
@@ -58,13 +58,11 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.accompanist.navigationAnimation)
     implementation(libs.animated.navigation.bar)
-
-    implementation(libs.firebase.auth)
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
-
-    implementation(project(mapOf("path" to ":core:data")))
-    implementation(project(mapOf("path" to ":core:domain")))
     implementation(libs.filament.android)
+    implementation(project(mapOf("path" to ":common-ui")))
+    implementation(project(mapOf("path" to ":core:domain")))
+    implementation(project(mapOf("path" to ":ui:home")))
+    implementation(project(mapOf("path" to ":core:data")))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -73,12 +71,21 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
     implementation(libs.navigation.compose)
-    implementation(project(mapOf("path" to ":common-ui")))
+
+    //coil
+    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation("com.google.accompanist:accompanist-coil:0.10.0")
+
+    // navigation
+    implementation(libs.navigation.compose)
+
+    // firebase
+    implementation(libs.firebase.auth)
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
 
     // hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)
     implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
-
 }

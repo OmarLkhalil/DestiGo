@@ -8,6 +8,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import com.example.addpost.AddPostScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.mobilebreakero.auth.ui.login.screens.LoginScreen
@@ -18,6 +19,7 @@ import com.mobilebreakero.auth.ui.passwordreset.screens.SendConfirmationCodeScre
 import com.mobilebreakero.auth.ui.signup.screens.SignUpScreen
 import com.mobilebreakero.auth.ui.start.screen.StartAuthScreen
 import com.mobilebreakero.auth.ui.verification.EmailVerificationScreen
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.ADD_POST_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CHOOSE_NEW_PASSWORD
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CONFIRM_CODE_SENT
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CREATE_TRIP
@@ -122,6 +124,9 @@ fun MainNavHost(
         }
         composable(route = PLAN_CHECK_LIST) {
             PlanCheckListScreen(navController = navController)
+        }
+        composable(route = ADD_POST_SCREEN) {
+            AddPostScreen(navController)
         }
     }
 }

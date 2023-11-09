@@ -22,5 +22,6 @@ object NavigationRoutes {
     const val PASSWORD_UPDATED_SUCCESSFULLY = "passwordUpdated"
     const val CONFIRM_CODE_SENT = "confirmCode"
     const val SEARCH_SCREEN = "searchScreen"
+    const val ADD_POST_SCREEN = "AddPost"
 
 }

@@ -4,10 +4,11 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinKapt)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.firebase)
 }
 
 android {
-    namespace = "com.example.auth"
+    namespace =  "com.mobilebreakero.auth"
     compileSdk = 33
 
     defaultConfig {
@@ -73,8 +74,9 @@ dependencies {
     implementation(libs.navigation.compose)
 
     // firebase
-    implementation(libs.firebase.auth)
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
 
     // hilt
     implementation(libs.hilt.android)

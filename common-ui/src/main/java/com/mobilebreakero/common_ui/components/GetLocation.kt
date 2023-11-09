@@ -1,4 +1,4 @@
-package com.mobilebreakero.interestedplaces.components
+package com.mobilebreakero.common_ui.components
 
 import android.annotation.SuppressLint
 import android.content.Context

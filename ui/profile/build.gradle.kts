@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(project(mapOf("path" to ":core:domain")))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -62,6 +63,7 @@ dependencies {
 
     // Coil
     implementation(project(mapOf("path" to ":common-ui")))
+    implementation(libs.firebase.auth.ktx)
 
     implementation(libs.coil.compose)
 }

@@ -12,7 +12,6 @@ import com.mobilebreakero.search.SearchViewModel
 fun SearchResultsList(
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
-
     val items = viewModel.searchItems.value.items?.flow?.collectAsLazyPagingItems()
     LazyColumn {
         if (items != null) {

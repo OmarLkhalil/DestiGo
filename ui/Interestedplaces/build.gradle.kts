@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlinKapt)
+    alias(libs.plugins.firebase)
 }
 
 android {
@@ -81,4 +82,5 @@ dependencies {
 
     implementation(libs.paging.compose)
     implementation(libs.paging)
+    implementation(libs.firebase.auth.ktx)
 }

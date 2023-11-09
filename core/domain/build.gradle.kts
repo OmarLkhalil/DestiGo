@@ -1,4 +1,3 @@
-import com.android.build.api.variant.BuildConfigField
 import org.jetbrains.kotlin.konan.properties.Properties
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
@@ -6,6 +5,7 @@ plugins {
     alias(libs.plugins.androidlibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinKapt)
+    alias(libs.plugins.firebase)
 }
 
 val localProperties = Properties()
@@ -57,11 +57,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation(libs.firebase.firestore.ktx)
     implementation(libs.google.gson)
     implementation(libs.paging.compose)
 
-    implementation(libs.firebase.auth)
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
 
 }

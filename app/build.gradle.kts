@@ -1,11 +1,10 @@
-import org.jetbrains.kotlin.konan.properties.Properties
-
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinKapt)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.firebase)
 }
 
 android {
@@ -66,7 +65,6 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
-    implementation(libs.firebase.auth.ktx)
     implementation(project(mapOf("path" to ":core:data")))
     implementation(project(mapOf("path" to ":core:domain")))
     implementation(project(mapOf("path" to ":ui:home")))
@@ -78,7 +76,6 @@ dependencies {
     implementation(project(mapOf("path" to ":ui:welcome")))
     implementation(project(mapOf("path" to ":ui:navigation")))
     implementation(project(mapOf("path" to ":common-ui")))
-    implementation(libs.firebase.firestore.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -99,6 +96,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
 
-    implementation(libs.firebase.auth)
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
 }

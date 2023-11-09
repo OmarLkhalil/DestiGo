@@ -17,10 +17,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilebreakero.search.SearchViewModel
-import com.mobilebreakero.search.components.MapView
+import com.mobilebreakero.common_ui.components.MapView
 import com.mobilebreakero.search.components.SearchResultsList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -31,23 +32,22 @@ import kotlinx.coroutines.launch
 fun SearchScreen(
     searchViewModel: SearchViewModel = hiltViewModel()
 ) {
+
     var searchText by remember { mutableStateOf("") }
     var searchType by remember { mutableStateOf("") }
     val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-
     val coroutineScope = rememberCoroutineScope { ioDispatcher }
 
-    var selectedLocation by remember { mutableStateOf("") }
+    val selectedLocation by remember { mutableStateOf("") }
 
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
 
-        MapView(selectedLocation = selectedLocation) { newLocation ->
-            selectedLocation = newLocation
-        }
+        MapView(selectedLocation = selectedLocation, onLocationSelected = {}, context = context)
 
         Spacer(modifier = Modifier.height(16.dp))
 

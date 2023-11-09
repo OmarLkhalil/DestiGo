@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun GreetingSection(
-    name: String = "osama"
+    name: String? = ""
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,

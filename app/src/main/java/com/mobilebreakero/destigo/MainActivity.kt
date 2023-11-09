@@ -19,12 +19,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.mobilebreakero.auth.ui.common.components.MainViewModel
-import com.mobilebreakero.common_ui.navigation.NavigationRoutes.EMAIL_VERIFICATION_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.INTERESTED_PLACES_SCREEN
-import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SEARCH_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.START_SCREEN
-import com.mobilebreakero.common_ui.navigation.NavigationRoutes.WELCOME_SCREEN
 import com.mobilebreakero.destigo.ui.theme.DestiGoTheme
 import com.mobilebreakero.home.components.BottomNavigation
 import com.mobilebreakero.navigation.MainNavHost
@@ -93,12 +90,12 @@ class MainActivity : ComponentActivity() {
     private fun authState() : String {
         val isUserSignedOut = viewModel.getAuthState().collectAsState().value
         return if (isUserSignedOut) {
-            HOME_SCREEN
+            START_SCREEN
         } else {
             if (viewModel.isEmailVerified) {
                 HOME_SCREEN
             } else {
-                HOME_SCREEN
+                START_SCREEN
             }
         }
     }

@@ -49,14 +49,9 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 
     // firebase
-    implementation(libs.firebase.bom)
-    implementation(libs.firebase.product)
-    implementation(libs.firebase.auth)
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
-    implementation("com.google.firebase:firebase-database:20.2.2")
-    implementation("com.google.firebase:firebase-firestore:24.8.1")
-    implementation("com.google.firebase:firebase-firestore-ktx")
-
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
 
     implementation(libs.google.gson)
     implementation(libs.retrofit)

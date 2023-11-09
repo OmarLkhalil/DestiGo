@@ -62,6 +62,7 @@ dependencies {
     implementation(project(mapOf("path" to ":ui:profile")))
     implementation(project(mapOf("path" to ":ui:scan")))
     implementation(project(mapOf("path" to ":ui:trips")))
+    implementation(project(mapOf("path" to ":ui:addPost")))
     implementation(project(mapOf("path" to ":ui:auth")))
     implementation(project(mapOf("path" to ":ui:search")))
     implementation(project(mapOf("path" to ":ui:Interestedplaces")))
@@ -81,10 +82,9 @@ dependencies {
     implementation(libs.navigation.compose)
 
     // firebase
-    implementation(libs.firebase.bom)
-    implementation(libs.firebase.product)
-    implementation(libs.firebase.auth)
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
 
     // hilt
     implementation(libs.hilt.android)

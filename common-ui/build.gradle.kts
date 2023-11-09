@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinKapt)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.firebase)
 }
 
 
@@ -65,9 +66,8 @@ dependencies {
 
     // firebase
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.product)
-    implementation(libs.firebase.auth)
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
 
     implementation(libs.accompanist.navigationAnimation)
 
@@ -77,4 +77,9 @@ dependencies {
     implementation(libs.hilt.navigation)
     implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
+
+
+    // google
+    implementation(libs.google.services)
+    implementation(libs.google.location)
 }

@@ -36,9 +36,9 @@ fun PostItem(numberOfLike: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(3.dp)
             .clip(RoundedCornerShape(20.dp))
-            .background(Color(0xFFF2F5FF))
+            .background(Color(0xFFF8FAFF))
     ) {
         Column {
             Row(
@@ -55,7 +55,7 @@ fun PostItem(numberOfLike: String) {
                     modifier = Modifier.padding(start = 8.dp)
                 ) {
                     Text(
-                        text = "Moaz Mahdy",
+                        text = "Omar Khalil",
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF4F80FF)
@@ -78,8 +78,8 @@ fun PostItem(numberOfLike: String) {
                 contentDescription = "Post Image",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(280.dp)
-                    .padding(8.dp)
+                    .height(300.dp)
+                    .padding(3.dp)
                     .clip(RoundedCornerShape(bottomEnd = 25.dp, bottomStart = 25.dp))
             )
             Box {
@@ -98,7 +98,7 @@ fun PostItem(numberOfLike: String) {
                         description = "Comment Icon",
                         text = "comment"
                     )
-                    Spacer(modifier = Modifier.width(10.dp))
+                    Spacer(modifier = Modifier.width(5.dp))
                     PostContent(icon = R.drawable.share, description = "Share Icon", text = "share")
                 }
             }

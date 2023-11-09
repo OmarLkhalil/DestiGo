@@ -16,9 +16,9 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ProfileStat(
-    name: String,
+    modifier: Modifier = Modifier,
+    name: String? = "",
     address: String,
-    modifier: Modifier = Modifier
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -26,7 +26,7 @@ fun ProfileStat(
         modifier = modifier
     ) {
         Text(
-            text = name,
+            text = name?:"",
             fontWeight = FontWeight.Bold,
             fontSize = 31.sp,
             color = Color(0xFF5483fe)

@@ -24,7 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.auth.R
+import com.mobilebreakero.auth.R
 import com.mobilebreakero.common_ui.components.AuthButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf

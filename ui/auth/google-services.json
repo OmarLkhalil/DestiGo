@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:155013614979:android:3b65b7e373253307613ab6",
         "android_client_info": {
-          "package_name": "com.example.auth"
+          "package_name": "com.mobilebreakero.auth"
         }
       },
       "oauth_client": [],

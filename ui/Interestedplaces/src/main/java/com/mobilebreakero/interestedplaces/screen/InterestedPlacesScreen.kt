@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -23,11 +25,15 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.mobilebreakero.common_ui.components.AuthButton
+import com.mobilebreakero.common_ui.components.GetUserFromFireStore
+import com.mobilebreakero.domain.model.AppUser
 import com.mobilebreakero.interestedplaces.InterestedPlacesViewModel
 import com.mobilebreakero.interestedplaces.components.GreetingSection
 import com.mobilebreakero.interestedplaces.components.VerticalGrid
-import com.mobilebreakero.interestedplaces.components.getUserLocation
+import com.mobilebreakero.common_ui.components.getUserLocation
 import com.mobilebreakero.interestedplaces.components.selectedItemsList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -51,13 +57,24 @@ fun InterestedScreenContent(
     currentLocation: String
 ) {
 
+    val user = remember { mutableStateOf(AppUser()) }
+    val firebaseUser = Firebase.auth.currentUser
+
+    GetUserFromFireStore(
+        id = firebaseUser?.uid ?: "",
+        user = { userId ->
+            userId.id = firebaseUser?.uid
+            user.value = userId
+        }
+    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(10.dp)
     ) {
         Spacer(modifier = Modifier.height(10.dp))
-        GreetingSection()
+        GreetingSection(name = user.value.name)
         Spacer(modifier = Modifier.height(10.dp))
         VerticalGrid()
         val context = LocalContext.current

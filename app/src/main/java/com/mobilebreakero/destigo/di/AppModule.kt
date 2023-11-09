@@ -22,6 +22,7 @@ import com.mobilebreakero.domain.usecase.auth.SignUpWithEmailAndPassword
 import com.mobilebreakero.domain.usecase.auth.UpdatePassword
 import com.mobilebreakero.domain.usecase.firestore.AddUser
 import com.mobilebreakero.domain.usecase.firestore.FireStoreUseCase
+import com.mobilebreakero.domain.usecase.firestore.GetUserById
 import com.mobilebreakero.domain.usecase.firestore.GetUsers
 import com.mobilebreakero.domain.usecase.firestore.UpdateUser
 import com.mobilebreakero.domain.usecase.firestore.post.AddPostUseCase
@@ -58,7 +59,8 @@ object AppModule {
     ) = FireStoreUseCase(
         addUser = AddUser(repo),
         getUsers = GetUsers(repo),
-        updateUser = UpdateUser(repo)
+        updateUser = UpdateUser(repo),
+        getUserByID = GetUserById(repo),
     )
 
 

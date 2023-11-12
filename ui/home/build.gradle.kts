@@ -81,4 +81,5 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(project(mapOf("path" to ":common-ui")))
 
+    implementation(libs.coil.compose)
 }

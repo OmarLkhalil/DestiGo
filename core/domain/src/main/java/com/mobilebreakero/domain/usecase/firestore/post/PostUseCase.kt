@@ -1,5 +1,6 @@
 package com.mobilebreakero.domain.usecase.firestore.post
 
 data class PostUseCase(
-    val addPost: AddPostUseCase
+    val addPost: AddPostUseCase,
+    val getPosts: GetPostsUseCase
 )

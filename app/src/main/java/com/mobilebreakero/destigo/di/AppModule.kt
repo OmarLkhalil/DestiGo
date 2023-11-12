@@ -15,8 +15,8 @@ import com.mobilebreakero.domain.usecase.auth.ReloadUser
 import com.mobilebreakero.domain.usecase.auth.RestPassword
 import com.mobilebreakero.domain.usecase.auth.SendEmailVerification
 import com.mobilebreakero.domain.usecase.auth.SendPasswordResetEmail
-import com.mobilebreakero.domain.usecase.auth.SignInWithEmailAndPassword
 import com.mobilebreakero.domain.usecase.auth.SignInAnnonymously
+import com.mobilebreakero.domain.usecase.auth.SignInWithEmailAndPassword
 import com.mobilebreakero.domain.usecase.auth.SignOut
 import com.mobilebreakero.domain.usecase.auth.SignUpWithEmailAndPassword
 import com.mobilebreakero.domain.usecase.auth.UpdatePassword
@@ -26,6 +26,7 @@ import com.mobilebreakero.domain.usecase.firestore.GetUserById
 import com.mobilebreakero.domain.usecase.firestore.GetUsers
 import com.mobilebreakero.domain.usecase.firestore.UpdateUser
 import com.mobilebreakero.domain.usecase.firestore.post.AddPostUseCase
+import com.mobilebreakero.domain.usecase.firestore.post.GetPostsUseCase
 import com.mobilebreakero.domain.usecase.firestore.post.PostUseCase
 import dagger.Module
 import dagger.Provides
@@ -72,7 +73,8 @@ object AppModule {
     fun providePostUseCase(
         repo: PostsRepo
     ) = PostUseCase (
-        addPost = AddPostUseCase(repo = repo)
+        addPost = AddPostUseCase(repo = repo),
+        getPosts = GetPostsUseCase(repo)
     )
 
     @Provides

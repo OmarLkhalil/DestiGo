@@ -80,9 +80,7 @@ fun AddPostCard(navController: NavController, viewModel: AddPostViewModel = hilt
         ) {
             TitleText()
             AddPostButtons(
-                onClick = {
-                    //Todo
-                },
+                onClick = { },
                 iconId = R.drawable.location,
                 description = "Location Icon",
                 text = "Your Location"
@@ -111,7 +109,7 @@ fun AddPostCard(navController: NavController, viewModel: AddPostViewModel = hilt
                 id = user?.id + 1,
                 userId = user?.id,
                 userName = user?.name,
-                image = imageUri
+                image = imageUri.toString()
             )
             PostOrCancelSection(navController = navController, viewModel, post)
         }

@@ -6,7 +6,7 @@ import com.mobilebreakero.domain.model.Post
 import com.mobilebreakero.domain.util.Response
 
 
-typealias postResponse = Response<Post>
+typealias postResponse = Response<List<Post>>
 typealias addPostResponse = Response<Boolean>
 typealias updatePostResponse = Response<Boolean>
 
@@ -17,4 +17,6 @@ interface PostsRepo {
         onSuccessListener: OnSuccessListener<Void>,
         onFailureListener: OnFailureListener
     ): addPostResponse
+
+    suspend fun getPosts(): postResponse
 }

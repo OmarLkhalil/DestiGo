@@ -11,5 +11,8 @@ data class AuthUseCase(
     val sendPasswordResetEmail: SendPasswordResetEmail,
     val sendEmailVerification: SendEmailVerification,
     val updatePassword: UpdatePassword,
-    val resetPassword: RestPassword
+    val resetPassword: RestPassword,
+    val updateEmail: UpdateEmail,
+    val checkUserSignedIn: CheckUserSignedInUseCase,
+    val deleteAccount: DeleteAccount
 )

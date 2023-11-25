@@ -1,8 +1,10 @@
 package com.mobilebreakero.home.components
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -27,20 +30,39 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.SubcomposeAsyncImage
 import com.mobilebreakero.home.R
 
 
 @Composable
-fun PostItem(numberOfLike: String) {
+fun PostItem(
+    name: String,
+    numberOfLike: String,
+    location: String,
+    imageUri: String
+) {
 
     Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(3.dp)
-            .clip(RoundedCornerShape(20.dp))
-            .background(Color(0xFFF8FAFF))
+            .width(350.dp)
+            .wrapContentHeight()
+            .padding(10.dp)
+            .background(Color.Transparent)
     ) {
-        Column {
+
+        Column(
+            modifier = Modifier
+                .shadow(
+                    elevation = 4.dp,
+                    shape = RoundedCornerShape(20.dp),
+                    clip = true,
+                    ambientColor = Color(0xFFD5E1FF)
+                )
+                .clip(RoundedCornerShape(20.dp))
+                .fillMaxWidth()
+                .align(Alignment.Center)
+                .background(Color(0xFFD5E1FF))
+        ) {
             Row(
                 modifier = Modifier.padding(8.dp)
             ) {
@@ -55,7 +77,7 @@ fun PostItem(numberOfLike: String) {
                     modifier = Modifier.padding(start = 8.dp)
                 ) {
                     Text(
-                        text = "Omar Khalil",
+                        text = name,
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF4F80FF)
@@ -68,13 +90,13 @@ fun PostItem(numberOfLike: String) {
                             tint = Color(0xFF4F80FF)
                         )
                         Text(
-                            text = "Cairo, Egypt"
+                            text = location
                         )
                     }
                 }
             }
-            Image(
-                painter = painterResource(id = R.drawable.social),
+            SubcomposeAsyncImage(
+                model = Uri.parse(imageUri),
                 contentDescription = "Post Image",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -90,24 +112,32 @@ fun PostItem(numberOfLike: String) {
                     PostContent(
                         icon = R.drawable.like,
                         description = "Like Icon",
-                        text = numberOfLike
+                        text = numberOfLike,
+                        onClick = {}
                     )
                     Spacer(modifier = Modifier.width(90.dp))
                     PostContent(
                         icon = R.drawable.comment,
                         description = "Comment Icon",
-                        text = "comment"
+                        text = "comment",
+                        onClick = {}
                     )
                     Spacer(modifier = Modifier.width(5.dp))
-                    PostContent(icon = R.drawable.share, description = "Share Icon", text = "share")
+                    PostContent(
+                        icon = R.drawable.share,
+                        description = "Share Icon",
+                        text = "share",
+                        onClick = {}
+                    )
                 }
             }
         }
     }
+    Spacer(modifier = Modifier.height(14.dp))
 }
 
 @Composable
-fun PostContent(icon: Int, description: String, text: String) {
+fun PostContent(icon: Int, description: String, text: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .border(
@@ -115,6 +145,7 @@ fun PostContent(icon: Int, description: String, text: String) {
                 color = Color(0xFF4F80FF),
                 shape = RoundedCornerShape(10.dp)
             )
+            .clickable { onClick() }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

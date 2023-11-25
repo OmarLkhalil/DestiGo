@@ -32,7 +32,7 @@ fun GreetingSection(
             Text(
                 text = "Hello $name",
                 color = Color.Black,
-                fontSize = 30.sp,
+                fontSize = 26.sp,
                 fontFamily = FontFamily.SansSerif
             )
             Text(

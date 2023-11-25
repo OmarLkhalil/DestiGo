@@ -1,6 +1,7 @@
 package com.mobilebreakero.domain.model
 
 
+
 data class PlacesModel(
     val places: List<PlaceItem> = emptyList(),
     val status: String,
@@ -13,6 +14,6 @@ data class PlaceItem(
     val icon: String? = null,
     val name: String? = null,
     val vicinity: String? = null,
-    val photos: List<PhotoItem?>? = null,
+    val photos: List<Any?>? = null,
     val placeId: String? = null
 )

@@ -1,6 +1,7 @@
 package com.mobilebreakero.destigo.di
 
 import com.mobilebreakero.data.remote.TripApi
+import com.mobilebreakero.domain.util.DataUtils.API_KEY
 import com.mobilebreakero.domain.util.DataUtils.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -12,7 +13,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
@@ -20,21 +20,13 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideHttp(): OkHttpClient {
+
         val httpClient = OkHttpClient.Builder()
             .connectTimeout(20, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)
-        httpClient.addInterceptor { chain ->
-            val original = chain.request()
-            val requestBuilder = original.newBuilder()
-                .addHeader("accept", "application/json")
-
-            val request = requestBuilder.build()
-            chain.proceed(request)
-        }
 
         return httpClient.build()
     }
-
 
     @Provides
     @Singleton
@@ -46,11 +38,10 @@ object NetworkModule {
             .build()
     }
 
-
     @Provides
     @Singleton
     fun provideApiService(retrofit: Retrofit): TripApi {
         return retrofit.create(TripApi::class.java)
     }
-
 }
+

@@ -1,6 +1,5 @@
 package com.mobilebreakero.domain.util
 
-import com.google.firebase.firestore.auth.User
 import com.mobilebreakero.domain.BuildConfig
 import com.mobilebreakero.domain.model.AppUser
 
@@ -9,10 +8,9 @@ object DataUtils {
 
     var user: AppUser? = null
 
-    var firebaseUser: User? = null
-
     const val API_KEY = BuildConfig.API_KEY
 
-    const val BASE_URL = "https://maps.googleapis.com/maps/api/"
+    const val TRIP_API_KEY = "48F0F0B67AF246DFAFE77A9A03610475"
+    const val BASE_URL = "https://api.content.tripadvisor.com/api/v1/"
 
 }

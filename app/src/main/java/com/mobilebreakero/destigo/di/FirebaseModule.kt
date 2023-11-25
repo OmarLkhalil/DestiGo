@@ -7,9 +7,11 @@ import com.google.firebase.ktx.Firebase
 import com.mobilebreakero.data.repoimpl.AuthRepositoryImpl
 import com.mobilebreakero.data.repoimpl.FireStoreRepoImpl
 import com.mobilebreakero.data.repoimpl.PostRepoImpl
+import com.mobilebreakero.data.repoimpl.TripRepoImpl
 import com.mobilebreakero.domain.repo.AuthRepository
 import com.mobilebreakero.domain.repo.FireStoreRepository
 import com.mobilebreakero.domain.repo.PostsRepo
+import com.mobilebreakero.domain.repo.TripsRepo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,15 +29,22 @@ object FirebaseModule {
         AuthRepositoryImpl(auth, repository)
 
     @Provides
-    fun providesFireStoreRepository(fireStore: FirebaseFirestore): FireStoreRepository =
-        FireStoreRepoImpl(fireStore.collection("users"))
+    fun providesFireStoreRepository(): FireStoreRepository =
+        FireStoreRepoImpl()
 
     @Provides
-    fun providePostRepo(fireStore: FirebaseFirestore): PostsRepo =
-        PostRepoImpl(fireStore.collection("posts"))
+    fun providePostRepo(): PostsRepo =
+        PostRepoImpl()
 
     @Provides
     fun provideFirebaseFirestore(): FirebaseFirestore {
         return FirebaseFirestore.getInstance()
     }
+
+    @Provides
+    fun provideTripsRepo() : TripsRepo{
+        return TripRepoImpl()
+    }
+
+
 }

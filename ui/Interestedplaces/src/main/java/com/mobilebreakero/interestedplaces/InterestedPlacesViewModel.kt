@@ -1,61 +1,32 @@
 package com.mobilebreakero.interestedplaces
 
-import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mobilebreakero.domain.model.PlacesItem
 import com.mobilebreakero.domain.usecase.SearchResultUseCase
 import com.mobilebreakero.domain.util.Response
-import com.mobilebreakero.domain.util.SearchState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class InterestedPlacesViewModel @Inject constructor(private val useCase: SearchResultUseCase) : ViewModel() {
+class InterestedPlacesViewModel @Inject constructor(private val useCase: SearchResultUseCase) :
+    ViewModel() {
 
-    var search = mutableStateOf(SearchState())
+    private val _searchResults = MutableStateFlow<Response<List<PlacesItem>>>(Response.Loading)
+    val searchResults: StateFlow<Response<List<PlacesItem>>> get() = _searchResults
 
-    val searchItems: State<SearchState>
-        get() = search
+    fun searchPlaces(location: String, type: String, language: String) {
+        viewModelScope.launch {
+            _searchResults.value = useCase(location, type, language)
+                .catch { exception ->
 
-    fun getSearchResultStream(
-        location: String,
-        radius: Int,
-        type: String,
-        language: String,
-        keyword: String
-    ) {
-        useCase(
-            location = location,
-            radius = radius,
-            type = type,
-            language = language,
-            keyword = keyword
-        ).onEach { dataState ->
-            when (dataState) {
-                is Response.Success -> {
-                    search.value = SearchState(
-                        items = dataState.data
-                    )
-                    Log.e("Search", dataState.data.toString())
                 }
-
-                is Response.Failure -> {
-                    search.value = SearchState(
-                        error = dataState.e.message ?: "An unexpected error happened"
-                    )
-                    Log.e("Search", dataState.e.message ?: "An unexpected error happened")
-                }
-
-                is Response.Loading -> {
-                    search.value = SearchState(isLoading = true)
-                    Log.e("Search", "Loading..")
-                }
-            }
-        }.launchIn(viewModelScope)
+                .first()
+        }
     }
-
 }

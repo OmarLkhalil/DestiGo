@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.mobilebreakero.auth.ui.common.components.MainViewModel
+import com.mobilebreakero.common_ui.components.DestiGoTopAppBar
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.INTERESTED_PLACES_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.START_SCREEN
@@ -54,6 +55,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 Scaffold(
+                    topBar = { DestiGoTopAppBar(navController) },
                     bottomBar = { BottomNavigation(navController) }
                 ) { pv ->
                     Box(modifier = Modifier.padding(pv)) {
@@ -68,7 +70,7 @@ class MainActivity : ComponentActivity() {
             editor.putBoolean(FIRST_LAUNCH_KEY, false)
             editor.apply()
             requestPermission()
-        } else{
+        } else {
             checkPermission()
         }
     }
@@ -76,18 +78,29 @@ class MainActivity : ComponentActivity() {
     private fun requestPermission() {
         val permission = Manifest.permission.ACCESS_FINE_LOCATION
 
-        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(permission), REQUEST_LOCATION_PERMISSION)
+        if (ContextCompat.checkSelfPermission(
+                this,
+                permission
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(permission),
+                REQUEST_LOCATION_PERMISSION
+            )
         }
     }
 
-    private fun checkPermission() : Boolean {
+    private fun checkPermission(): Boolean {
         val permission = Manifest.permission.ACCESS_FINE_LOCATION
-        return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+        return ContextCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     @Composable
-    private fun authState() : String {
+    private fun authState(): String {
         val isUserSignedOut = viewModel.getAuthState().collectAsState().value
         return if (isUserSignedOut) {
             START_SCREEN

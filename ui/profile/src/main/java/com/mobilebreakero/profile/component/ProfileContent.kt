@@ -15,12 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.mobilebreakero.profile.R
 
 
 @Composable
-fun ProfileSection(
-) {
+fun ProfileSection(navController: NavController) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -44,7 +44,7 @@ fun ProfileSection(
         DescriptionSection()
         Spacer(modifier = Modifier.height(20.dp))
         CardsDisplay(
-            onClick = {}
-        )
+            navController = navController,
+            )
     }
 }

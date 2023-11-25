@@ -90,6 +90,7 @@ dependencies {
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
+
     // hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)

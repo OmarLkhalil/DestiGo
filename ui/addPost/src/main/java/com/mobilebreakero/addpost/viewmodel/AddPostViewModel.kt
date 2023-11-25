@@ -23,13 +23,7 @@ class AddPostViewModel @Inject constructor(
         private set
 
     fun addPost(post: Post) = viewModelScope.launch {
-        Log.e("SuccessPostAwwdd", "Done")
         addPostResponse = Response.Loading
-        addPostResponse = postUseCase.addPost(
-            post = post, {
-                Log.e("SuccessPostAdd", "Done")
-            },{
-                Log.e("FailedAdddd", "KFNMMCVPS")
-            })
+        addPostResponse = postUseCase.addPost(post = post, {},{})
     }
 }

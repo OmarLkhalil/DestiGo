@@ -21,17 +21,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.ACCOUNT_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SAVED_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.YOUR_POSTS_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.YOUR_TRIPS_SCREEN
 
 @Composable
 fun CardsDisplay(
-    onClick: () -> Unit
+    navController: NavController,
 ) {
 
     val items = listOf(
-        ListItem(Color(0xFFD5E1FF), "Your Posts"),
-        ListItem(Color(0xFFEDFDF6), "Your Trips"),
-        ListItem(Color(0xFFEBEBEB), "Account"),
-        ListItem(Color(0xFFF9FDED), "Saved"),
+        ListItem(Color(0xFFD5E1FF), YOUR_POSTS_SCREEN),
+        ListItem(Color(0xFFEDFDF6), YOUR_TRIPS_SCREEN),
+        ListItem(Color(0xFFEBEBEB), ACCOUNT_SCREEN),
+        ListItem(Color(0xFFF9FDED), SAVED_SCREEN),
     )
 
     LazyVerticalGrid(
@@ -48,7 +53,7 @@ fun CardsDisplay(
                         5.dp,
                         shape = RoundedCornerShape(22.dp)
                     )
-                    .clickable { onClick() }
+                    .clickable { navController.navigate(item.textString) }
             ) {
                 Box(
                     modifier = Modifier

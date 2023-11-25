@@ -9,7 +9,7 @@ data class Post (
     var location: String? = "Cairo, Egypt",
     var numberOfLikes: Int? = 0,
     var comments: List<String>? = null,
-    var image: Uri? = null
+    var image: String? = null
 ) {
     companion object {
         const val COLLECTION_NAME = "posts"

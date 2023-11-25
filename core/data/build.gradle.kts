@@ -52,9 +52,11 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.storage)
 
     implementation(libs.google.gson)
     implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
 
     // hilt
     implementation(libs.hilt.android)

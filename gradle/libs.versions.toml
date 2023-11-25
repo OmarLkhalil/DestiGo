@@ -19,10 +19,10 @@ navigation-compose = "2.6.0"
 compose-material = "1.4.3"
 retrofit = "2.9.0"
 ggson = "2.10.1"
-paging  = "3.1.1"
-paging-compose  = "1.0.0-alpha19"
+paging = "3.1.1"
+paging-compose = "1.0.0-alpha19"
 coroutines = "1.7.2"
-animated-bar= "1.0.0"
+animated-bar = "1.0.0"
 room = "2.5.2"
 appcompat = "1.6.1"
 material = "1.9.0"
@@ -61,18 +61,18 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "ggson" }
 retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
-paging = {group = "androidx.paging", name = "paging-runtime", version.ref = "paging"}
-paging-compose = {group = "androidx.paging", name = "paging-compose", version.ref = "paging-compose"}
-paging-ktx = {group = "androidx.paging", name = "paging-common-ktx", version.ref = "paging"}
-animated-navigation-bar = {group = "com.exyte", name = "animated-navigation-bar", version.ref = "animated-bar"}
-room-database-runtime = {group = "androidx.room", name = "room-runtime", version.ref = "room"}
-room-database-compiler = {group = "androidx.room", name = "room-compiler", version.ref = "room"}
-room-database-ktx = {group = "androidx.room", name = "room-ktx", version.ref = "room"}
+paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
+paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging-compose" }
+paging-ktx = { group = "androidx.paging", name = "paging-common-ktx", version.ref = "paging" }
+animated-navigation-bar = { group = "com.exyte", name = "animated-navigation-bar", version.ref = "animated-bar" }
+room-database-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-database-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-database-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase"}
-firebase-product = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "analytics"}
-firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth"}
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
+firebase-product = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "analytics" }
+firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore" }
 google-services = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "google-services" }
 javaMail = { group = "com.sun.mail", name = "android-mail", version = "1.6.0" }
@@ -80,6 +80,7 @@ javaActivation = { group = "com.sun.mail", name = "android-activation", version 
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 google-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "google-location" }
 filament-android = { group = "com.google.ar.sceneform", name = "filament-android", version = "1.17.1" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage-ktx" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

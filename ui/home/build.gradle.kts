@@ -63,6 +63,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.storage)
 
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)
@@ -80,5 +81,7 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
     implementation(libs.navigation.compose)
     implementation(project(mapOf("path" to ":common-ui")))
+
+    implementation(libs.coil.compose)
 
 }

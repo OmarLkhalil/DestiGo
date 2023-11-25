@@ -1,10 +1,11 @@
 package com.mobilebreakero.trips.screens.plan
 
 
-import androidx.compose.foundation.background
+import android.app.DatePickerDialog
+import android.net.Uri
+import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,24 +13,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,31 +35,59 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.mobilebreakero.common_ui.components.AuthButton
+import com.mobilebreakero.common_ui.components.MapView
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes
-import com.mobilebreakero.common_ui.navigation.NavigationRoutes.TRIPS_SCREEN
+import com.mobilebreakero.domain.model.Trip
+import com.mobilebreakero.domain.util.DataUtils
+import com.mobilebreakero.trips.TempTrip
+import com.mobilebreakero.trips.TripsViewModel
 import com.mobilebreakero.trips.components.CreateTripButton
+import java.lang.Math.random
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 
 enum class TripFilters {
     Study, Work, Vacation, Adventure, Other
 }
 
+var tripId = generateRandomTripId()
+
+fun generateRandomTripId(): Int {
+    return (100000..999999).random()
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateTripScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: TripsViewModel = hiltViewModel()
 ) {
+
+    val isDateClicked = remember { mutableStateOf(false) }
     var visitMyBros by remember { mutableStateOf("") }
     var selected by remember { mutableStateOf<TripFilters?>(null) }
-    var direcrions by remember { mutableStateOf("") }
-    var date by remember { mutableStateOf("") }
+    var travelReason by remember { mutableStateOf("") }
+    var selectedLocation by remember { mutableStateOf("Cairo, Egypt") }
+    var selectedDate by remember { mutableStateOf("11/12/2023") }
+    val isLocationClicked = remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    val user = DataUtils.user
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,34 +95,6 @@ fun CreateTripScreen(
         horizontalAlignment = CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-
-        TopAppBar(title = {
-            Text(
-                text = "Create Trip", fontSize = 25.sp, fontWeight = FontWeight.Bold
-            )
-        }, navigationIcon = {
-            IconButton(onClick = {
-                navController.navigate(TRIPS_SCREEN)
-            }) {
-                Box(
-                    modifier = Modifier
-                        .size(35.dp)
-                        .clip(RoundedCornerShape(5.dp))
-                        .background(Color(0xFF4F80FF)), contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "back to home",
-                        modifier = Modifier.size(25.dp),
-                        tint = Color.White
-                    )
-                }
-            }
-        }, modifier = Modifier.shadow(12.dp)
-        )
-
-        Spacer(modifier = Modifier.height(30.dp))
-
         Text(
             text = "Trip Name",
             fontSize = 25.sp,
@@ -107,24 +103,34 @@ fun CreateTripScreen(
                 .align(Start)
                 .padding(8.dp)
         )
-
         TextField(
             value = visitMyBros,
             onValueChange = {
                 visitMyBros = it
             },
-            placeholder = { Text(text = "visit my bros") },
-            modifier = Modifier
-                .align(Start)
-                .width(420.dp)
-                .wrapContentHeight()
-                .padding(12.dp, 8.dp, 12.dp, 8.dp),
-            shape = RoundedCornerShape(12.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = Color(0xFFEFEEEE),
+            label = {
+                Text(text = "Visit my Bros")
+            },
+            textStyle = androidx.compose.ui.text.TextStyle(
+                color = Color.Black,
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center
             ),
-            maxLines = 2
+            modifier = Modifier
+                .width(300.dp)
+                .height(50.dp)
+                .clip(RoundedCornerShape(20.dp))
+                .border(.7.dp, Color(0xFF4F80FF), shape = RoundedCornerShape(20.dp)),
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Color.White,
+                textColor = Color.Black,
+                disabledTextColor = Color.Transparent,
+                focusedIndicatorColor = Color.Black,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
+            ),
         )
+
         Text(
             text = "Why? ",
             fontSize = 25.sp,
@@ -148,6 +154,7 @@ fun CreateTripScreen(
                         .padding(4.dp),
                     onClick = {
                         selected = it
+                        travelReason = it.name
                     },
                     label = {
                         Row(
@@ -170,7 +177,7 @@ fun CreateTripScreen(
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = Color(0xFF4F80FF),
                         selectedLabelColor = Color.White,
-                        containerColor = Color(0xFFEFEEEE),
+                        containerColor = Color(0xFFF8FAFF),
                         disabledContainerColor = Color(0xFFEFEEEE),
                         disabledLabelColor = Color.Black,
                     ),
@@ -178,6 +185,7 @@ fun CreateTripScreen(
                 )
             }
         }
+
         Text(
             text = "Where? ",
             fontSize = 25.sp,
@@ -186,22 +194,19 @@ fun CreateTripScreen(
                 .align(Start)
                 .padding(12.dp)
         )
-        TextField(
-            value = direcrions,
-            onValueChange = {
-                direcrions = it
+
+        AuthButton(
+            onClick = {
+                isLocationClicked.value = true
             },
-            placeholder = { Text(text = "Cairo,Egypt") },
             modifier = Modifier
-                .align(Start)
-                .width(420.dp)
-                .wrapContentHeight()
-                .padding(12.dp, 8.dp, 12.dp, 8.dp),
-            shape = RoundedCornerShape(12.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = Color(0xFFEFEEEE),
-            ),
-            maxLines = 1
+                .width(300.dp)
+                .height(80.dp)
+                .padding(12.dp, 12.dp, 20.dp, 12.dp)
+                .border(.7.dp, Color(0xFF4F80FF), shape = RoundedCornerShape(20.dp)),
+            text = selectedLocation,
+            buttonColor = Color.White,
+            textColor = Color.Black.copy(alpha = 0.3f)
         )
         Text(
             text = "When? ",
@@ -211,31 +216,101 @@ fun CreateTripScreen(
                 .align(Start)
                 .padding(12.dp)
         )
-        TextField(
-            value = date,
-            onValueChange = {
-                date = it
+
+        AuthButton(
+            onClick = {
+                isDateClicked.value = true
             },
-            placeholder = { Text(text = "07/10/2023") },
             modifier = Modifier
-                .align(Start)
-                .width(420.dp)
-                .wrapContentHeight()
-                .padding(12.dp, 8.dp, 12.dp, 8.dp),
-            shape = RoundedCornerShape(12.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = Color(0xFFEFEEEE),
-            ),
-            maxLines = 1
+                .width(350.dp)
+                .height(80.dp)
+                .padding(12.dp, 12.dp, 20.dp, 12.dp)
+                .border(.7.dp, Color(0xFF4F80FF), shape = RoundedCornerShape(20.dp)),
+            text = selectedDate,
+            buttonColor = Color.White,
+            textColor = Color.Black.copy(alpha = 0.3f)
         )
         Spacer(modifier = Modifier.height(80.dp))
+
         CreateTripButton(text = "Next",
             buttonColor = Color(0xff4F80FF),
             modifier = Modifier
                 .align(CenterHorizontally)
                 .height(50.dp)
                 .width(320.dp),
-            onClick = { navController.navigate(NavigationRoutes.PLAN_CHECK_LIST) }
+            onClick = {
+                viewModel.addTripToFireStore(
+                    Trip(
+                        id = tripId.toString(),
+                        userId = user?.id,
+                        why = travelReason,
+                        location = selectedLocation,
+                        date = selectedDate,
+                        name = visitMyBros
+                    )
+                )
+                navController.navigate(NavigationRoutes.PLAN_CHECK_LIST)
+            }
         )
+    }
+
+    if (isLocationClicked.value) {
+        MapView(
+            selectedLocation = selectedLocation,
+            onLocationSelected = {
+                selectedLocation = it
+                isLocationClicked.value = false
+            },
+            context = context
+        )
+    }
+
+    if (isDateClicked.value) {
+        ShowDatePickerDialog(selectedDate = selectedDate, onDateSelected = {
+            selectedDate = it
+        })
+    }
+
+}
+
+@Composable
+fun ShowDatePickerDialog(
+    selectedDate: String,
+    onDateSelected: (String) -> Unit
+) {
+    val context = LocalContext.current
+    val datePickerDialog = remember {
+        DatePickerDialog(
+            context,
+            { _, year, month, dayOfMonth ->
+                val formattedDate = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+                    .format(Calendar.getInstance().apply {
+                        set(year, month, dayOfMonth)
+                    }.time)
+                onDateSelected(formattedDate)
+            },
+            Calendar.getInstance().get(Calendar.YEAR),
+            Calendar.getInstance().get(Calendar.MONTH),
+            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        )
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            if (datePickerDialog.isShowing) {
+                datePickerDialog.dismiss()
+            }
+        }
+    }
+
+    LaunchedEffect(selectedDate) {
+        if (!datePickerDialog.isShowing) {
+            datePickerDialog.updateDate(
+                Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+            )
+            datePickerDialog.show()
+        }
     }
 }

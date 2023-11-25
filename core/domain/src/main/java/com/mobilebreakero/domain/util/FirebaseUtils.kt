@@ -12,6 +12,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resumeWithException
 
+
 @OptIn(ExperimentalCoroutinesApi::class)
 suspend fun <T> Task<T>.await(): T {
     return suspendCancellableCoroutine { cont ->
@@ -24,7 +25,6 @@ suspend fun <T> Task<T>.await(): T {
         }
     }
 }
-
 
 fun getCollection (collectionName:String): CollectionReference {
     val db = Firebase.firestore

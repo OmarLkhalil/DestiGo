@@ -31,34 +31,6 @@
           </set>
         </option>
       </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="testRunner" value="GRADLE" />
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="jbr-17" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/common-ui" />
-            <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/core/data" />
-            <option value="$PROJECT_DIR$/core/domain" />
-            <option value="$PROJECT_DIR$/ui" />
-            <option value="$PROJECT_DIR$/ui/Interestedplaces" />
-            <option value="$PROJECT_DIR$/ui/addPost" />
-            <option value="$PROJECT_DIR$/ui/auth" />
-            <option value="$PROJECT_DIR$/ui/home" />
-            <option value="$PROJECT_DIR$/ui/navigation" />
-            <option value="$PROJECT_DIR$/ui/profile" />
-            <option value="$PROJECT_DIR$/ui/scan" />
-            <option value="$PROJECT_DIR$/ui/search" />
-            <option value="$PROJECT_DIR$/ui/testing" />
-            <option value="$PROJECT_DIR$/ui/trips" />
-            <option value="$PROJECT_DIR$/ui/welcome" />
-          </set>
-        </option>
-      </GradleProjectSettings>
     </option>
   </component>
 </project>

@@ -32,7 +32,7 @@ import com.mobilebreakero.domain.util.Utils.Companion.showMessage
 fun SignInWithEmailAndPasswordScreenContent(
     navController: NavController,
     viewModel: LoginViewModel = hiltViewModel(),
-    ) {
+) {
 
     AuthContent("Login")
 
@@ -70,7 +70,10 @@ fun SignInWithEmailAndPasswordScreenContent(
 
 
     Spacer(modifier = Modifier.height(33.dp))
-    Text(text = "Forgot Password?", color = Color(0xff4F80FF), modifier = Modifier.clickable { navController.navigate(SEND_CONFIRMATION_CODE) })
+    Text(
+        text = "Forgot Password?",
+        color = Color(0xff4F80FF),
+        modifier = Modifier.clickable { navController.navigate(SEND_CONFIRMATION_CODE) })
 
     SignIn(
         showErrorMessage = { errorMessage ->

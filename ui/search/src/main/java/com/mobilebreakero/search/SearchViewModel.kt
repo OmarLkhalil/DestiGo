@@ -1,64 +1,50 @@
 package com.mobilebreakero.search
 
-import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mobilebreakero.domain.usecase.SearchResultUseCase
-import com.mobilebreakero.domain.util.SearchState
+import com.mobilebreakero.domain.model.DataItem
+import com.mobilebreakero.domain.model.PhotoDataItem
+import com.mobilebreakero.domain.usecase.PhotoUseCase
+import com.mobilebreakero.domain.usecase.SearchPlacesUseCase
+import com.mobilebreakero.domain.util.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.mobilebreakero.domain.util.Response.Success
-import com.mobilebreakero.domain.util.Response.Failure
-import com.mobilebreakero.domain.util.Response.Loading
-import kotlinx.coroutines.flow.launchIn
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val useCase: SearchResultUseCase) : ViewModel() {
+class SearchViewModel @Inject constructor(
+    private val useCase: SearchPlacesUseCase,
+    private val photoUseCase: PhotoUseCase
+) : ViewModel() {
 
-    private val search = mutableStateOf(SearchState())
+    private val _searchResult = MutableStateFlow<Response<List<DataItem?>>>(Response.Success(listOf()))
+    val searchResult: StateFlow<Response<List<DataItem?>>> = _searchResult
 
-    val searchItems: State<SearchState>
-        get() = search
-
-    fun getSearchResultStream(
-        location: String,
-        radius: Int,
-        type: String,
-        language: String,
-        keyword: String
-    ) {
-        useCase(
-            location = location,
-            radius = radius,
-            type = type,
-            language = language,
-            keyword = keyword
-        ).onEach { dataState ->
-            when (dataState) {
-                is Success -> {
-                    search.value = SearchState(
-                        items = dataState.data
-                    )
-                    Log.e("Search", dataState.data.toString())
-                }
-
-                is Failure -> {
-                    search.value = SearchState(
-                        error = dataState.e.message ?: "An unexpected error happened"
-                    )
-                    Log.e("Search", dataState.e.message ?: "An unexpected error happened")
-                }
-
-                is Loading -> {
-                    search.value = SearchState(isLoading = true)
-                    Log.e("Search", "Loading..")
-                }
-            }
-        }.launchIn(viewModelScope)
+    fun getSearchedResult(query: String, language: String, filter: String) {
+        viewModelScope.launch {
+            val result = useCase.invoke(
+                query = query,
+                language = language,
+                filter = filter
+            )
+            _searchResult.value = result
+        }
     }
+    private val _photo = MutableStateFlow<Response<List<PhotoDataItem?>>>(Response.Success(listOf()))
+    val photo: StateFlow<Response<List<PhotoDataItem?>>> = _photo
+
+    fun getPhoto(locationId: String) {
+        viewModelScope.launch {
+            try {
+                _photo.value = Response.Loading
+                val result = photoUseCase.invoke(locationId)
+                _photo.value = result
+            } catch (e: Exception) {
+                _photo.value = Response.Failure(e)
+            }
+        }
+    }
+
 }

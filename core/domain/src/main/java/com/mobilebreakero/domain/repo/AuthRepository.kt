@@ -1,9 +1,12 @@
 package com.mobilebreakero.domain.repo
 
+
+import android.content.Context
 import com.google.firebase.auth.FirebaseUser
-import com.mobilebreakero.domain.util.Response
 import kotlinx.coroutines.CoroutineScope
+import com.mobilebreakero.domain.util.Response
 import kotlinx.coroutines.flow.StateFlow
+
 
 typealias AuthStateResponse = StateFlow<Boolean>
 typealias SignInResponse = Response<Boolean>
@@ -14,7 +17,9 @@ typealias SendPasswordResetEmailResponse = Response<Boolean>
 typealias ReloadUserResponse = Response<Boolean>
 typealias ResetPasswordResponse = Response<Boolean>
 typealias SendResetPasswordResponse = Response<Boolean>
-
+typealias UpdateEmailResponse = Response<Boolean>
+typealias CheckUserSignedIn = Response<Boolean>
+typealias DeleteAccountResponse = Response<Boolean>
 
 interface AuthRepository {
 
@@ -29,4 +34,7 @@ interface AuthRepository {
     suspend fun sendPasswordResetEmail(email: String): SendPasswordResetEmailResponse
     suspend fun resetPassword(password: String): ResetPasswordResponse
     suspend fun sendResetPassword(email: String, confirmationCode: Int): SendResetPasswordResponse
+    suspend fun updateEmail(email: String): UpdateEmailResponse
+    suspend fun checkUserSignedIn(email: String, password: String, context : Context): CheckUserSignedIn
+    suspend fun deleteAccount(): DeleteAccountResponse
 }

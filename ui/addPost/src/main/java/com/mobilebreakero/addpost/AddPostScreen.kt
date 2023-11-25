@@ -17,8 +17,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mobilebreakero.addpost.componant.AddPostCard
 import com.mobilebreakero.addpost.viewmodel.AddPostViewModel
-import com.mobilebreakero.common_ui.components.AppTopBar
-import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
 
 @Composable
 fun AddPostScreen(
@@ -37,7 +35,6 @@ fun AddPostScreen(
                 .wrapContentHeight(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AppTopBar(navController = navController, route = HOME_SCREEN)
             Spacer(modifier = Modifier.height(50.dp))
             AddPostCard(navController)
         }

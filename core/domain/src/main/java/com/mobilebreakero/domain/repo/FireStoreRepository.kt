@@ -12,12 +12,14 @@ typealias addUserResponse = Response<Boolean>
 typealias updateUserResponse = Response<Boolean>
 
 interface FireStoreRepository {
-    suspend fun getUsers(): Flow<userResponse>
+
+    suspend fun getUsers(): Flow<Response.Success<MutableList<AppUser>>>
     suspend fun getUserById(id: String): userResponse
     suspend fun addUser(
         user: AppUser,
         onSuccessListener: OnSuccessListener<Void>,
         onFailureListener: OnFailureListener
     ): addUserResponse
-    suspend fun updateUser(id: String): updateUserResponse
+
+    suspend fun updateUser(id: String, name: String): updateUserResponse
 }

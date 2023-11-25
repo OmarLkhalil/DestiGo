@@ -42,7 +42,17 @@ fun MapView(
                     val longitude = latLng.longitude
 
                     val newLocation = "$latitude,$longitude"
-                    onLocationSelected(newLocation)
+
+                    val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+                    if (!addresses.isNullOrEmpty()) {
+                        val country = addresses[0].countryName
+                        val government = addresses[0].adminArea
+                        val fullAddress = "$government, $country"
+                        onLocationSelected(fullAddress)
+                    } else {
+                        onLocationSelected(newLocation)
+                    }
+
                     selectedMarker?.remove()
                     selectedMarker = googleMap.addMarker(
                         MarkerOptions()
@@ -57,25 +67,4 @@ fun MapView(
             .fillMaxWidth()
             .height(300.dp)
     )
-
-    SideEffect {
-        val latLng = selectedLocation.split(",").run {
-            if (size == 2) {
-                LatLng(get(0).toDouble(), get(1).toDouble())
-            } else {
-                null
-            }
-        }
-
-        if (latLng != null) {
-            val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-            if (addresses != null) {
-                if (addresses.isNotEmpty()) {
-                    val country = addresses[0].countryName
-                    val government = addresses[0].adminArea
-                    val fullAddress = "$government, $country"
-                }
-            }
-        }
-    }
 }

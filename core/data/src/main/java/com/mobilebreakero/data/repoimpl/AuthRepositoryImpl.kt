@@ -1,15 +1,18 @@
 package com.mobilebreakero.data.repoimpl
 
+import android.content.Context
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.mobilebreakero.domain.model.AppUser
 import com.mobilebreakero.domain.repo.AuthRepository
+import com.mobilebreakero.domain.repo.CheckUserSignedIn
+import com.mobilebreakero.domain.repo.DeleteAccountResponse
 import com.mobilebreakero.domain.repo.FireStoreRepository
 import com.mobilebreakero.domain.repo.ReloadUserResponse
 import com.mobilebreakero.domain.repo.ResetPasswordResponse
 import com.mobilebreakero.domain.repo.SendResetPasswordResponse
-import com.mobilebreakero.domain.repo.SignUpResponse
+import com.mobilebreakero.domain.repo.UpdateEmailResponse
 import com.mobilebreakero.domain.util.DataUtils
 import com.mobilebreakero.domain.util.Response.Failure
 import com.mobilebreakero.domain.util.Response.Success
@@ -96,7 +99,6 @@ class AuthRepositoryImpl @Inject constructor(
     ) = try {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (!task.isSuccessful) {
-                //show error message
                 task.exception!!.localizedMessage?.let { Log.e("Error create user", it) }
             } else {
                 CoroutineScope(Dispatchers.IO).launch {
@@ -104,10 +106,8 @@ class AuthRepositoryImpl @Inject constructor(
                 }
             }
         }.await()
-        Log.e("Success12", "DocumentSnapshot successfully written!")
         Success(true)
     } catch (e: Exception) {
-        Log.e("Failed12", "Error writing document", e)
         Failure(e)
     }
 
@@ -118,10 +118,30 @@ class AuthRepositoryImpl @Inject constructor(
         Failure(e)
     }
 
+    override suspend fun deleteAccount(): DeleteAccountResponse = try {
+        auth.currentUser?.delete()
+        Success(true)
+    } catch (e: Exception) {
+        Failure(e)
+    }
+
     override suspend fun resetPassword(password: String): ResetPasswordResponse {
         return try {
             auth.currentUser?.updatePassword(password)?.await()
             Success(true)
+        } catch (e: Exception) {
+            Failure(e)
+        }
+    }
+
+    override suspend fun updateEmail(email: String): UpdateEmailResponse {
+        return try {
+            if (auth.currentUser?.email != email) {
+                auth.currentUser?.sendEmailVerification()?.await()
+                Success(true)
+            } else {
+                Failure(Exception("Email is the same as the current one \n please enter a different email"))
+            }
         } catch (e: Exception) {
             Failure(e)
         }
@@ -176,6 +196,23 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun checkUserSignedIn(
+        email: String,
+        password: String,
+        context: Context
+    ): CheckUserSignedIn {
+        return try {
+            if (currentUser?.email == email) {
+                signInWithEmailAndPassword(email, password)
+            } else {
+                Failure(Exception("Your current email doesn't match the entered email"))
+            }
+        } catch (e: Exception) {
+            Failure(e)
+        }
+    }
+
+
     private suspend fun createFireStoreUser(uid: String?, name: String?, email: String?) {
         val user = AppUser(
             id = uid,
@@ -184,9 +221,9 @@ class AuthRepositoryImpl @Inject constructor(
         )
         repository.addUser(user, onSuccessListener = {
             DataUtils.user = user
-            Log.e("Zozza", DataUtils.user?.name!! ?: "A7A")
         }) {
 
         }
     }
+
 }

@@ -1,28 +1,46 @@
 package com.mobilebreakero.data.remote
 
-import com.mobilebreakero.data.dto.Details
-import com.mobilebreakero.domain.util.DataUtils.API_KEY
+import com.mobilebreakero.data.TextSearchRequest
+import com.mobilebreakero.domain.model.DetailsResponse
+import com.mobilebreakero.domain.model.PhotosResponse
+import com.mobilebreakero.domain.model.PlacesItem
+import com.mobilebreakero.domain.model.PlacesResponse
+import com.mobilebreakero.domain.model.TripPlacesResponse
+import com.mobilebreakero.domain.util.DataUtils.TRIP_API_KEY
+import org.json.JSONObject
+import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TripApi {
 
-    @GET("place/nearbysearch/json")
-    suspend fun getNearbyPlaces(
-        @Query("location") location: String,
-        @Query("radius") radius: Int,
-        @Query("type") type: String,
-        @Query("keyword") keyword: String,
+    @POST("places/searchText")
+    suspend fun searchText(@Body request: TextSearchRequest): Response<PlacesResponse>
+
+
+    @GET("location/search")
+    suspend fun searchLocation(
+        @Query("key") key: String? = TRIP_API_KEY,
         @Query("language") language: String,
-        @Query("key") apiKey: String = API_KEY,
-    ): Details
+        @Query("searchQuery") query: String,
+        @Query("category") filter: String
+    ): Response<TripPlacesResponse>
 
 
-    @GET("place/details/json")
-    suspend fun getPlaceDetails(
-        @Query("placeid") placeId: String,
-        @Query("fields") fields: String,
-        @Query("key") apiKey: String = API_KEY
-    ): retrofit2.Response<Details>
+    @GET("location/{locationId}/details")
+    suspend fun getDetails(
+        @Path("locationId") locationId: String,
+        @Query("key") key: String? = TRIP_API_KEY,
+    ): Response<DetailsResponse>
+
+
+    @GET("location/{locationId}/photos")
+    suspend fun getPhotos(
+        @Path("locationId") locationId: String,
+        @Query("key") key: String? = TRIP_API_KEY,
+    ): Response<PhotosResponse>
 
 }

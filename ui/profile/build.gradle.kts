@@ -2,6 +2,8 @@
 plugins {
     alias(libs.plugins.androidlibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlinKapt)
 }
 
 android {
@@ -61,6 +63,12 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation(libs.navigation.compose)
 
+    //hilt
+
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation)
+    implementation(libs.hilt.navigation.compose)
+    kapt(libs.hilt.android.compiler)
     // Coil
     implementation(project(mapOf("path" to ":common-ui")))
     implementation(libs.firebase.auth.ktx)

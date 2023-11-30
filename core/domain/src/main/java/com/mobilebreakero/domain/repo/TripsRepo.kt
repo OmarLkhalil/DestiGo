@@ -8,6 +8,7 @@ import com.mobilebreakero.domain.util.Response
 import kotlinx.coroutines.flow.Flow
 
 typealias addTripResponse = Response<Boolean>
+typealias updateTripResponse = Response<Boolean>
 
 interface TripsRepo {
 
@@ -17,5 +18,15 @@ interface TripsRepo {
         trip: Trip, onSuccessListener: OnSuccessListener<Void>,
         onFailureListener: OnFailureListener
     ): addTripResponse
+
+    suspend fun addCheckList(
+        checkList : List<String>,
+        id : String
+    ):updateTripResponse
+
+    suspend fun addPlaces (
+        places : List<String>,
+        id : String
+    ):updateTripResponse
 
 }

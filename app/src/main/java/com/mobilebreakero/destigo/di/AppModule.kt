@@ -41,6 +41,8 @@ import com.mobilebreakero.domain.usecase.firestore.UpdateUser
 import com.mobilebreakero.domain.usecase.firestore.post.AddPostUseCase
 import com.mobilebreakero.domain.usecase.firestore.post.GetPostsUseCase
 import com.mobilebreakero.domain.usecase.firestore.post.PostUseCase
+import com.mobilebreakero.domain.usecase.firestore.trips.AddChickList
+import com.mobilebreakero.domain.usecase.firestore.trips.AddPlaces
 import com.mobilebreakero.domain.usecase.firestore.trips.AddTrip
 import com.mobilebreakero.domain.usecase.firestore.trips.GetTrips
 import com.mobilebreakero.domain.usecase.firestore.trips.TripsUseCase
@@ -89,7 +91,9 @@ object AppModule {
         repo: TripsRepo
     ) = TripsUseCase(
         getTrips = GetTrips(repo),
-        addTrip = AddTrip(repo)
+        addTrip = AddTrip(repo),
+        chickList = AddChickList(repo),
+        places = AddPlaces(repo)
     )
 
     @Provides

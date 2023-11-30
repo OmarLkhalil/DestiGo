@@ -5,6 +5,7 @@ import com.google.android.gms.tasks.OnSuccessListener
 import com.mobilebreakero.domain.model.Trip
 import com.mobilebreakero.domain.repo.TripsRepo
 import com.mobilebreakero.domain.repo.addTripResponse
+import com.mobilebreakero.domain.repo.updateTripResponse
 import com.mobilebreakero.domain.util.Response
 import com.mobilebreakero.domain.util.getCollection
 import kotlinx.coroutines.flow.Flow
@@ -37,4 +38,26 @@ class TripRepoImpl @Inject constructor() : TripsRepo {
         Response.Failure(e)
     }
 
+    override suspend fun addCheckList(checkList: List<String>, id: String):updateTripResponse {
+        return try {
+            val tripCollection = getCollection(Trip.COLLECTION_NAME)
+            val tripDoc = tripCollection.document(id)
+            tripDoc.update("checkList",checkList)
+            Response.Success(true)
+        }
+        catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
+
+    override suspend fun addPlaces(places: List<String>, id: String): updateTripResponse {
+        return try {
+            val tripCollection = getCollection(Trip.COLLECTION_NAME)
+            val tripDoc = tripCollection.document(id)
+            tripDoc.update("places",places)
+            Response.Success(true)
+        }catch (e:Exception){
+            Response.Failure(e)
+        }
+    }
 }

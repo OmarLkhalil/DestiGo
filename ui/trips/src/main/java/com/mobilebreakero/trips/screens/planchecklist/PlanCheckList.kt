@@ -1,26 +1,20 @@
 package com.mobilebreakero.trips.screens.planchecklist
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,54 +23,34 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CREATE_TRIP
+import com.mobilebreakero.trips.TripsViewModel
 import com.mobilebreakero.trips.components.CreateTripButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlanCheckListScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: TripsViewModel = hiltViewModel()
+
 ){
-    var myPassport by remember { mutableStateOf("") }
-    var myLaptop by remember { mutableStateOf("") }
+    var itemName by remember { mutableStateOf("") }
+    var chickListItems by remember { mutableStateOf(listOf("")) }
+
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        TopAppBar(title = {
-            Text(
-                text = "Check List", fontSize = 25.sp, fontWeight = FontWeight.Bold
-            )
-        }, navigationIcon = {
-            IconButton(onClick = {
-                navController.navigate(CREATE_TRIP)
-            }) {
-                Box(
-                    modifier = Modifier
-                        .size(35.dp)
-                        .clip(RoundedCornerShape(5.dp))
-                        .background(Color(0xFF4F80FF)), contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "back to home",
-                        modifier = Modifier.size(25.dp),
-                        tint = Color.White
-
-                    )
-                }
-            }
-        }, modifier = Modifier.shadow(12.dp)
-        )
-
         Spacer(modifier = Modifier.height(30.dp))
 
         Text(
@@ -87,53 +61,65 @@ fun PlanCheckListScreen(
                 .align(Alignment.Start)
                 .padding(8.dp)
         )
-        TextField(value = myPassport,
-            onValueChange = {
-                myPassport = it
-            },
-            placeholder = { Text(text = "My Passport") },
-            modifier = Modifier
-                .align(Alignment.Start)
-                .width(420.dp)
-                .wrapContentHeight()
-                .padding(12.dp, 8.dp, 12.dp, 8.dp),
-            shape = RoundedCornerShape(12.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = Color(0xFFEFEEEE),
-            ),
-            maxLines = 2
-        )
-        TextField(value = myLaptop,
-            onValueChange = {
-                myLaptop = it
-            },
-            placeholder = { Text(text = "My Laptop") },
-            modifier = Modifier
-                .align(Alignment.Start)
-                .width(420.dp)
-                .wrapContentHeight()
-                .padding(12.dp, 8.dp, 12.dp, 8.dp),
-            shape = RoundedCornerShape(12.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = Color(0xFFEFEEEE),
-            ),
-            maxLines = 2
-        )
+
+        chickListItems.forEachIndexed{
+            index, item ->
+            ChickLitItem(text = item,
+                onTextChanged =
+                {newText ->
+                    chickListItems = chickListItems.toMutableList().apply { this[index] = newText }})
+        }
         Spacer(modifier = Modifier.height(80.dp))
 
         CreateTripButton(text = "Add",
             buttonColor = Color(0xff4F80FF),
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-                .height(50.dp).width(220.dp),
-            onClick = {}
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .height(50.dp)
+                .width(220.dp),
+            onClick = { chickListItems = chickListItems + listOf("")}
         )
-        Spacer(modifier = Modifier.height(220.dp))
+        Spacer(modifier = Modifier.height(100.dp))
         CreateTripButton(text = "Next",
             buttonColor = Color(0xff4F80FF),
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-                .height(50.dp).width(320.dp),
-            onClick = {}
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .height(50.dp)
+                .width(320.dp),
+            onClick = { viewModel.addChickList(chickListItems, id = "249076")}
         )
 
     }
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ChickLitItem(text :String , onTextChanged:(String) ->Unit){
+    Spacer(modifier = Modifier.height(15.dp))
+    TextField(
+        value = text,
+        onValueChange = {
+            onTextChanged(it)
+        },
+        label = {
+            Text(text = "My Passport")
+        },
+        textStyle = androidx.compose.ui.text.TextStyle(
+            color = Color.Black,
+            fontSize = 14.sp,
+            textAlign = TextAlign.Center
+        ),
+        modifier = Modifier
+            .width(300.dp)
+            .height(50.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .border(.7.dp, Color(0xFF4F80FF), shape = RoundedCornerShape(20.dp)),
+        colors = TextFieldDefaults.textFieldColors(
+            containerColor = Color.White,
+            textColor = Color.Black,
+            disabledTextColor = Color.Transparent,
+            focusedIndicatorColor = Color.Black,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent
+        ),
+    )
 }

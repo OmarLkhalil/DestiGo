@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilebreakero.domain.model.Trip
 import com.mobilebreakero.domain.repo.addTripResponse
+import com.mobilebreakero.domain.repo.updateTripResponse
 import com.mobilebreakero.domain.usecase.firestore.trips.TripsUseCase
 import com.mobilebreakero.domain.util.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,7 +34,7 @@ class TripsViewModel @Inject constructor(
         }
     }
 
-    var addTripResponse by mutableStateOf<addTripResponse>(Response.Success(false))
+    private var addTripResponse by mutableStateOf<addTripResponse>(Response.Success(false))
         private set
 
     fun addTripToFireStore(trip: Trip) = viewModelScope.launch {
@@ -47,8 +48,26 @@ class TripsViewModel @Inject constructor(
     fun addSelectedTrip(trip: TempTrip) {
         _selectedTrips.add(trip)
     }
+    var addChickListResponse by mutableStateOf<updateTripResponse> (Response.Success(false))
+        private set
+
+    fun addChickList(checkList: List<String>,id: String){
+        viewModelScope.launch {
+            try {
+                addChickListResponse = Response.Loading
+                addChickListResponse = tripsUseCase.chickList(checkList,id)
+
+            }catch (
+                e:Exception
+            ){
+                addChickListResponse =
+                    Response.Failure(e)
+            }
+        }
+    }
 
 }
+
 
 data class TempTrip (
     var id: String? = null,

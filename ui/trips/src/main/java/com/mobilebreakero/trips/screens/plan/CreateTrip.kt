@@ -249,7 +249,7 @@ fun CreateTripScreen(
                         name = visitMyBros
                     )
                 )
-                navController.navigate(NavigationRoutes.PLAN_CHECK_LIST)
+                navController.navigate("planChickList/${tripId}")
             }
         )
     }

@@ -32,12 +32,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mobilebreakero.trips.TripsViewModel
 import com.mobilebreakero.trips.components.CreateTripButton
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlanCheckListScreen(
     navController: NavController,
-    viewModel: TripsViewModel = hiltViewModel()
+    viewModel: TripsViewModel = hiltViewModel(),
+    tripId : String
 
 ){
     var itemName by remember { mutableStateOf("") }
@@ -86,7 +86,7 @@ fun PlanCheckListScreen(
                 .align(Alignment.CenterHorizontally)
                 .height(50.dp)
                 .width(320.dp),
-            onClick = { viewModel.addChickList(chickListItems, id = "249076")}
+            onClick = { viewModel.addChickList(chickListItems, id = tripId.toString())}
         )
 
     }

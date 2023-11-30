@@ -64,6 +64,7 @@ import com.mobilebreakero.scan.ScanScreen
 import com.mobilebreakero.search.screen.SearchScreen
 import com.mobilebreakero.trips.screens.plan.CreateTripScreen
 import com.mobilebreakero.trips.screens.plan.PlanScreen
+import com.mobilebreakero.trips.screens.plan.tripId
 import com.mobilebreakero.trips.screens.planchecklist.PlanCheckListScreen
 import com.mobilebreakero.welcome.WelcomeScreen
 
@@ -142,8 +143,11 @@ fun MainNavHost(
         composable(route = CREATE_TRIP) {
             CreateTripScreen(navController = navController)
         }
-        composable(route = PLAN_CHECK_LIST) {
-            PlanCheckListScreen(navController = navController)
+        composable(route = "planChickList/{tripId}") {
+            val tripId = it.arguments?.getString("tripId","")
+            if (tripId != null) {
+                PlanCheckListScreen(navController = navController, tripId = tripId)
+            }
         }
         composable(route = ADD_POST_SCREEN) {
             AddPostScreen(navController = navController)

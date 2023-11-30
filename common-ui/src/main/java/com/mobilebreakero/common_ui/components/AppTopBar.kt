@@ -86,7 +86,11 @@ fun TopBarTitle(navController: NavController) {
         Text(
             text = if (currentRoute.isEmpty()) {
                 ""
-            } else {
+            } else if (currentRoute == "planChickList/{tripId}"){
+                "plan chick list"
+            }
+
+            else {
                 currentRoute.toString()
             },
             textAlign = TextAlign.Center,

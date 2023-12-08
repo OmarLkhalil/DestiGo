@@ -1,5 +1,6 @@
 package com.mobilebreakero.search.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -11,12 +12,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.VerticalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,17 +35,24 @@ import coil.request.ImageRequest
 import com.mobilebreakero.common_ui.components.LoadingIndicator
 import com.mobilebreakero.domain.model.DataItem
 import com.mobilebreakero.domain.model.PhotoDataItem
+import com.mobilebreakero.domain.util.Response
 import com.mobilebreakero.search.SearchViewModel
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchResultItem(
-    item: List<DataItem?>,
-    itemIndex: Int,
+    item: DataItem,
     navController: NavController,
-    photos: List<PhotoDataItem?>,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
+
+    LaunchedEffect(item) {
+        item.locationId?.let { viewModel.getPhoto(it) }
+    }
+
+    val photos by viewModel.photo.collectAsState()
+
     Box(
         modifier = Modifier
             .width(350.dp)
@@ -61,12 +71,14 @@ fun SearchResultItem(
                 .height(150.dp)
                 .clip(RoundedCornerShape(20.dp))
                 .fillMaxWidth()
-                .clickable {}
+                .clickable {
+                    navController.navigate("details/${item.locationId}")
+                }
                 .background(Color(0xFFD5E1FF))
         ) {
             Row(modifier = Modifier.fillMaxSize()) {
                 Spacer(modifier = Modifier.width(135.dp))
-                item[itemIndex]?.name?.let {
+                item.name?.let {
                     Text(
                         text = it,
                         color = Color.Black,
@@ -76,33 +88,51 @@ fun SearchResultItem(
             }
         }
 
-        val isImageFetched = remember { mutableStateOf(false) }
+        when (photos) {
 
-        if (item[itemIndex]?.locationId != null) {
-            LaunchedEffect(key1 = Unit) {
-                isImageFetched.value = true
-                item[itemIndex]?.locationId?.let { viewModel.getPhoto(it) }
+            is Response.Success -> {
+                val results =
+                    (photos as Response.Success<List<PhotoDataItem?>>).data.filter { it?.id.toString() == item.locationId }
+                VerticalPager(
+                    state = rememberPagerState(),
+                    modifier = Modifier.fillMaxWidth(),
+                    pageCount = results.size
+                ) { page ->
+                    val photoOfEachOne = results[page]?.images?.large?.url
+
+                    SubcomposeAsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(photoOfEachOne)
+                            .crossfade(true)
+                            .build(),
+                        modifier = Modifier
+                            .height(170.dp)
+                            .width(125.dp)
+                            .align(Alignment.CenterStart)
+                            .clip(RoundedCornerShape(15.dp)),
+                        contentDescription = null,
+                        contentScale = FillBounds,
+                        loading = {
+                            LoadingIndicator()
+                        },
+                    )
+                }
+            }
+
+            is Response.Failure -> {
+                (photos as Response.Failure).e.message?.let {
+                    Text(
+                        text = it,
+                        color = Color.Red,
+                        modifier = Modifier.padding(top = 15.dp)
+                    )
+                }
+            }
+
+            else -> {
+                LoadingIndicator()
             }
         }
 
-
-        if (photos.isNotEmpty() && itemIndex <= photos.size && photos[itemIndex]?.images?.original?.url != null) {
-            SubcomposeAsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(photos[itemIndex]?.images?.original?.url)
-                    .crossfade(true)
-                    .build(),
-                modifier = Modifier
-                    .height(170.dp)
-                    .width(125.dp)
-                    .align(Alignment.CenterStart)
-                    .clip(RoundedCornerShape(15.dp)),
-                contentDescription = null,
-                contentScale = FillBounds,
-                loading = {
-                    LoadingIndicator()
-                },
-            )
-        }
     }
 }

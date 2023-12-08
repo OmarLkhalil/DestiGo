@@ -26,6 +26,7 @@ import com.mobilebreakero.common_ui.R
 fun MapView(
     selectedLocation: String,
     onLocationSelected: (String) -> Unit,
+    getGovernment: (String) -> Unit,
     context: Context
 ) {
     var selectedMarker: Marker? by remember { mutableStateOf(null) }
@@ -49,6 +50,7 @@ fun MapView(
                         val government = addresses[0].adminArea
                         val fullAddress = "$government, $country"
                         onLocationSelected(fullAddress)
+                        getGovernment(government)
                     } else {
                         onLocationSelected(newLocation)
                     }

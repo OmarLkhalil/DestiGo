@@ -48,21 +48,21 @@ fun AccountAccessSettingsContent(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            SettingsCard(icon = R.drawable.privacy, text = "change username", onClick = {
+            SettingsCard(icon = R.drawable.account, text = "change username", onClick = {
                 navController.navigate(CHOOSE_NEW_USERNAME)
             })
             Spacer(modifier = Modifier.height(10.dp))
             SettingsCard(
-                icon = R.drawable.switchaccount,
+                icon = R.drawable.password,
                 text = "update password",
                 onClick = { navController.navigate(SEND_CONFIRMATION_CODE) })
             Spacer(modifier = Modifier.height(10.dp))
             SettingsCard(
-                icon = R.drawable.feedback,
+                icon = R.drawable.account,
                 text = "update email",
                 onClick = { navController.navigate(CHOOSE_NEW_EMAIL) })
             Spacer(modifier = Modifier.height(10.dp))
-            SettingsCard(icon = R.drawable.info, text = "delete your email", onClick = {
+            SettingsCard(icon = R.drawable.delete, text = "delete your email", onClick = {
                 isDeleteAccountConfirmation.value = true
             })
             Spacer(modifier = Modifier.height(10.dp))

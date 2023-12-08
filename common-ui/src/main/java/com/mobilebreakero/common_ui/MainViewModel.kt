@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
+
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val useCase: FireStoreUseCase

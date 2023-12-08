@@ -25,8 +25,12 @@ object FirebaseModule {
     fun provideFirebaseAuth() = Firebase.auth
 
     @Provides
-    fun providesAuthRepository(auth: FirebaseAuth, repository: FireStoreRepository): AuthRepository =
-        AuthRepositoryImpl(auth, repository)
+    fun providesAuthRepository(
+        auth: FirebaseAuth,
+        repository: FireStoreRepository,
+        fireStore: FirebaseFirestore
+    ): AuthRepository =
+        AuthRepositoryImpl(auth, repository, fireStore)
 
     @Provides
     fun providesFireStoreRepository(): FireStoreRepository =
@@ -42,7 +46,7 @@ object FirebaseModule {
     }
 
     @Provides
-    fun provideTripsRepo() : TripsRepo{
+    fun provideTripsRepo(): TripsRepo {
         return TripRepoImpl()
     }
 

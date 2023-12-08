@@ -24,4 +24,5 @@ class SettingsViewModel @Inject constructor(private val useCase: AuthUseCase) : 
             signOutResponse = useCase.signOut()
         }
     }
+
 }

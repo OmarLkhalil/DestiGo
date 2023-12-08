@@ -20,13 +20,15 @@ import androidx.core.content.ContextCompat
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.mobilebreakero.auth.ui.common.components.MainViewModel
 import com.mobilebreakero.common_ui.components.DestiGoTopAppBar
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.EMAIL_VERIFICATION_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
-import com.mobilebreakero.common_ui.navigation.NavigationRoutes.INTERESTED_PLACES_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.START_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.WELCOME_SCREEN
 import com.mobilebreakero.destigo.ui.theme.DestiGoTheme
 import com.mobilebreakero.home.components.BottomNavigation
 import com.mobilebreakero.navigation.MainNavHost
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -34,6 +36,7 @@ class MainActivity : ComponentActivity() {
     private val FIRST_LAUNCH_PREFS = "FirstLaunchPrefs"
     private val FIRST_LAUNCH_KEY = "FirstLaunch"
     private val REQUEST_LOCATION_PERMISSION = 129
+    private val REQUEST_CAMERA_PERMISSION = 232
     private val viewModel by viewModels<MainViewModel>()
 
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
@@ -49,7 +52,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberAnimatedNavController()
 
                 val startDestination = if (isFirstLaunch) {
-                    INTERESTED_PLACES_SCREEN
+                    WELCOME_SCREEN
                 } else {
                     authState()
                 }
@@ -72,6 +75,18 @@ class MainActivity : ComponentActivity() {
             requestPermission()
         } else {
             checkPermission()
+        }
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CAMERA),
+                REQUEST_CAMERA_PERMISSION
+            )
         }
     }
 
@@ -108,7 +123,7 @@ class MainActivity : ComponentActivity() {
             if (viewModel.isEmailVerified) {
                 HOME_SCREEN
             } else {
-                START_SCREEN
+                EMAIL_VERIFICATION_SCREEN
             }
         }
     }

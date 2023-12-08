@@ -1,5 +1,7 @@
 package com.mobilebreakero.interestedplaces.components
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -10,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.mobilebreakero.interestedplaces.R
 
 val selectedItemsList = mutableListOf<InterestsItem>()
+val selectedItemsNames = mutableListOf<String>()
 
 @Composable
 fun VerticalGrid() {
@@ -27,6 +30,9 @@ fun VerticalGrid() {
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(550.dp)
     ) {
         itemsIndexed(
             items = interests,
@@ -41,12 +47,14 @@ fun VerticalGrid() {
                             interest.isSelected = !interest.isSelected
                             if (interest.isSelected) {
                                 selectedItemsList.add(interest)
+                                selectedItemsNames.add(interest.title)
                             } else {
                                 selectedItemsList.remove(interest)
+                                selectedItemsNames.remove(interest.title)
                             }
                         } else {
                             interest.isSelected = false
-                            if(selectedItemsList.contains(interest)) {
+                            if (selectedItemsList.contains(interest)) {
                                 selectedItemsList.remove(interest)
                             }
                         }

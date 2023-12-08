@@ -9,4 +9,4 @@ plugins {
     alias(libs.plugins.kotlinParcelize) apply false
     alias(libs.plugins.firebase) apply false
 }
-true // Needed to make the Suppress annotation work for the plugins block
+true

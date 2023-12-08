@@ -31,7 +31,11 @@ fun NameSection(modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.Start,
         modifier = modifier
     ) {
-        ProfileStat(name = user.value.name, address = "Cairo, Egypt")
+        ProfileStat(
+            name = user.value.name,
+            address = user.value.location,
+            status = user.value.status
+        )
     }
 
 }

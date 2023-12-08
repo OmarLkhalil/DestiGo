@@ -79,6 +79,7 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
     implementation(libs.navigation.compose)
     implementation(project(mapOf("path" to ":common-ui")))
+    implementation(libs.firebase.storage)
 
     implementation(libs.coil.compose)
 }

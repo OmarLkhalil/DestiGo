@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
+import com.google.firebase.firestore.FirebaseFirestore
 import com.mobilebreakero.domain.model.AppUser
 import com.mobilebreakero.domain.repo.AuthRepository
 import com.mobilebreakero.domain.repo.CheckUserSignedIn
@@ -17,6 +18,7 @@ import com.mobilebreakero.domain.util.DataUtils
 import com.mobilebreakero.domain.util.Response.Failure
 import com.mobilebreakero.domain.util.Response.Success
 import com.mobilebreakero.domain.util.await
+import com.mobilebreakero.domain.util.getCollection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -36,7 +38,8 @@ import javax.mail.internet.MimeMessage
 @Singleton
 class AuthRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth,
-    private val repository: FireStoreRepository
+    private val repository: FireStoreRepository,
+    private val fireStore: FirebaseFirestore
 ) : AuthRepository {
 
     override val currentUser get() = auth.currentUser
@@ -85,8 +88,15 @@ class AuthRepositoryImpl @Inject constructor(
         email: String,
         password: String
     ) = try {
-        auth.signInWithEmailAndPassword(email, password).await()
-        Success(true)
+        val userDoc = getCollection(AppUser.COLLECTION_NAME)
+        val user = userDoc.whereEqualTo("email", email).get().await()
+
+        if (user.isEmpty) {
+            Failure(Exception("User not found"))
+        } else {
+            auth.signInWithEmailAndPassword(email, password).await()
+            Success(true)
+        }
     } catch (e: Exception) {
         Failure(e)
     }
@@ -136,8 +146,14 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun updateEmail(email: String): UpdateEmailResponse {
         return try {
-            if (auth.currentUser?.email != email) {
-                auth.currentUser?.sendEmailVerification()?.await()
+            if (auth.currentUser?.email == email) {
+                auth.currentUser?.verifyBeforeUpdateEmail(email)?.await()
+                if (auth.currentUser?.isEmailVerified == false) {
+                    auth.currentUser?.sendEmailVerification()?.await()
+                } else {
+                    fireStore.collection("users").document(auth.currentUser?.uid!!)
+                        .update("email", email)
+                }
                 Success(true)
             } else {
                 Failure(Exception("Email is the same as the current one \n please enter a different email"))
@@ -202,10 +218,12 @@ class AuthRepositoryImpl @Inject constructor(
         context: Context
     ): CheckUserSignedIn {
         return try {
-            if (currentUser?.email == email) {
+            val currentUserEmail = auth.currentUser?.email
+            if (currentUserEmail == email) {
                 signInWithEmailAndPassword(email, password)
+                Success(true)
             } else {
-                Failure(Exception("Your current email doesn't match the entered email"))
+                Failure(Exception("User is not the same as the current one \n please enter a different user"))
             }
         } catch (e: Exception) {
             Failure(e)

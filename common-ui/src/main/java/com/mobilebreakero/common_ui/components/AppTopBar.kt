@@ -22,7 +22,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.mobilebreakero.common_ui.R
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.ADD_COMMENT
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.ADD_PLACES_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CHOOSE_COVER_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.DETAILS_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PLAN_CHECK_LIST
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.POSTS_DETAILS
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PROFILE_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SCAN_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SIGN_IN_SCREEN
@@ -62,16 +68,18 @@ fun NavIcon(navController: NavController) {
 
     val routeNames = listOf(HOME_SCREEN, TRIPS_SCREEN, PROFILE_SCREEN, SCAN_SCREEN)
 
-    if (currentRoute !in routeNames) {
-        IconButton(onClick = {
-            navController.popBackStack()
-        }) {
-            Icon(
-                painter = painterResource(id = R.drawable.backbutton),
-                contentDescription = "back",
-                tint = Color(0xFF4F80FF),
-                modifier = Modifier.size(60.dp)
-            )
+    if (currentRoute != null) {
+        if (currentRoute !in routeNames && currentRoute.isNotEmpty()) {
+            IconButton(onClick = {
+                navController.popBackStack()
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.backbutton),
+                    contentDescription = "back",
+                    tint = Color(0xFF4F80FF),
+                    modifier = Modifier.size(60.dp)
+                )
+            }
         }
     }
 }
@@ -86,6 +94,20 @@ fun TopBarTitle(navController: NavController) {
         Text(
             text = if (currentRoute.isEmpty()) {
                 ""
+            } else if (currentRoute == DETAILS_SCREEN) {
+                "Details"
+            } else if (currentRoute == PLAN_CHECK_LIST) {
+                "Plan Check List"
+            } else if (currentRoute == ADD_PLACES_SCREEN) {
+                "Places to Visit"
+            } else if (currentRoute == CHOOSE_COVER_SCREEN) {
+                "Choose Cover Image"
+            } else if (currentRoute == HOME_SCREEN) {
+                "Home"
+            } else if (currentRoute == ADD_COMMENT) {
+                "Add New Comment"
+            } else if (currentRoute == POSTS_DETAILS) {
+                "Post Details"
             } else {
                 currentRoute.toString()
             },
@@ -94,7 +116,7 @@ fun TopBarTitle(navController: NavController) {
             maxLines = 1,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF4F80FF),
-            fontSize = 22.sp,
+            fontSize = 18.sp,
             overflow = TextOverflow.Ellipsis
         )
     }

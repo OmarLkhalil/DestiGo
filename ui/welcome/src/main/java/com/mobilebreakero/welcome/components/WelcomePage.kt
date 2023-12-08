@@ -54,7 +54,7 @@ fun WelcomePage(
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.FillBounds,
             loading = {
-                CircularProgressIndicator(modifier = Modifier.background(MaterialTheme.colorScheme.primary))
+                CircularProgressIndicator(modifier = Modifier.background(Color.Blue))
             })
 
         Column(

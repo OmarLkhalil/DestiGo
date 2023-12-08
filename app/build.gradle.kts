@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.androidApplication)
@@ -6,6 +8,8 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.firebase)
 }
+val localProperties = Properties()
+localProperties.load(project.rootProject.file("local.properties").inputStream())
 
 android {
     namespace = "com.mobilebreakero.destigo"
@@ -22,6 +26,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField("String", "MAPS_API_KEY", "\"${localProperties["MAPS_API_KEY"]}\"")
+
     }
 
     buildTypes {
@@ -86,7 +92,6 @@ dependencies {
 
     implementation(libs.accompanist.navigationAnimation)
     implementation(libs.animated.navigation.bar)
-
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)

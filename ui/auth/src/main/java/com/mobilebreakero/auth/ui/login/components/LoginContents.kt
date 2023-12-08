@@ -25,15 +25,16 @@ import com.mobilebreakero.auth.ui.common.components.AuthContent
 import com.mobilebreakero.auth.ui.common.components.AuthTextField
 import com.mobilebreakero.auth.ui.common.components.PasswordTextField
 import com.mobilebreakero.auth.ui.login.LoginViewModel
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SEND_CONFIRMATION_CODE
 import com.mobilebreakero.domain.util.Utils.Companion.showMessage
+
 
 @Composable
 fun SignInWithEmailAndPasswordScreenContent(
     navController: NavController,
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
-
     AuthContent("Login")
 
     var emailText by remember { mutableStateOf("") }
@@ -54,7 +55,7 @@ fun SignInWithEmailAndPasswordScreenContent(
     AuthButton(
         onClick = {
             viewModel.signInWithEmailAndPassword(
-                email = emailText,
+                email = emailText.trim().lowercase(),
                 password = passwordText,
             )
         },
@@ -68,16 +69,22 @@ fun SignInWithEmailAndPasswordScreenContent(
             .padding(horizontal = 20.dp, vertical = 2.dp)
     )
 
-
     Spacer(modifier = Modifier.height(33.dp))
+
     Text(
         text = "Forgot Password?",
         color = Color(0xff4F80FF),
-        modifier = Modifier.clickable { navController.navigate(SEND_CONFIRMATION_CODE) })
+        modifier = Modifier.clickable {
+            navController.navigate(SEND_CONFIRMATION_CODE)
+        }
+    )
 
     SignIn(
         showErrorMessage = { errorMessage ->
             showMessage(context, errorMessage)
+        },
+        navigateToHome = {
+            navController.navigate(HOME_SCREEN)
         }
     )
 

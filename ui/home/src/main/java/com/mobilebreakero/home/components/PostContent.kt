@@ -1,7 +1,6 @@
 package com.mobilebreakero.home.components
 
 import android.net.Uri
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -21,11 +20,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -37,10 +42,26 @@ import com.mobilebreakero.home.R
 @Composable
 fun PostItem(
     name: String,
-    numberOfLike: String,
+    numberOfLike: Int,
     location: String,
-    imageUri: String
+    imageUri: String,
+    text: String,
+    profilePhoto: String,
+    onLikeClick: () -> Unit,
+    onPostClick: () -> Unit,
+    isLiked: Boolean,
+    onCommentClick: () -> Unit,
+    onProfileClick: () -> Unit,
+    onShareClick: () -> Unit,
 ) {
+
+    val likeCount = remember { mutableStateOf(numberOfLike) }
+    val isLikeBy = remember { mutableStateOf(isLiked) }
+
+    LaunchedEffect(likeCount, isLikeBy) {
+        likeCount.value = numberOfLike
+        isLikeBy.value = isLiked
+    }
 
     Box(
         modifier = Modifier
@@ -62,16 +83,18 @@ fun PostItem(
                 .fillMaxWidth()
                 .align(Alignment.Center)
                 .background(Color(0xFFD5E1FF))
+                .clickable { onPostClick() }
         ) {
             Row(
                 modifier = Modifier.padding(8.dp)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.user),
-                    contentDescription = "profile photo",
+                ProfileImage(
+                    contentDescription = "Profile Photo",
                     modifier = Modifier
                         .size(40.dp)
-                        .shadow(2.dp, shape = CircleShape)
+                        .clip(CircleShape),
+                    contentScale = ContentScale.Crop,
+                    data = Uri.parse(profilePhoto)
                 )
                 Column(
                     modifier = Modifier.padding(start = 8.dp)
@@ -95,40 +118,62 @@ fun PostItem(
                     }
                 }
             }
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = text,
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF4F80FF)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
             SubcomposeAsyncImage(
                 model = Uri.parse(imageUri),
                 contentDescription = "Post Image",
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp)
+                    .width(320.dp)
+                    .height(280.dp)
                     .padding(3.dp)
-                    .clip(RoundedCornerShape(bottomEnd = 25.dp, bottomStart = 25.dp))
+                    .clip(
+                        RoundedCornerShape(
+                            bottomEnd = 12.dp,
+                            bottomStart = 12.dp,
+                            topStart = 5.dp,
+                            topEnd = 5.dp
+                        )
+                    ),
+                contentScale = ContentScale.FillBounds
             )
+
             Box {
                 Row(
                     modifier = Modifier.padding(start = 20.dp, bottom = 12.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     PostContent(
-                        icon = R.drawable.like,
+                        icon = if (isLikeBy.value) R.drawable.likefilled else R.drawable.like,
                         description = "Like Icon",
-                        text = numberOfLike,
-                        onClick = {}
-                    )
+                        text = "${likeCount.value}",
+                    ) {
+                        onLikeClick()
+                    }
                     Spacer(modifier = Modifier.width(90.dp))
                     PostContent(
                         icon = R.drawable.comment,
                         description = "Comment Icon",
-                        text = "comment",
-                        onClick = {}
-                    )
+                        text = "comment"
+                    ) {
+                        onCommentClick()
+                    }
                     Spacer(modifier = Modifier.width(5.dp))
                     PostContent(
                         icon = R.drawable.share,
                         description = "Share Icon",
-                        text = "share",
-                        onClick = {}
-                    )
+                        text = "share"
+                    ) {
+                        onShareClick()
+                    }
                 }
             }
         }

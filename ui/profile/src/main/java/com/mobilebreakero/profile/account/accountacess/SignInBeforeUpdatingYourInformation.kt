@@ -55,7 +55,7 @@ fun SignInBeforeUpdatingYourInformation(
         val isSignInClicked = remember { mutableStateOf(false) }
 
         Text(
-            text = "Your Must Sign In again in order to update your information",
+            text = "You Must Sign In again in order to update your information",
             fontSize = 20.sp,
             modifier = Modifier
                 .align(CenterHorizontally)
@@ -80,7 +80,7 @@ fun SignInBeforeUpdatingYourInformation(
         AuthButton(
             onClick = {
                 viewModel.signInWithEmailAndPassword(
-                    email = emailText,
+                    email = emailText.trim().lowercase(),
                     password = passwordText,
                     context = context
                 )
@@ -97,8 +97,8 @@ fun SignInBeforeUpdatingYourInformation(
                 .align(CenterHorizontally)
         )
 
-
         Spacer(modifier = Modifier.height(33.dp))
+
         Text(
             text = "Forgot Password?",
             color = Color(0xff4F80FF),
@@ -121,6 +121,7 @@ fun SignIn(
     showErrorMessage: (errorMessage: String?) -> Unit,
     navController: NavController
 ) {
+
     when (val signInResponse = viewModel.signInResponse) {
         is Response.Loading -> LoadingIndicator()
         is Response.Success -> {

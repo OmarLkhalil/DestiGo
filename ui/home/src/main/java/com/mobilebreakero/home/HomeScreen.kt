@@ -1,5 +1,7 @@
 package com.mobilebreakero.home
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -25,6 +28,7 @@ import com.google.firebase.ktx.Firebase
 import com.mobilebreakero.common_ui.components.GetUserFromFireStore
 import com.mobilebreakero.domain.model.AppUser
 import com.mobilebreakero.domain.model.Post
+import com.mobilebreakero.domain.model.Trip
 import com.mobilebreakero.domain.util.Response
 import com.mobilebreakero.home.components.AddButtonDesign
 import com.mobilebreakero.home.components.ForYouItem
@@ -35,18 +39,10 @@ import com.mobilebreakero.viewModel.HomeViewModel
 
 
 @Composable
-fun HomeScreen(
-    navController: NavController,
-    viewModel: HomeViewModel = hiltViewModel()
-) {
+fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltViewModel()) {
 
     val user = remember { mutableStateOf(AppUser()) }
     val firebaseUser = Firebase.auth.currentUser
-    val posts by viewModel.postsFlow.collectAsState()
-
-    LaunchedEffect(Unit) {
-        viewModel.getPosts()
-    }
 
     GetUserFromFireStore(
         id = firebaseUser?.uid ?: "",
@@ -55,6 +51,18 @@ fun HomeScreen(
             user.value = userId
         }
     )
+
+    val posts by viewModel.postsFlow.collectAsState()
+
+    val trips by viewModel.tripsFlow.collectAsState()
+
+    LaunchedEffect(posts) {
+        viewModel.getPosts()
+    }
+
+    LaunchedEffect(trips) {
+        viewModel.getTrips(id = user.value.id ?: "")
+    }
 
     Box(
         modifier = Modifier
@@ -72,12 +80,33 @@ fun HomeScreen(
                     navController = navController
                 )
             }
+
             TitleText(text = "For You")
-            LazyRow {
-                items(5) {
-                    ForYouItem()
+
+            when (trips) {
+                is Response.Loading -> {
+
                 }
+
+                is Response.Success -> {
+                    val tripsResult = (trips as Response.Success<List<Trip>>).data
+                    Log.e("HomeScreen", "HomeScreen: $tripsResult")
+
+                    LazyRow {
+                        items(tripsResult.size) { index ->
+                            ForYouItem(
+                                title = tripsResult[index].name!!,
+                                desc = tripsResult[index].location!!,
+                                image = tripsResult[index].image!!,
+                            )
+                        }
+                    }
+                }
+
+                else -> {}
             }
+
+
             TitleText(text = "Travellers Posts")
             LazyColumn(
                 modifier = Modifier
@@ -87,29 +116,92 @@ fun HomeScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 when (posts) {
+
                     is Response.Loading -> {
 
                     }
 
                     is Response.Success -> {
+
                         val posts = (posts as Response.Success<List<Post>>).data
+
                         items(posts.size) { index ->
+                            val context = LocalContext.current
+
+                            val postsLikes = posts[index].numberOfLikes
+
+                            val isLiked =
+                                posts[index].likedUserIds.contains(user.value.id)
+
+                            val userProfile = posts[index].userId
+
                             PostItem(
                                 name = posts[index].userName!!,
-                                numberOfLike = posts[index].numberOfLikes.toString(),
+                                numberOfLike = postsLikes,
                                 location = posts[index].location!!,
-                                imageUri = posts[index].image!!
+                                imageUri = posts[index].image!!,
+                                profilePhoto = posts[index].profilePhoto!!,
+                                text = posts[index].text ?: "",
+                                onLikeClick = {
+                                    viewModel.likePost(
+                                        postId = posts[index].id!!,
+                                        userId = user.value.id!!,
+                                        context = context,
+                                        likes = postsLikes,
+                                    )
+                                },
+                                onCommentClick = {
+                                    navController.navigate("comment/${posts[index].id}")
+                                },
+                                onPostClick = {
+                                    navController.navigate("postDetails/${posts[index].id}")
+                                },
+                                onProfileClick = {
+                                    navController.navigate("profileDetails/${userProfile}")
+                                },
+                                onShareClick = {
+
+                                    viewModel.sharePost(
+                                        postId = posts[index].id!!,
+                                        userId = user.value.id!!,
+                                        userName = user.value.name!!,
+                                    )
+
+                                    when (viewModel.sharePostResponse) {
+
+                                        is Response.Success -> {
+                                            Toast.makeText(
+                                                context,
+                                                "Post shared successfully",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+
+                                        is Response.Failure -> {
+                                            Toast.makeText(
+                                                context,
+                                                "Error sharing post",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+
+                                        else -> {
+                                        }
+                                    }
+
+
+                                },
+                                isLiked = isLiked
                             )
                         }
                     }
 
-                    is Response.Failure -> {
-
-                    }
+                    else -> {}
                 }
 
             }
         }
     }
+
     AddButtonDesign(navController = navController)
 }

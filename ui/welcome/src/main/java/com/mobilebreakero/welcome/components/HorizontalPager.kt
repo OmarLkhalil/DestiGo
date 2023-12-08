@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.START_SCREEN
 import com.mobilebreakero.welcome.R
 import kotlinx.coroutines.launch
 
@@ -65,16 +66,16 @@ fun WelcomePager(
                     "Get Started"
                 },
                 onClick = {
-                    if(pagerState.currentPage < 3) {
+                    if (pagerState.currentPage < 3) {
                         coroutineScope.launch {
                             pagerState.animateScrollToPage(pagerState.currentPage + 1)
                         }
                     } else {
-                        navController.navigate("StartAuthScreen")
+                        navController.navigate(START_SCREEN)
                     }
                 },
                 skipClick = {
-                    navController.navigate("StartAuthScreen")
+                    navController.navigate(START_SCREEN)
                 }
             )
         }

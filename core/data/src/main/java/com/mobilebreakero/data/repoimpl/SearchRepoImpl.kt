@@ -34,7 +34,7 @@ class SearchResultRepoImpl(
                     if (places.isNotEmpty()) {
                         emit(Response.Success(places))
                     } else {
-                        emit(Response.Success(emptyList())) // You can define an EmptyResult response type
+                        emit(Response.Success(emptyList()))
                     }
                 } else {
                     val errorMessage =

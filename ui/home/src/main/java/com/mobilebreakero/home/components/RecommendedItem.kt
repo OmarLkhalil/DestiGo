@@ -18,14 +18,20 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.mobilebreakero.common_ui.components.CoilImage
 
+
 @Composable
-fun ForYouItem() {
+fun ForYouItem(
+    title: String,
+    desc: String,
+    image: String? = "https://egypttimetravel.com/wp-content/uploads/2020/06/Cairo.jpg"
+) {
 
     Box(
         modifier = Modifier
             .size(250.dp)
             .padding(start = 10.dp)
     ) {
+
         CoilImage(
             contentDescription = "",
             modifier = Modifier
@@ -33,9 +39,11 @@ fun ForYouItem() {
                 .width(200.dp)
                 .clip(RoundedCornerShape(20.dp)),
             contentScale = ContentScale.FillBounds,
-            data = "https://egypttimetravel.com/wp-content/uploads/2020/06/Cairo.jpg",
+            data = image,
             onClick = { },
-            title = "Cairo"
+            title = title,
+            desc = desc,
+            onFavoriteClick = {}
         )
 
         Icon(

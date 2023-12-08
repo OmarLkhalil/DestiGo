@@ -1,5 +1,6 @@
 package com.mobilebreakero.profile.component
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +17,7 @@ import com.mobilebreakero.common_ui.components.LoadingIndicator
 
 @Composable
 fun ProfileImage(
-    data: Int? = null,
+    data: Uri? = null,
     contentDescription: String,
     modifier: Modifier,
     contentScale: ContentScale,
@@ -40,7 +41,7 @@ fun ProfileImage(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.2f))
+                .background(Color.Black.copy(alpha = 0.1f))
         )
     }
 }

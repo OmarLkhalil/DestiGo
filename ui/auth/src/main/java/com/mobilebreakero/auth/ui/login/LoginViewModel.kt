@@ -17,6 +17,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val useCase: AuthUseCase
 ): ViewModel() {
+
     var signInResponse by mutableStateOf<SignInResponse>(Success(false))
         private set
 

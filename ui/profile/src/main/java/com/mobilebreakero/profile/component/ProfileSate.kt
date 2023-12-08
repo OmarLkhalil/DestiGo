@@ -18,22 +18,31 @@ import androidx.compose.ui.unit.sp
 fun ProfileStat(
     modifier: Modifier = Modifier,
     name: String? = "",
-    address: String,
+    address: String? = "",
+    status: String? = "",
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.Start,
         modifier = modifier
     ) {
         Text(
-            text = name?:"",
+            text = name ?: "",
             fontWeight = FontWeight.Bold,
-            fontSize = 31.sp,
+            fontSize = 20.sp,
+            textAlign = TextAlign.Start,
             color = Color(0xFF5483fe)
+
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = address,
+            text = address ?: "",
+            fontSize = 15.sp,
+            textAlign = TextAlign.Start
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = status ?: "",
             fontSize = 15.sp,
             textAlign = TextAlign.Start
         )

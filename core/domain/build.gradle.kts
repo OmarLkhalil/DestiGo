@@ -20,7 +20,8 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        buildConfigField("String", "API_KEY", "\"${localProperties["API_KEY"]}\"")
+        buildConfigField("String", "MAPS_API_KEY", "\"${localProperties["MAPS_API_KEY"]}\"")
+        buildConfigField("String", "TRIP_API_KEY", "\"${localProperties["TRIP_API_KEY"]}\"")
     }
 
 

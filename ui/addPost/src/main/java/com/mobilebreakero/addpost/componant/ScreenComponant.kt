@@ -1,8 +1,6 @@
 package com.mobilebreakero.addpost.componant
 
 import android.net.Uri
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -21,10 +19,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,24 +48,25 @@ import com.google.firebase.storage.ktx.storage
 import com.mobilebreakero.addpost.R
 import com.mobilebreakero.addpost.viewmodel.AddPostViewModel
 import com.mobilebreakero.common_ui.components.LoadingIndicator
-import com.mobilebreakero.common_ui.components.MapView
+import com.mobilebreakero.common_ui.components.getUserLocation
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
 import com.mobilebreakero.domain.model.Post
 import com.mobilebreakero.domain.util.DataUtils
-import com.mobilebreakero.domain.util.Response
-import java.util.Random
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddPostCard(navController: NavController, viewModel: AddPostViewModel = hiltViewModel()) {
 
     var imageUri by remember { mutableStateOf<Uri?>(null) }
+
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         imageUri = uri
     }
-    var uploadProgress by remember { mutableStateOf(0f) }
+
+    val uploadProgress by remember { mutableStateOf(0f) }
 
     val user = DataUtils.user
 
@@ -73,6 +75,9 @@ fun AddPostCard(navController: NavController, viewModel: AddPostViewModel = hilt
 
     var selectedLocation by remember { mutableStateOf("Cairo, Egypt") }
     var isLocationClicked by remember { mutableStateOf(false) }
+    var isAddPostSatus by remember { mutableStateOf(false) }
+    var newStatus by remember { mutableStateOf("") }
+
     Box(
         modifier = Modifier
             .border(
@@ -88,7 +93,21 @@ fun AddPostCard(navController: NavController, viewModel: AddPostViewModel = hilt
         Column(
             modifier = Modifier.fillMaxSize(),
         ) {
+            val context = LocalContext.current
+
+            if (isLocationClicked) {
+                getUserLocation(context) { location ->
+                    selectedLocation = location
+                    isLocationClicked = false
+                }
+            }
+
             TitleText()
+
+            AddPostButtons(iconId = R.drawable.text, text = "add your status", onClick = {
+                isAddPostSatus = true
+            }, description = "Text Icon")
+
             AddPostButtons(
                 onClick = {
                     isLocationClicked = !isLocationClicked
@@ -119,19 +138,22 @@ fun AddPostCard(navController: NavController, viewModel: AddPostViewModel = hilt
                 }
             )
 
-            PostOrCancelSection(navController = navController, viewModel = viewModel, onClick = {
+            PostOrCancelSection(navController = navController, onClick = {
                 if (imageUri != null && !isUploading) {
                     isUploading = true
                     uploadImageToStorage(imageUri) { downloadUrl, isSuccessful ->
                         isUploading = false
                         if (isSuccessful as Boolean) {
                             imageLink = downloadUrl
+
                             val post = Post(
-                                id = user?.id + Random(10000),
+                                id = GenerateRandomIdNumber().toString(),
                                 userId = user?.id,
                                 userName = user?.name,
                                 image = imageLink,
                                 location = selectedLocation,
+                                profilePhoto = user?.photoUrl,
+                                text = newStatus,
                             )
                             viewModel.addPost(post)
                             imageUri = null
@@ -149,19 +171,40 @@ fun AddPostCard(navController: NavController, viewModel: AddPostViewModel = hilt
                 )
             }
 
-            val context = LocalContext.current
-
-            if (isLocationClicked) {
-                MapView(selectedLocation = selectedLocation, onLocationSelected = {
-                    selectedLocation = it
-                    isLocationClicked = false
-                }, context = context)
+            if (isAddPostSatus) {
+                AlertDialog(
+                    onDismissRequest = {
+                        isAddPostSatus = false
+                    },
+                    title = { Text("Update Status") },
+                    text = {
+                        OutlinedTextField(
+                            value = newStatus,
+                            onValueChange = { newStatus = it },
+                            label = { Text("New Status") }
+                        )
+                    },
+                    confirmButton = {
+                        Button(
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4F80FF)),
+                            onClick = {
+                                newStatus = newStatus
+                                isAddPostSatus = false
+                            }
+                        ) {
+                            Text("add post")
+                        }
+                    }
+                )
             }
 
         }
     }
 }
 
+fun GenerateRandomIdNumber(): Int {
+    return (100000000..999999999).random()
+}
 
 @Composable
 fun TitleText() {
@@ -211,7 +254,7 @@ fun AddPostButtons(
 fun uploadImageToStorage(uri: Uri?, onComplete: (String, Any?) -> Unit) {
     val store = Firebase.storage
     val storageRef = store.reference
-    val imageRef = storageRef.child("images/${DataUtils.user?.id}")
+    val imageRef = storageRef.child("images/${GenerateRandomIdNumber()}")
 
     if (uri == null) {
         onComplete("", false)
@@ -241,11 +284,8 @@ fun uploadImageToStorage(uri: Uri?, onComplete: (String, Any?) -> Unit) {
 @Composable
 fun PostOrCancelSection(
     navController: NavController,
-    viewModel: AddPostViewModel,
     onClick: () -> Unit
 ) {
-
-    val context = LocalContext.current
 
     Row(
         horizontalArrangement = Arrangement.Center

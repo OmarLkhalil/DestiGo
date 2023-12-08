@@ -27,8 +27,8 @@ import com.mobilebreakero.domain.usecase.auth.ReloadUser
 import com.mobilebreakero.domain.usecase.auth.RestPassword
 import com.mobilebreakero.domain.usecase.auth.SendEmailVerification
 import com.mobilebreakero.domain.usecase.auth.SendPasswordResetEmail
-import com.mobilebreakero.domain.usecase.auth.SignInWithEmailAndPassword
 import com.mobilebreakero.domain.usecase.auth.SignInAnnonymously
+import com.mobilebreakero.domain.usecase.auth.SignInWithEmailAndPassword
 import com.mobilebreakero.domain.usecase.auth.SignOut
 import com.mobilebreakero.domain.usecase.auth.SignUpWithEmailAndPassword
 import com.mobilebreakero.domain.usecase.auth.UpdateEmail
@@ -37,13 +37,30 @@ import com.mobilebreakero.domain.usecase.firestore.AddUser
 import com.mobilebreakero.domain.usecase.firestore.FireStoreUseCase
 import com.mobilebreakero.domain.usecase.firestore.GetUserById
 import com.mobilebreakero.domain.usecase.firestore.GetUsers
+import com.mobilebreakero.domain.usecase.firestore.UpdateLocation
+import com.mobilebreakero.domain.usecase.firestore.UpdateProfilePhoto
+import com.mobilebreakero.domain.usecase.firestore.UpdateStatus
+import com.mobilebreakero.domain.usecase.firestore.GetInterestedPlaces
 import com.mobilebreakero.domain.usecase.firestore.UpdateUser
+import com.mobilebreakero.domain.usecase.firestore.UpdateInterestedPlaces
+import com.mobilebreakero.domain.usecase.firestore.post.AddCommentUseCase
 import com.mobilebreakero.domain.usecase.firestore.post.AddPostUseCase
+import com.mobilebreakero.domain.usecase.firestore.post.DeletePostUseCase
+import com.mobilebreakero.domain.usecase.firestore.post.GetPostsById
+import com.mobilebreakero.domain.usecase.firestore.post.GetPostDetails
 import com.mobilebreakero.domain.usecase.firestore.post.GetPostsUseCase
+import com.mobilebreakero.domain.usecase.firestore.post.LikePostUseCase
 import com.mobilebreakero.domain.usecase.firestore.post.PostUseCase
+import com.mobilebreakero.domain.usecase.firestore.post.SharePostUseCase
+import com.mobilebreakero.domain.usecase.firestore.trips.AddChickList
+import com.mobilebreakero.domain.usecase.firestore.trips.AddPlaces
 import com.mobilebreakero.domain.usecase.firestore.trips.AddTrip
 import com.mobilebreakero.domain.usecase.firestore.trips.GetTrips
 import com.mobilebreakero.domain.usecase.firestore.trips.TripsUseCase
+import com.mobilebreakero.domain.usecase.firestore.trips.UpdatePhoto
+import com.mobilebreakero.domain.usecase.firestore.trips.DeleteTrip
+import com.mobilebreakero.domain.usecase.firestore.trips.GetTripDetails
+import com.mobilebreakero.domain.usecase.firestore.trips.GetTripsByCategories
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -81,6 +98,11 @@ object AppModule {
         getUsers = GetUsers(repo),
         updateUser = UpdateUser(repo),
         getUserByID = GetUserById(repo),
+        updateUserLocation = UpdateLocation(repo),
+        updateUserPhotoUrl = UpdateProfilePhoto(repo),
+        updateUserStatus = UpdateStatus(repo),
+        updateUserInterestedPlaces = UpdateInterestedPlaces(repo),
+        getInterestedPlaces = GetInterestedPlaces(repo)
     )
 
 
@@ -89,8 +111,15 @@ object AppModule {
         repo: TripsRepo
     ) = TripsUseCase(
         getTrips = GetTrips(repo),
-        addTrip = AddTrip(repo)
+        addTrip = AddTrip(repo),
+        chickList = AddChickList(repo),
+        places = AddPlaces(repo),
+        deleteTrip = DeleteTrip(repo),
+        updatePhoto = UpdatePhoto(repo),
+        getTripDetails = GetTripDetails(repo),
+        getTripsByCategories = GetTripsByCategories(repo)
     )
+
 
     @Provides
     fun provideSearchRepo(api: TripApi, placesMapper: PlacesMapper): SearchRepository {
@@ -103,6 +132,12 @@ object AppModule {
     ) = PostUseCase(
         addPost = AddPostUseCase(repo = repo),
         getPosts = GetPostsUseCase(repo),
+        likePost = LikePostUseCase(repo),
+        sharePost = SharePostUseCase(repo),
+        addComment = AddCommentUseCase(repo),
+        deletePost = DeletePostUseCase(repo),
+        getPostsByUserId = GetPostsById(repo),
+        getPostDetails = GetPostDetails(repo)
     )
 
     @Provides

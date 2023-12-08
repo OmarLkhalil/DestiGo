@@ -81,6 +81,14 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 google-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "google-location" }
 filament-android = { group = "com.google.ar.sceneform", name = "filament-android", version = "1.17.1" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage-ktx" }
+camerax = {group = "com.google.zxing", name = "core", version = "3.3.0"}
+camera = { group = "androidx.camera", name = "camera-camera2", version = "1.1.0" }
+camerEmbedded = { group = "com.journeyapps", name = "zxing-android-embedded", version = "3.6.0" }
+cameracore = { group = "androidx.camera", name = "camera-core", version = "1.1.0" }
+cameralifecycle = { group = "androidx.camera", name = "camera-lifecycle", version = "1.1.0" }
+cameraview = { group = "androidx.camera", name = "camera-view", version = "1.0.0-alpha31" }
+vision-common = { group = "com.google.mlkit", name = "vision-common", version = "17.3.0" }
+play-services-mlkit-barcode-scanning = { group = "com.google.android.gms", name = "play-services-mlkit-barcode-scanning", version = "18.3.0" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

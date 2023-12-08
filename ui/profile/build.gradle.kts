@@ -71,7 +71,10 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     // Coil
     implementation(project(mapOf("path" to ":common-ui")))
+    implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.storage)
 
     implementation(libs.coil.compose)
 }

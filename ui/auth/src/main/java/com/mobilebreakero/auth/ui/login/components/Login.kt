@@ -11,14 +11,25 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.ui.graphics.Color
 import com.mobilebreakero.auth.ui.login.LoginViewModel
 
+
 @Composable
 fun SignIn(
     viewModel: LoginViewModel = hiltViewModel(),
-    showErrorMessage: (errorMessage: String?) -> Unit
+    showErrorMessage: (errorMessage: String?) -> Unit,
+    navigateToHome: () -> Unit
 ) {
-    when(val signInResponse = viewModel.signInResponse) {
+
+    when (val signInResponse = viewModel.signInResponse) {
         is Loading -> CircularProgressIndicator(color = Color.Blue)
-        is Success -> Unit
+        is Success -> {
+            val isUserSignedIn = signInResponse.data
+            LaunchedEffect(isUserSignedIn) {
+                if (isUserSignedIn) {
+                    navigateToHome()
+                }
+            }
+        }
+
         is Failure -> signInResponse.apply {
             LaunchedEffect(e) {
                 print(e)

@@ -63,6 +63,7 @@ dependencies {
     implementation(project(mapOf("path" to ":ui:scan")))
     implementation(project(mapOf("path" to ":ui:trips")))
     implementation(project(mapOf("path" to ":ui:addPost")))
+    implementation(project(mapOf("path" to ":ui:details")))
     implementation(project(mapOf("path" to ":ui:auth")))
     implementation(project(mapOf("path" to ":ui:search")))
     implementation(project(mapOf("path" to ":ui:Interestedplaces")))

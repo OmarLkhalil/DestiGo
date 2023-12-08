@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -26,10 +27,9 @@ fun SearchResultsList(
     viewModel: SearchViewModel = hiltViewModel(),
     navController: NavController
 ) {
-
     val searchResults by viewModel.searchResult.collectAsState()
-
     Log.d("SearchResultsList", "SearchResultsList: $searchResults")
+
 
     val photos by viewModel.photo.collectAsState()
     Log.d("SearchResultsList", "Search photos result : $photos")
@@ -39,35 +39,17 @@ fun SearchResultsList(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val results = when (val response = searchResults) {
+            is Response.Success -> response.data
+            else -> emptyList()
+        }
 
-        when (searchResults) {
-            is Response.Success -> {
-                val results = (searchResults as Response.Success<List<DataItem?>>).data
-                val photosResult = photos
-
-                items(results.size) { index ->
-
-                    val photosList =
-                        if (photosResult is Response.Success) photosResult.data else listOf()
-
-                    SearchResultItem(
-                        item = results,
-                        itemIndex = index,
-                        navController = navController,
-                        photos = photosList
-                    )
-                }
-            }
-
-            is Response.Failure -> {
-                Log.d("SearchResultsList", "SearchResultsList: Failure")
-            }
-
-            is Response.Loading -> {
-                Log.d("SearchResultsList", "SearchResultsList: Loading")
-                item {
-                    LoadingIndicator()
-                }
+        items(results.size) { index ->
+            results[index]?.let {
+                SearchResultItem(
+                    item = it,
+                    navController = navController
+                )
             }
         }
     }

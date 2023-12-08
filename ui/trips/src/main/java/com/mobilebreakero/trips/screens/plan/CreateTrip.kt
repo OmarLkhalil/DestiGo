@@ -2,7 +2,6 @@ package com.mobilebreakero.trips.screens.plan
 
 
 import android.app.DatePickerDialog
-import android.net.Uri
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -38,25 +38,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.mobilebreakero.common_ui.components.AuthButton
 import com.mobilebreakero.common_ui.components.MapView
-import com.mobilebreakero.common_ui.navigation.NavigationRoutes
 import com.mobilebreakero.domain.model.Trip
 import com.mobilebreakero.domain.util.DataUtils
-import com.mobilebreakero.trips.TempTrip
 import com.mobilebreakero.trips.TripsViewModel
 import com.mobilebreakero.trips.components.CreateTripButton
-import java.lang.Math.random
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 
@@ -70,6 +66,8 @@ fun generateRandomTripId(): Int {
     return (100000..999999).random()
 }
 
+var selectedLocationpass: String = "Cairo"
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateTripScreen(
@@ -82,7 +80,11 @@ fun CreateTripScreen(
     var selected by remember { mutableStateOf<TripFilters?>(null) }
     var travelReason by remember { mutableStateOf("") }
     var selectedLocation by remember { mutableStateOf("Cairo, Egypt") }
+    var getGovernment by remember { mutableStateOf(selectedLocationpass) }
+    var howLong by remember { mutableStateOf("") }
     var selectedDate by remember { mutableStateOf("11/12/2023") }
+    var endDate by remember { mutableStateOf("11/12/2023") }
+    var tripCategory by remember { mutableStateOf(listOf("")) }
     val isLocationClicked = remember { mutableStateOf(false) }
     val context = LocalContext.current
 
@@ -97,7 +99,7 @@ fun CreateTripScreen(
     ) {
         Text(
             text = "Trip Name",
-            fontSize = 25.sp,
+            fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .align(Start)
@@ -109,7 +111,7 @@ fun CreateTripScreen(
                 visitMyBros = it
             },
             label = {
-                Text(text = "Visit my Bros")
+                Text(text = "Visit my Bros", color = Color.Black.copy(alpha = 0.3f))
             },
             textStyle = androidx.compose.ui.text.TextStyle(
                 color = Color.Black,
@@ -133,7 +135,7 @@ fun CreateTripScreen(
 
         Text(
             text = "Why? ",
-            fontSize = 25.sp,
+            fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .align(Start)
@@ -181,14 +183,17 @@ fun CreateTripScreen(
                         disabledContainerColor = Color(0xFFEFEEEE),
                         disabledLabelColor = Color.Black,
                     ),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(20.dp),
+                    elevation = FilterChipDefaults.filterChipElevation(
+                        defaultElevation = 5.dp
+                    )
                 )
             }
         }
 
         Text(
             text = "Where? ",
-            fontSize = 25.sp,
+            fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .align(Start)
@@ -201,7 +206,7 @@ fun CreateTripScreen(
             },
             modifier = Modifier
                 .width(300.dp)
-                .height(80.dp)
+                .height(70.dp)
                 .padding(12.dp, 12.dp, 20.dp, 12.dp)
                 .border(.7.dp, Color(0xFF4F80FF), shape = RoundedCornerShape(20.dp)),
             text = selectedLocation,
@@ -210,7 +215,7 @@ fun CreateTripScreen(
         )
         Text(
             text = "When? ",
-            fontSize = 25.sp,
+            fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .align(Start)
@@ -222,15 +227,56 @@ fun CreateTripScreen(
                 isDateClicked.value = true
             },
             modifier = Modifier
-                .width(350.dp)
-                .height(80.dp)
+                .width(300.dp)
+                .height(70.dp)
                 .padding(12.dp, 12.dp, 20.dp, 12.dp)
                 .border(.7.dp, Color(0xFF4F80FF), shape = RoundedCornerShape(20.dp)),
             text = selectedDate,
             buttonColor = Color.White,
             textColor = Color.Black.copy(alpha = 0.3f)
         )
-        Spacer(modifier = Modifier.height(80.dp))
+
+        Text(
+            text = "How Long? ",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .align(Start)
+                .padding(12.dp)
+        )
+
+        TextField(
+            value = howLong,
+            onValueChange = {
+                howLong = it
+            },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number
+            ),
+            label = {
+                Text(text = "How Long will you stay?", color = Color.Black.copy(alpha = 0.3f))
+            },
+            textStyle = androidx.compose.ui.text.TextStyle(
+                color = Color.Black,
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center,
+            ),
+            modifier = Modifier
+                .width(300.dp)
+                .height(50.dp)
+                .clip(RoundedCornerShape(20.dp))
+                .border(.7.dp, Color(0xFF4F80FF), shape = RoundedCornerShape(20.dp)),
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Color.White,
+                textColor = Color.Black,
+                disabledTextColor = Color.Transparent,
+                focusedIndicatorColor = Color.Black,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
+            ),
+        )
+
+        Spacer(modifier = Modifier.height(15.dp))
 
         CreateTripButton(text = "Next",
             buttonColor = Color(0xff4F80FF),
@@ -239,17 +285,24 @@ fun CreateTripScreen(
                 .height(50.dp)
                 .width(320.dp),
             onClick = {
+                endDate = calculateEndDate(selectedDate, howLong)
+                tripCategory = getCategoryBasedOnUserTravelReason(travelReason)
+
                 viewModel.addTripToFireStore(
                     Trip(
                         id = tripId.toString(),
                         userId = user?.id,
                         why = travelReason,
                         location = selectedLocation,
-                        date = selectedDate,
-                        name = visitMyBros
+                        startDate = selectedDate,
+                        name = visitMyBros,
+                        duration = howLong,
+                        endDate = endDate,
+                        category = tripCategory
                     )
                 )
-                navController.navigate(NavigationRoutes.PLAN_CHECK_LIST)
+                navController.navigate("planCheckList/${tripId}")
+                selectedLocationpass = getGovernment
             }
         )
     }
@@ -261,13 +314,18 @@ fun CreateTripScreen(
                 selectedLocation = it
                 isLocationClicked.value = false
             },
+            getGovernment = { governemnt ->
+                getGovernment = governemnt
+            },
             context = context
         )
     }
 
+
     if (isDateClicked.value) {
         ShowDatePickerDialog(selectedDate = selectedDate, onDateSelected = {
             selectedDate = it
+            isDateClicked.value = false
         })
     }
 
@@ -313,4 +371,37 @@ fun ShowDatePickerDialog(
             datePickerDialog.show()
         }
     }
+}
+
+fun calculateEndDate(startDate: String, duration: String): String {
+    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    val calendar = Calendar.getInstance()
+
+    calendar.time = sdf.parse(startDate) ?: Date()
+    calendar.add(Calendar.DAY_OF_MONTH, duration.toInt())
+
+    return sdf.format(calendar.time)
+}
+
+
+fun getCategoryBasedOnUserTravelReason(travelReason: String): List<String> {
+
+    return when (travelReason) {
+        "Study" -> listOf("Restaurant", "Hotel")
+        "Work" -> listOf("Restaurant", "Hotel")
+        "Vacation" -> listOf(
+            "Mountain",
+            "Sea",
+            "Restaurant",
+            "Hotel",
+            "Culture",
+            "Beach",
+            "Shopping"
+        )
+
+        "Adventure" -> listOf("Mountain", "Hotel", "Adventure")
+        "Other" -> listOf("Mountain", "Sea", "Restaurant", "Hotel", "Culture")
+        else -> listOf("Mountain", "Sea", "Restaurant", "Hotel", "Culture")
+    }
+
 }

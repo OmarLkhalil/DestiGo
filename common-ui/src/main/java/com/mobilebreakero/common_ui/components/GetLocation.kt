@@ -2,6 +2,7 @@ package com.mobilebreakero.common_ui.components
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.location.Geocoder
 import android.os.Looper
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -23,11 +24,12 @@ lateinit var locationProvider: FusedLocationProviderClient
 
 @SuppressLint("MissingPermission")
 @Composable
-fun getUserLocation(context: Context): String {
+fun getUserLocation(context: Context, onLocationGet: (String) -> Unit): String {
 
     locationProvider = LocationServices.getFusedLocationProviderClient(context)
 
     var currentUserLocation by remember { mutableStateOf(LatandLong()) }
+    val geocoder = Geocoder(context)
 
     DisposableEffect(key1 = locationProvider) {
         locationCallback = object : LocationCallback() {
@@ -43,10 +45,26 @@ fun getUserLocation(context: Context): String {
                             val lat = location.latitude
                             val long = location.longitude
                             currentUserLocation = LatandLong(latitude = lat, longitude = long)
+                            val fullAddress = getFullAddress(context, lat, long)
+                            onLocationGet(fullAddress)
                         }
                     }
                     .addOnFailureListener {
                     }
+            }
+
+            private fun getFullAddress(context: Context, lat: Double, long: Double): String {
+
+                val addresses = geocoder.getFromLocation(lat, long, 1)
+                if (!addresses.isNullOrEmpty()) {
+                    val country = addresses[0].countryName
+                    val government = addresses[0].adminArea
+                    val fullAddress = "$government, $country"
+                    return fullAddress
+                } else {
+                    return "null"
+                }
+
             }
         }
         locationUpdate()

@@ -38,7 +38,7 @@ fun SignUpWithEmailAndPassword(
     AuthTextField(
         text = usernameText,
         onValueChange = { usernameText = it },
-        label = "Username"
+        label = "Full Name"
     )
 
     var emailText by remember { mutableStateOf("") }
@@ -58,8 +58,8 @@ fun SignUpWithEmailAndPassword(
     AuthButton(
         onClick = {
             viewModel.signUpWithEmailAndPassword(
-                name = usernameText,
-                email = emailText,
+                name = usernameText.trim().lowercase(),
+                email = emailText.trim().lowercase(),
                 password = passwordText,
             )
         },

@@ -1,5 +1,6 @@
 package com.mobilebreakero.profile.account.settings
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -15,11 +16,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -32,11 +33,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.mobilebreakero.common_ui.components.GetUserFromFireStore
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PROFILE_SETTINGS
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SIGN_IN_BEFORE_UPDATE
-import com.mobilebreakero.common_ui.navigation.NavigationRoutes.START_SCREEN
-import com.mobilebreakero.domain.util.Response
-import com.mobilebreakero.domain.util.Utils
+import com.mobilebreakero.domain.model.AppUser
 import com.mobilebreakero.profile.R
 import com.mobilebreakero.profile.component.ProfileImage
 
@@ -45,6 +47,18 @@ fun AccountSettingsContent(
     navController: NavController,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
+
+    val user = remember { mutableStateOf(AppUser()) }
+
+    val firebaseUser = Firebase.auth.currentUser
+
+    GetUserFromFireStore(
+        user = { uId ->
+            uId.id = firebaseUser?.uid
+            user.value = uId
+        },
+        id = firebaseUser?.uid ?: "",
+    )
 
     Box(
         modifier = Modifier
@@ -90,6 +104,7 @@ fun AccountSettingsContent(
                 viewModel.signOut()
             })
         }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -99,7 +114,9 @@ fun AccountSettingsContent(
             horizontalArrangement = Arrangement.Center
         ) {
             ProfileImage(
-                data = R.drawable.culture, contentDescription = "", modifier = Modifier
+                data = Uri.parse(user.value.photoUrl),
+                contentDescription = "",
+                modifier = Modifier
                     .height(120.dp)
                     .width(120.dp)
                     .align(CenterVertically)

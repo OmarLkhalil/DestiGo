@@ -1,7 +1,9 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
+@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixe
 plugins {
     alias(libs.plugins.androidlibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlinKapt)
 }
 
 android {
@@ -54,12 +56,39 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(libs.accompanist.navigationAnimation)
+    implementation(libs.animated.navigation.bar)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.storage)
+
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.vision.common)
+    implementation(libs.play.services.mlkit.barcode.scanning)
+    kapt(libs.hilt.android.compiler)
+    implementation(project(mapOf("path" to ":core:data")))
+    implementation(project(mapOf("path" to ":core:domain")))
+    implementation(libs.filament.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.ui.test.junit4)
+    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
     implementation(libs.navigation.compose)
-
-    // Coil
+    implementation(project(mapOf("path" to ":common-ui")))
 
     implementation(libs.coil.compose)
+    implementation(libs.camerax)
+    implementation(libs.camera)
+    implementation(libs.camerEmbedded)
+    implementation(libs.cameracore)
+    implementation(libs.cameralifecycle)
+    implementation(libs.cameraview)
+
 }

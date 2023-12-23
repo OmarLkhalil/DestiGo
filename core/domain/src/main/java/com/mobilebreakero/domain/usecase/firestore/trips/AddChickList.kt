@@ -4,12 +4,19 @@ import com.mobilebreakero.domain.repo.TripsRepo
 import javax.inject.Inject
 
 class AddChickList @Inject constructor(
-    private val repo: TripsRepo)
-{
-    suspend operator fun invoke (
-        checkList: List<String>,
-        id: String
+    private val repo: TripsRepo
+) {
+    suspend operator fun invoke(
+        itemName: String,
+        id: String,
+        checked: Boolean,
+        checkItemId: String
     ) =
-        repo.addCheckList(checkList, id)
+        repo.addCheckList(
+            itemName = itemName,
+            id = id,
+            checked = checked,
+            checkItemId = checkItemId
+        )
 
 }

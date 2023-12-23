@@ -7,19 +7,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mobilebreakero.domain.model.DetailsResponse
 import com.mobilebreakero.domain.model.Post
+import com.mobilebreakero.domain.model.RecommendedPlaceItem
 import com.mobilebreakero.domain.model.Trip
+import com.mobilebreakero.domain.model.TripsItem
 import com.mobilebreakero.domain.repo.addPostResponse
+import com.mobilebreakero.domain.repo.addTripResponse
 import com.mobilebreakero.domain.repo.getTripsResponse
 import com.mobilebreakero.domain.repo.postDetailsResponse
 import com.mobilebreakero.domain.repo.postResponse
-import com.mobilebreakero.domain.repo.tripsResponseInterested
 import com.mobilebreakero.domain.repo.updatePostResponse
-import com.mobilebreakero.domain.repo.updateUserResponse
-import com.mobilebreakero.domain.usecase.firestore.FireStoreUseCase
-import com.mobilebreakero.domain.usecase.firestore.post.PostUseCase
-import com.mobilebreakero.domain.usecase.firestore.trips.TripsUseCase
+import com.mobilebreakero.domain.usecase.RecommendedPlaceUseCase
+import com.mobilebreakero.domain.usecase.RecommendedUseCase
+import com.mobilebreakero.domain.usecase.firestore.UserUseCase
+import com.mobilebreakero.domain.usecase.firestore.PostUseCase
+import com.mobilebreakero.domain.usecase.firestore.TripsUseCase
 import com.mobilebreakero.domain.util.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,8 +32,10 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val postUseCase: PostUseCase,
+    private val userUseCase: UserUseCase,
+    private val recommendedUseCase: RecommendedUseCase,
+    private val recommendedPlaceUseCase: RecommendedPlaceUseCase,
     private val tripsUseCase: TripsUseCase,
-    private val fireStoreUseCase: FireStoreUseCase
 ) : ViewModel() {
 
     init {
@@ -120,7 +124,7 @@ class HomeViewModel @Inject constructor(
     fun getTrips(id: String) {
         viewModelScope.launch {
             try {
-                val result = fireStoreUseCase.getInterestedPlaces(id)
+                val result = userUseCase.getInterestedPlaces(id)
                 if (result is Response.Success) {
                     val trips = result.data
                     tripsResult = trips
@@ -155,19 +159,46 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    var getUserInterestedPlacesBasedOnDatasource =
-        mutableStateOf<tripsResponseInterested>(Response.Success(listOf()))
+    var userRecommendations by mutableStateOf(listOf<TripsItem?>())
         private set
 
-    fun getUserInterestedPlaces(id: String) {
+    fun getRecommendations(userInterests: List<String>) {
         viewModelScope.launch {
             try {
-                getUserInterestedPlacesBasedOnDatasource.value = Response.Loading
-                getUserInterestedPlacesBasedOnDatasource.value =
-                    fireStoreUseCase.getInterestedPlaces(id)
+                val result = recommendedUseCase.getRecommendation(userInterests)
+                userRecommendations = result
             } catch (e: Exception) {
-                getUserInterestedPlacesBasedOnDatasource.value = Response.Failure(e)
+                Log.e("HomeViewModel", "Error getting recommendations: $e")
             }
         }
     }
+
+    var userRecommendationsPlaces by mutableStateOf(listOf<RecommendedPlaceItem?>())
+        private set
+
+    fun getRecommendedPlaces(userInterests: List<String>) {
+        viewModelScope.launch {
+            try {
+                val result = recommendedPlaceUseCase.getRecommendationPlaces(userInterests)
+                userRecommendationsPlaces = result
+            } catch (e: Exception) {
+                Log.e("HomeViewModel", "Error getting recommendations: $e")
+            }
+        }
+    }
+
+    var savePublicTripsResponse by mutableStateOf<addTripResponse>(Response.Success(false))
+        private set
+
+    fun savePublicTrips(trip: TripsItem) {
+        viewModelScope.launch {
+            try {
+                savePublicTripsResponse = Response.Loading
+                savePublicTripsResponse = tripsUseCase.savePublicTrips(trip, {}, {})
+            } catch (e: Exception) {
+                savePublicTripsResponse = Response.Failure(e)
+            }
+        }
+    }
+
 }

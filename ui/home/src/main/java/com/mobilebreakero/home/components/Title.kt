@@ -8,10 +8,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun TitleText(text: String) {
+fun TitleText(text: String, modifier: Modifier = Modifier) {
     Text(
         text = text,
-        fontSize = 28.sp,
-        modifier = Modifier.padding(10.dp)
+        fontSize = 20.sp,
+        modifier = modifier.padding(10.dp)
     )
 }

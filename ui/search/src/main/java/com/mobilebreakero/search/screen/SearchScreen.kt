@@ -125,7 +125,7 @@ fun SearchScreen(
                     ),
                     shape = RoundedCornerShape(20.dp),
                     elevation = FilterChipDefaults.filterChipElevation(
-                        defaultElevation = 5.dp
+                        elevation = 5.dp
                     )
                 )
             }
@@ -179,7 +179,7 @@ fun SearchScreen(
                     ),
                     shape = RoundedCornerShape(20.dp),
                     elevation = FilterChipDefaults.filterChipElevation(
-                        defaultElevation = 5.dp
+                        elevation = 5.dp
                     )
                 )
             }

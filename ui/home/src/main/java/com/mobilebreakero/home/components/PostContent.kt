@@ -21,14 +21,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -55,11 +53,11 @@ fun PostItem(
     onShareClick: () -> Unit,
 ) {
 
-    val likeCount = remember { mutableStateOf(numberOfLike) }
+    val likeCount = remember { mutableIntStateOf(numberOfLike) }
     val isLikeBy = remember { mutableStateOf(isLiked) }
 
-    LaunchedEffect(likeCount, isLikeBy) {
-        likeCount.value = numberOfLike
+    LaunchedEffect(Unit) {
+        likeCount.intValue = numberOfLike
         isLikeBy.value = isLiked
     }
 
@@ -73,16 +71,15 @@ fun PostItem(
 
         Column(
             modifier = Modifier
-                .shadow(
-                    elevation = 4.dp,
-                    shape = RoundedCornerShape(20.dp),
-                    clip = true,
-                    ambientColor = Color(0xFFD5E1FF)
-                )
                 .clip(RoundedCornerShape(20.dp))
                 .fillMaxWidth()
                 .align(Alignment.Center)
-                .background(Color(0xFFD5E1FF))
+                .background(Color(0xFFF8FAFF))
+                .border(
+                    width = .4.dp,
+                    color = Color(0xFF4F80FF),
+                    shape = RoundedCornerShape(20.dp)
+                )
                 .clickable { onPostClick() }
         ) {
             Row(
@@ -92,6 +89,7 @@ fun PostItem(
                     contentDescription = "Profile Photo",
                     modifier = Modifier
                         .size(40.dp)
+                        .clickable { onProfileClick() }
                         .clip(CircleShape),
                     contentScale = ContentScale.Crop,
                     data = Uri.parse(profilePhoto)
@@ -145,8 +143,12 @@ fun PostItem(
                     ),
                 contentScale = ContentScale.FillBounds
             )
-
-            Box {
+            Spacer(modifier = Modifier.height(8.dp))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(45.dp)
+            ) {
                 Row(
                     modifier = Modifier.padding(start = 20.dp, bottom = 12.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -154,8 +156,15 @@ fun PostItem(
                     PostContent(
                         icon = if (isLikeBy.value) R.drawable.likefilled else R.drawable.like,
                         description = "Like Icon",
-                        text = "${likeCount.value}",
+                        text = likeCount.intValue.toString()
                     ) {
+                        isLikeBy.value = !isLikeBy.value
+                        if (isLikeBy.value) {
+                            likeCount.intValue++
+                        } else {
+                            if (likeCount.intValue > 0)
+                                likeCount.intValue--
+                        }
                         onLikeClick()
                     }
                     Spacer(modifier = Modifier.width(90.dp))
@@ -203,7 +212,7 @@ fun PostContent(icon: Int, description: String, text: String, onClick: () -> Uni
                     .size(20.dp),
                 tint = Color(0xFF4F80FF)
             )
-            Spacer(modifier = Modifier.width(10.dp))
+            Spacer(modifier = Modifier.width(7.dp))
             Text(text = text, color = Color.Gray, fontSize = 8.sp)
         }
     }

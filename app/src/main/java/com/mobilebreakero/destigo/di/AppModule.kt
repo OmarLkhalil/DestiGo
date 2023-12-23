@@ -1,9 +1,11 @@
 package com.mobilebreakero.destigo.di
 
+import android.content.Context
 import com.mobilebreakero.data.mapper.PlacesMapper
 import com.mobilebreakero.data.remote.TripApi
 import com.mobilebreakero.data.repoimpl.DetailsRepoImplementation
 import com.mobilebreakero.data.repoimpl.PhotoRepoImplementation
+import com.mobilebreakero.data.repoimpl.RecommededImple
 import com.mobilebreakero.data.repoimpl.SearchPlacesRepoImpl
 import com.mobilebreakero.data.repoimpl.SearchResultRepoImpl
 import com.mobilebreakero.domain.repo.AuthRepository
@@ -11,11 +13,15 @@ import com.mobilebreakero.domain.repo.DetailsRepository
 import com.mobilebreakero.domain.repo.FireStoreRepository
 import com.mobilebreakero.domain.repo.PhotoRepository
 import com.mobilebreakero.domain.repo.PostsRepo
+import com.mobilebreakero.domain.repo.RecommendedTrips
 import com.mobilebreakero.domain.repo.SearchRepository
 import com.mobilebreakero.domain.repo.SearchResultRepo
 import com.mobilebreakero.domain.repo.TripsRepo
 import com.mobilebreakero.domain.usecase.DetailsUseCase
+import com.mobilebreakero.domain.usecase.GetPublicTripsUseCase
 import com.mobilebreakero.domain.usecase.PhotoUseCase
+import com.mobilebreakero.domain.usecase.RecommendedPlaceUseCase
+import com.mobilebreakero.domain.usecase.RecommendedUseCase
 import com.mobilebreakero.domain.usecase.SearchPlacesUseCase
 import com.mobilebreakero.domain.usecase.SearchResultUseCase
 import com.mobilebreakero.domain.usecase.auth.AuthUseCase
@@ -33,16 +39,16 @@ import com.mobilebreakero.domain.usecase.auth.SignOut
 import com.mobilebreakero.domain.usecase.auth.SignUpWithEmailAndPassword
 import com.mobilebreakero.domain.usecase.auth.UpdateEmail
 import com.mobilebreakero.domain.usecase.auth.UpdatePassword
-import com.mobilebreakero.domain.usecase.firestore.AddUser
-import com.mobilebreakero.domain.usecase.firestore.FireStoreUseCase
-import com.mobilebreakero.domain.usecase.firestore.GetUserById
-import com.mobilebreakero.domain.usecase.firestore.GetUsers
-import com.mobilebreakero.domain.usecase.firestore.UpdateLocation
-import com.mobilebreakero.domain.usecase.firestore.UpdateProfilePhoto
-import com.mobilebreakero.domain.usecase.firestore.UpdateStatus
-import com.mobilebreakero.domain.usecase.firestore.GetInterestedPlaces
-import com.mobilebreakero.domain.usecase.firestore.UpdateUser
-import com.mobilebreakero.domain.usecase.firestore.UpdateInterestedPlaces
+import com.mobilebreakero.domain.usecase.firestore.user.AddUser
+import com.mobilebreakero.domain.usecase.firestore.UserUseCase
+import com.mobilebreakero.domain.usecase.firestore.user.GetUserById
+import com.mobilebreakero.domain.usecase.firestore.user.GetUsers
+import com.mobilebreakero.domain.usecase.firestore.user.UpdateLocation
+import com.mobilebreakero.domain.usecase.firestore.user.UpdateProfilePhoto
+import com.mobilebreakero.domain.usecase.firestore.user.UpdateStatus
+import com.mobilebreakero.domain.usecase.firestore.user.GetInterestedPlaces
+import com.mobilebreakero.domain.usecase.firestore.user.UpdateUser
+import com.mobilebreakero.domain.usecase.firestore.user.UpdateInterestedPlaces
 import com.mobilebreakero.domain.usecase.firestore.post.AddCommentUseCase
 import com.mobilebreakero.domain.usecase.firestore.post.AddPostUseCase
 import com.mobilebreakero.domain.usecase.firestore.post.DeletePostUseCase
@@ -50,20 +56,30 @@ import com.mobilebreakero.domain.usecase.firestore.post.GetPostsById
 import com.mobilebreakero.domain.usecase.firestore.post.GetPostDetails
 import com.mobilebreakero.domain.usecase.firestore.post.GetPostsUseCase
 import com.mobilebreakero.domain.usecase.firestore.post.LikePostUseCase
-import com.mobilebreakero.domain.usecase.firestore.post.PostUseCase
+import com.mobilebreakero.domain.usecase.firestore.PostUseCase
 import com.mobilebreakero.domain.usecase.firestore.post.SharePostUseCase
 import com.mobilebreakero.domain.usecase.firestore.trips.AddChickList
+import com.mobilebreakero.domain.usecase.firestore.trips.AddPlaceVisitDate
 import com.mobilebreakero.domain.usecase.firestore.trips.AddPlaces
+import com.mobilebreakero.domain.usecase.firestore.trips.AddPublicTrips
 import com.mobilebreakero.domain.usecase.firestore.trips.AddTrip
+import com.mobilebreakero.domain.usecase.firestore.trips.AddTripJournal
 import com.mobilebreakero.domain.usecase.firestore.trips.GetTrips
-import com.mobilebreakero.domain.usecase.firestore.trips.TripsUseCase
+import com.mobilebreakero.domain.usecase.firestore.TripsUseCase
 import com.mobilebreakero.domain.usecase.firestore.trips.UpdatePhoto
 import com.mobilebreakero.domain.usecase.firestore.trips.DeleteTrip
+import com.mobilebreakero.domain.usecase.firestore.trips.GetPublicTrips
 import com.mobilebreakero.domain.usecase.firestore.trips.GetTripDetails
 import com.mobilebreakero.domain.usecase.firestore.trips.GetTripsByCategories
+import com.mobilebreakero.domain.usecase.firestore.trips.IsPlaceVisited
+import com.mobilebreakero.domain.usecase.firestore.trips.UpdatePlacePhoto
+import com.mobilebreakero.domain.usecase.firestore.trips.UpdateTripDate
+import com.mobilebreakero.domain.usecase.firestore.trips.UpdateTripDays
+import com.mobilebreakero.domain.usecase.firestore.trips.UpdateTripName
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 
 @Module
@@ -93,7 +109,7 @@ object AppModule {
     @Provides
     fun provideFireStoreUseCases(
         repo: FireStoreRepository
-    ) = FireStoreUseCase(
+    ) = UserUseCase(
         addUser = AddUser(repo),
         getUsers = GetUsers(repo),
         updateUser = UpdateUser(repo),
@@ -102,7 +118,7 @@ object AppModule {
         updateUserPhotoUrl = UpdateProfilePhoto(repo),
         updateUserStatus = UpdateStatus(repo),
         updateUserInterestedPlaces = UpdateInterestedPlaces(repo),
-        getInterestedPlaces = GetInterestedPlaces(repo)
+        getInterestedPlaces = GetInterestedPlaces(repo),
     )
 
 
@@ -117,7 +133,16 @@ object AppModule {
         deleteTrip = DeleteTrip(repo),
         updatePhoto = UpdatePhoto(repo),
         getTripDetails = GetTripDetails(repo),
-        getTripsByCategories = GetTripsByCategories(repo)
+        getTripsByCategories = GetTripsByCategories(repo),
+        addPlaceVisitDate = AddPlaceVisitDate(repo),
+        updatePlacePhoto = UpdatePlacePhoto(repo),
+        isVisited = IsPlaceVisited(repo),
+        addTripJournal = AddTripJournal(repo),
+        savePublicTrips = AddPublicTrips(repo),
+        getPublicTrips = GetPublicTrips(repo),
+        updateTripDate = UpdateTripDate(repo),
+        updateTripDays = UpdateTripDays(repo),
+        updateTripName = UpdateTripName(repo),
     )
 
 
@@ -173,5 +198,31 @@ object AppModule {
     @Provides
     fun providePhotosRepository(api: TripApi): PhotoRepository {
         return PhotoRepoImplementation(api)
+    }
+
+    @Provides
+    fun provideRecomendationUseCase(repo: RecommendedTrips): RecommendedUseCase {
+        return RecommendedUseCase(repo)
+    }
+
+
+    @Provides
+    fun provideRecomendationPlacesUseCase(repo: RecommendedTrips): RecommendedPlaceUseCase {
+        return RecommendedPlaceUseCase(repo)
+    }
+
+    @Provides
+    fun provideGetPublicTrips(repo: RecommendedTrips): GetPublicTripsUseCase {
+        return GetPublicTripsUseCase(repo)
+    }
+
+    @Provides
+    fun provideRecomdedRepo(context: Context): RecommendedTrips {
+        return RecommededImple(context)
+    }
+
+    @Provides
+    fun provideContext(@ApplicationContext context: Context): Context {
+        return context
     }
 }

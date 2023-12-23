@@ -1,0 +1,310 @@
+{
+  "trips": [
+    {
+      "id": 1,
+      "title": "Serenity in Santorini",
+      "description": "Experience the breathtaking beauty of Santorini's landscapes and crystal-clear waters.",
+      "image": "https://a.travel-assets.com/findyours-php/viewfinder/images/res70/408000/408515-Greece.jpg",
+      "category": "Sea",
+      "reason_for_travel": "Beach Getaway",
+      "places_to_visit": [
+        {
+          "name": "Oia",
+          "image": "https://a.travel-assets.com/findyours-php/viewfinder/images/res70/408000/408515-Greece.jpg"
+        },
+        {
+          "name": "Red Beach",
+          "image": "https://a.travel-assets.com/findyours-php/viewfinder/images/res70/507000/507157-red-beach.jpg"
+        },
+        {
+          "name": "Fira",
+          "image": "https://images.squarespace-cdn.com/content/v1/57b9b98a29687f1ef5c622df/1486129632695-K9YD9N25NBHP5MQ5MQC3/naxos+island?format=1500w"
+        }
+      ],
+      "full_journey": {
+        "start_date": "2023-05-01",
+        "end_date": "2023-05-07",
+        "number_of_days": 7,
+        "sleep": "Luxurious beachfront villa",
+        "eat": "Local seafood delicacies",
+        "activities": [
+          "Sunset cruises",
+          "Watersports",
+          "Exploring traditional villages"
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "title": "African Safari Adventure",
+      "description": "Embark on a thrilling safari journey through the heart of Africa's wildlife reserves.",
+      "image": "https://www.serengeti.com/assets/img/bush-walk-serengeti-national-park.jpg",
+      "category": "Adventure",
+      "reason_for_travel": "Wildlife Exploration",
+      "places_to_visit": [
+        {
+          "name": "Serengeti National Park",
+          "image": "https://www.serengeti.com/assets/img/about-serengeti-great-wildebeest-migration.jpg"
+        },
+        {
+          "name": "Ngorongoro Crater",
+          "image": "https://www.gibbsfarm.com/wp-content/uploads/2019/10/Gibbs-Farm-game-Drive.jpg"
+        },
+        {
+          "name": "Maasai Mara",
+          "image": "https://www.invest.go.ke/wp-content/uploads/2021/09/mzuri1.jpg"
+        }
+      ],
+      "full_journey": {
+        "start_date": "2023-07-10",
+        "end_date": "2023-07-18",
+        "number_of_days": 9,
+        "sleep": "Tented camps under the stars",
+        "eat": "Authentic African cuisine",
+        "activities": [
+          "Game drives",
+          "Hot air balloon safaris",
+          "Interaction with local tribes"
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "title": "Cultural Delight in Kyoto",
+      "description": "Immerse yourself in the rich cultural heritage of Kyoto, Japan.",
+      "image": "https://pinpointtraveler.com/wp-content/uploads/2023/08/byodoin-temple-kyoto-1024x684.jpg",
+      "category": "Cultural",
+      "reason_for_travel": "Historical Exploration",
+      "places_to_visit": [
+        {
+          "name": "Kinkaku-ji",
+          "image": "https://storage.googleapis.com/ikidane/upload/spot_gallery_484_01_ac76ae1bec/spot_gallery_484_01_ac76ae1bec.jpg"
+        },
+        {
+          "name": "Fushimi Inari Shrine",
+          "image": "https://www.snowmonkeyresorts.com/wp-content/uploads/2022/09/5177891_m.jpg"
+        },
+        {
+          "name": "Gion District",
+          "image": "https://www.japan-guide.com/g19/3902_12.jpg"
+        }
+      ],
+      "full_journey": {
+        "start_date": "2023-09-20",
+        "end_date": "2023-09-26",
+        "number_of_days": 7,
+        "sleep": "Traditional Ryokan",
+        "eat": "Kaiseki cuisine",
+        "activities": [
+          "Tea ceremonies",
+          "Kimono-wearing experience",
+          "Visit to historical temples"
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "title": "Northern Lights Expedition in Iceland",
+      "description": "Witness the magical display of the Northern Lights in the stunning landscapes of Iceland.",
+      "image": "https://imageio.forbes.com/specials-images/imageserve/655b7c725da03ee56f9b8580/Reykjavik--Iceland/960x0.jpg?height=474&width=711&fit=bounds",
+      "category": "Nature",
+      "reason_for_travel": "Aurora Borealis Viewing",
+      "places_to_visit": [
+        {
+          "name": "Reykjavik",
+          "image": "https://media.tacdn.com/media/attractions-splice-spp-720x480/10/3f/b6/02.jpg"
+        },
+        {
+          "name": "Thingvellir National Park",
+          "image": "https://static.wixstatic.com/media/df9fb8_b38148a17ee440c4a2b7ca178a725eea~mv2.jpg/v1/fill/w_640,h_360,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/df9fb8_b38148a17ee440c4a2b7ca178a725eea~mv2.jpg"
+        },
+        {
+          "name": "Jokulsarlon Glacier Lagoon",
+          "image": "https://upload.wikimedia.org/wikipedia/commons/a/a9/J%C3%B6kuls%C3%A1rl%C3%B3n_glacier_lagoon._Iceland_2012._-_panoramio.jpg"
+        }
+      ],
+      "full_journey": {
+        "start_date": "2023-11-15",
+        "end_date": "2023-11-21",
+        "number_of_days": 7,
+        "sleep": "Cozy cabins with panoramic views",
+        "eat": "Traditional Icelandic cuisine",
+        "activities": [
+          "Northern Lights tours",
+          "Glacier hiking",
+          "Geothermal spa experience"
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "title": "Mystical Marrakech",
+      "description": "Experience the vibrant colors and rich culture of Marrakech, Morocco.",
+      "image": "https://www.centralholidays.com/MyUpload/010320161633382Mystical_Marrakech_03.jpg",
+      "category": "Cultural",
+      "reason_for_travel": "Market Exploration",
+      "places_to_visit": [
+        {
+          "name": "Jardin Majorelle",
+          "image": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/4f/7f/06/20190418-125956-largejpg.jpg?w=1200&h=1200&s=1"
+        },
+        {
+          "name": "Medina of Marrakech",
+          "image": "https://media.worldnomads.com/Travel-Safety/morocco/souksafety-Pavliha.jpg"
+        },
+        {
+          "name": "Koutoubia Mosque",
+          "image": "https://naimexico.com/wp-content/uploads/2023/09/koutoubia-mosque-marrakech-sunrise-scaled.jpg"
+        }
+      ],
+      "full_journey": {
+        "start_date": "2023-08-10",
+        "end_date": "2023-08-16",
+        "number_of_days": 7,
+        "sleep": "Traditional Riad",
+        "eat": "Moroccan delicacies",
+        "activities": [
+          "Exploring souks",
+          "Camel rides",
+          "Traditional music and dance"
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "title": "Majestic Mountain Retreat",
+      "description": "Experience the serenity of the mountains with breathtaking views and crisp mountain air.",
+      "image": "https://gos3.ibcdn.com/2e11d404d50611e7940f0a5fe13dcb40.jpg",
+      "category": "Mountain",
+      "reason_for_travel": "Nature Retreat",
+      "places_to_visit": [
+        {
+          "name": "Rocky Mountain National Park",
+          "image": "https://gograndlake.com/wp-content/uploads/2019/07/RMNP-Pin-1.jpg"
+        },
+        {
+          "name": "Swiss Alps",
+          "image": "https://ariajourneys.com/wp-content/uploads/2017/02/ski-chalet-Zermatt-470x294.jpg"
+        },
+        {
+          "name": "Himalayas",
+          "image": "https://www.kuoni.co.uk/alfredand/wp-content/uploads/2023/01/iStock-1371289822.jpg"
+        }
+      ],
+      "full_journey": {
+        "start_date": "2023-04-01",
+        "end_date": "2023-04-07",
+        "number_of_days": 7,
+        "sleep": "Cozy mountain cabins",
+        "eat": "Alpine cuisine",
+        "activities": [
+          "Hiking trails",
+          "Mountain photography",
+          "Stargazing"
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "title": "Seaside Serenity in Santorini",
+      "description": "Indulge in the beauty of Santorini's beaches and crystal-clear waters.",
+      "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/451219984.jpg?k=55f4d7f8a61fdfb81d874215267b78e16d3535aa9e231da75536637e28d41b4a&o=&hp=1",
+      "category": "Sea",
+      "reason_for_travel": "Beach Relaxation",
+      "places_to_visit": [
+        {
+          "name": "Kamari Beach",
+          "image": "https://santorini-more.com/wp-content/uploads/2021/03/kamari-beach-18.jpg"
+        },
+        {
+          "name": "Perissa Beach",
+          "image": "https://images.santorini-view.com/files/temp/18059ec94f983525af06a18c334a54f1.jpg"
+        },
+        {
+          "name": "Red Beach",
+          "image": "https://saffronandmore.com.au/wp-content/uploads/Blog-Post-3-Featured-Image.jpg"
+        }
+      ],
+      "full_journey": {
+        "start_date": "2023-06-15",
+        "end_date": "2023-06-21",
+        "number_of_days": 7,
+        "sleep": "Beachfront resort",
+        "eat": "Fresh seafood by the sea",
+        "activities": [
+          "Sunbathing",
+          "Water sports",
+          "Boat excursions"
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "title": "Gastronomic Getaway in Paris",
+      "description": "Savor exquisite cuisine in the culinary capital of the world, Paris.",
+      "image": "https://midwifeandlife.com/wp-content/uploads/2023/09/marloes-hilckmann-EUzxLX8p8IA-unsplash-1020x765.jpg",
+      "category": "Restaurant",
+      "reason_for_travel": "Food Exploration",
+      "places_to_visit": [
+        {
+          "name": "Le Jules Verne",
+          "image": "https://images.squarespace-cdn.com/content/v1/5dcc682f10e8060a74b540c6/1583623783698-KUWDQ9S000A79O3MO1TY/5ea4da2777860cae2e630cad0af7b825.jpg"
+        },
+        {
+          "name": "Le Comptoir du Relais",
+          "image": "https://img-4.linternaute.com/HABVFZZVUhgHkMVGlW7fO9wz_NQ=/fit-in/550x550/d5ffbce345d145d6b4cff1a5777740c8/restaurant/3472.jpg"
+        },
+        {
+          "name": "L'Ambroisie",
+          "image": "https://media-cdn.tripadvisor.com/media/photo-s/19/fe/c0/9a/photo0jpg.jpg"
+        }
+      ],
+      "full_journey": {
+        "start_date": "2023-09-01",
+        "end_date": "2023-09-07",
+        "number_of_days": 7,
+        "sleep": "Charming boutique hotel",
+        "eat": "Michelin-starred dining experiences",
+        "activities": [
+          "Gourmet food tours",
+          "Wine tastings",
+          "Culinary workshops"
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "title": "Luxury Hotel Hop in Dubai",
+      "description": "Indulge in opulence with a tour of Dubai's most luxurious hotels and resorts.",
+      "image": "https://www.luxurylifestylemag.co.uk/wp-content/uploads/2023/09/bigstock-Dubai-United-Arab-Emirates-307909138-1024x470.jpg",
+      "category": "Hotel",
+      "reason_for_travel": "Luxury Experience",
+      "places_to_visit": [
+        {
+          "name": "Burj Al Arab Jumeirah",
+          "image": "https://thingstodoindubai.com/wp-content/uploads/2021/07/Burj-Al-Arab-Al-Mahara-Restaurant.jpg"
+        },
+        {
+          "name": "Atlantis, The Palm",
+          "image": "https://www.dubai.de/wp-content/uploads/dtcm-palm-jumeirah-atlantis-0-1280x550.jpg"
+        },
+        {
+          "name": "Jumeirah Beach Hotel",
+          "image": "https://www.vacationstravel.com/wp-content/uploads/2016/09/Vacationsmag_Jumeirah_Beach_Hotel_Exterior_Shot_4.jpg"
+        }
+      ],
+      "full_journey": {
+        "start_date": "2023-11-10",
+        "end_date": "2023-11-16",
+        "number_of_days": 7,
+        "sleep": "Iconic luxury hotels",
+        "eat": "Fine dining with panoramic views",
+        "activities": [
+          "Spa treatments",
+          "Private beach access",
+          "Helicopter tours"
+        ]
+      }
+    }
+  ]
+}

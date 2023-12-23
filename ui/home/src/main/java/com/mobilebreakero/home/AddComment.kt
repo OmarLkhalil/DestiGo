@@ -102,7 +102,6 @@ fun AddCommentScreen(
                     focusedBorderColor = Color(0xFF4F80FF),
                     unfocusedBorderColor = Color(0xFF4F80FF),
                     cursorColor = Color(0xFF4F80FF),
-                    textColor = Color(0xFF4F80FF)
                 ),
             )
             Spacer(modifier = Modifier.height(10.dp))

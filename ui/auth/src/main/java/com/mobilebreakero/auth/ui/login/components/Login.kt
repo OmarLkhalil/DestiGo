@@ -40,3 +40,31 @@ fun SignIn(
         else -> {}
     }
 }
+
+@Composable
+fun ForgetPasswordEmailSend(
+    viewModel: LoginViewModel = hiltViewModel(),
+    showErrorMessage: (errorMessage: String?) -> Unit,
+    navigateToLogin: () -> Unit
+) {
+
+    when (val sendPasswordRespones = viewModel.forgetPasswordEmailResponse) {
+        is Loading -> CircularProgressIndicator(color = Color.Blue)
+        is Success -> {
+            val isEmailSent = sendPasswordRespones.data
+            LaunchedEffect(isEmailSent) {
+                if (isEmailSent) {
+                    navigateToLogin()
+                }
+            }
+        }
+        is Failure -> sendPasswordRespones.apply {
+            LaunchedEffect(e) {
+                print(e)
+                showErrorMessage(e.message)
+            }
+        }
+
+        else -> {}
+    }
+}

@@ -1,25 +1,26 @@
 package com.mobilebreakero.data.repoimpl
 
+import android.util.Log
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.toObjects
-import com.mobilebreakero.domain.model.Comment
-import com.mobilebreakero.domain.model.PlaceItem
-import com.mobilebreakero.domain.model.Post
+import com.mobilebreakero.domain.model.CheckList
 import com.mobilebreakero.domain.model.Trip
+import com.mobilebreakero.domain.model.TripJournal
+import com.mobilebreakero.domain.model.TripPhotos
 import com.mobilebreakero.domain.model.TripPlace
+import com.mobilebreakero.domain.model.TripsItem
 import com.mobilebreakero.domain.repo.TripsRepo
 import com.mobilebreakero.domain.repo.addTripResponse
+import com.mobilebreakero.domain.repo.getPublicTripsResponse
 import com.mobilebreakero.domain.repo.getTripsResponse
 import com.mobilebreakero.domain.repo.updatePlacesResponse
 import com.mobilebreakero.domain.repo.updateTripResponse
 import com.mobilebreakero.domain.util.Response
 import com.mobilebreakero.domain.util.getCollection
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -28,21 +29,21 @@ import javax.inject.Singleton
 class TripRepoImpl @Inject constructor() : TripsRepo {
 
     override suspend fun getTrips(id: String): getTripsResponse {
-
         return try {
-            val db = FirebaseFirestore.getInstance()
-            val tripDoc = db.collection(Trip.COLLECTION_NAME)
-                .whereEqualTo("userId", id)
-                .get()
-                .await()
+            val tripCollection = getCollection(Trip.COLLECTION_NAME)
+            val tripQuery = tripCollection.whereEqualTo("userId", id)
+            Log.d("FirestoreDebug", "Query: $tripQuery")
+            val tripQuerySnapshot = tripQuery.get().await()
 
-            if (!tripDoc.isEmpty) {
-                val trips = tripDoc.toObjects(Trip::class.java) as List<Trip>
-                trips.let { Response.Success(it) }
+            if (tripQuerySnapshot.isEmpty) {
+                Log.d("FirestoreDebug", "No trips found for userId: $id")
+                Response.Failure(NoSuchElementException("No trips found"))
             } else {
-                Response.Failure(Exception("Not found any trips"))
+                val trips = tripQuerySnapshot.toObjects<Trip>()
+                Response.Success(trips)
             }
         } catch (e: Exception) {
+            Log.e("FirestoreDebug", "Error in getTrips: $e")
             Response.Failure(e)
         }
     }
@@ -62,13 +63,31 @@ class TripRepoImpl @Inject constructor() : TripsRepo {
         Response.Failure(e)
     }
 
-    override suspend fun addCheckList(checkList: List<String>, id: String): updateTripResponse {
+    override suspend fun addCheckList(
+        itemName: String,
+        id: String,
+        checked: Boolean,
+        checkItemId: String
+    ): updateTripResponse {
         return try {
             val tripCollection = getCollection(Trip.COLLECTION_NAME)
+
+            val newCheckList = CheckList(
+                name = itemName,
+                checked = checked,
+                checkItemId = checkItemId
+            )
+
             val tripDoc = tripCollection.document(id)
-            tripDoc.update("checkList", checkList)
+            val existingTrip = tripDoc.get().await().toObject(Trip::class.java)
+
+            existingTrip?.let {
+                tripDoc.update("checkList", FieldValue.arrayUnion(newCheckList))
+            }
+
             Response.Success(true)
         } catch (e: Exception) {
+            Log.e("TripRepoImpl", "addCheckList: ${e.message}")
             Response.Failure(e)
         }
     }
@@ -76,24 +95,33 @@ class TripRepoImpl @Inject constructor() : TripsRepo {
     override suspend fun addPlaces(
         placeName: String,
         placeId: String,
-        placePhoto: String,
-        id: String
+        id: String,
+        placeTripId: String
     ): updatePlacesResponse {
         return try {
             val tripCollection = getCollection(Trip.COLLECTION_NAME)
+
             val newPlace = TripPlace(
                 name = placeName,
                 tripId = id,
                 location = placeId,
-                image = placePhoto
+                id = placeTripId
             )
+
             val tripDoc = tripCollection.document(id)
-            tripDoc.update("places", FieldValue.arrayUnion(newPlace))
+            val existingTrip = tripDoc.get().await().toObject(Trip::class.java)
+
+            existingTrip?.let {
+                tripDoc.update("places", FieldValue.arrayUnion(newPlace))
+            }
+
             Response.Success(true)
         } catch (e: Exception) {
+            Log.e("TripRepoImpl", "addPlaces: ${e.message}")
             Response.Failure(e)
         }
     }
+
 
     override fun updatePhoto(photo: String, id: String): updatePlacesResponse {
         return try {
@@ -148,5 +176,152 @@ class TripRepoImpl @Inject constructor() : TripsRepo {
         }
     }
 
+    override suspend fun updatePhotoPlace(
+        photo: String, id: String
+    ): updatePlacesResponse {
+        return try {
+            val tripCollection = getCollection(Trip.COLLECTION_NAME)
+            val tripDoc = tripCollection.document(id)
+            val newPhoto = TripPhotos(
+                tripId = id,
+                images = photo
+            )
+            tripDoc.update("tripImages", FieldValue.arrayUnion(newPhoto))
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
 
+    override suspend fun isPlaceVisited(
+        isVisited: Boolean,
+        placeId: String,
+        tripId: String
+    ): updatePlacesResponse {
+        return try {
+            val tripCollection = getCollection(Trip.COLLECTION_NAME)
+            val tripDoc = tripCollection.document(tripId)
+            tripDoc.update("places", FieldValue.arrayUnion(isVisited))
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
+
+
+    override suspend fun addPlaceVisitDate(
+        date: String,
+        placeId: String,
+        tripId: String
+    ): updatePlacesResponse {
+        return try {
+            val tripCollection = getCollection(Trip.COLLECTION_NAME)
+            val tripDoc = tripCollection.document(tripId)
+            val updateMap = mapOf(
+                "places.$placeId.date" to date
+            )
+            tripDoc.set(updateMap, SetOptions.merge())
+
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
+
+
+    override suspend fun addTripJournal(
+        journal: String,
+        journalId: String,
+        tripId: String,
+        title: String,
+        image: String,
+        date: String
+    ): updatePlacesResponse {
+        return try {
+            val tripCollection = getCollection(Trip.COLLECTION_NAME)
+            val tripDoc = tripCollection.document(tripId)
+            val newJournal = TripJournal(
+                id = journalId,
+                title = title,
+                content = journal,
+                image = image,
+                tripId = tripId,
+                date = date
+            )
+            tripDoc.update("tripJournal", FieldValue.arrayUnion(newJournal))
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
+
+    override suspend fun savePublicTrip(
+        trip: TripsItem,
+        onSuccessListener: OnSuccessListener<Void>,
+        onFailureListener: OnFailureListener
+    ): addTripResponse {
+        return try {
+            val tripCollection = getCollection(TripsItem.COLLECTION_NAME)
+            val tripDoc = tripCollection.document(trip.tripId)
+            tripDoc.set(trip)
+                .addOnSuccessListener(onSuccessListener)
+                .addOnFailureListener(onFailureListener)
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
+
+    override suspend fun getPublicTrips(userId: String): getPublicTripsResponse {
+        return try {
+            val tripCollection = getCollection(TripsItem.COLLECTION_NAME)
+            val tripQuery = tripCollection.whereEqualTo("userId", userId)
+            Log.d("FirestoreDebug", "Query: $tripQuery")
+            val tripQuerySnapshot = tripQuery.get().await()
+
+            if (tripQuerySnapshot.isEmpty) {
+                Log.d("FirestoreDebug", "No trips found for userId: $userId")
+                Response.Failure(NoSuchElementException("No trips found"))
+            } else {
+                val trips = tripQuerySnapshot.toObjects<TripsItem>()
+                Response.Success(trips)
+            }
+        } catch (e: Exception) {
+            Log.e("FirestoreDebug", "Error in getTrips: $e")
+            Response.Failure(e)
+        }
+    }
+
+    override suspend fun updateTripName(tripName: String, tripId: String): updateTripResponse {
+        return try {
+            val tripCollection = getCollection(Trip.COLLECTION_NAME)
+            val tripDoc = tripCollection.document(tripId)
+            tripDoc.update("name", tripName)
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
+
+    override suspend fun updateTripDate(tripDate: String, tripId: String): updateTripResponse {
+        return try {
+            val tripCollection = getCollection(Trip.COLLECTION_NAME)
+            val tripDoc = tripCollection.document(tripId)
+            tripDoc.update("startDate", tripDate)
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
+
+    override suspend fun updateTripDays(tripDays: String, tripId: String): updateTripResponse {
+        return try {
+            val tripCollection = getCollection(Trip.COLLECTION_NAME)
+            val tripDoc = tripCollection.document(tripId)
+            tripDoc.update("duration", tripDays)
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
 }

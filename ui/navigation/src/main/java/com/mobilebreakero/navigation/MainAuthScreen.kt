@@ -1,6 +1,6 @@
 package com.mobilebreakero.navigation
 
-import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -8,9 +8,10 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import com.mobilebreakero.addpost.AddPostScreen
+import com.mobilebreakero.auth.ui.login.components.SendForgetPassword
 import com.mobilebreakero.auth.ui.login.screens.LoginScreen
 import com.mobilebreakero.profile.account.accountacess.updatepassword.screens.ChooseNewPasswordScreen
 import com.mobilebreakero.profile.account.accountacess.updatepassword.screens.ConfirmTheConfirmationCodeScreen
@@ -22,9 +23,9 @@ import com.mobilebreakero.auth.ui.verification.EmailVerificationScreen
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.ACCOUNT_ACCESS_SETTINGS
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.ACCOUNT_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.ADD_COMMENT
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.ADD_JOURNAL
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.ADD_PLACES_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.ADD_POST_SCREEN
-import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CHOOSE_COVER_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CHOOSE_NEW_EMAIL
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CHOOSE_NEW_PASSWORD
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CHOOSE_NEW_USERNAME
@@ -36,14 +37,17 @@ import com.mobilebreakero.common_ui.navigation.NavigationRoutes.EMAIL_VERIFICATI
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.INTERESTED_PLACES_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PASSWORD_UPDATED_SUCCESSFULLY
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PLACES_DETAILS_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PLAN_CHECK_LIST
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.POSTS_DETAILS
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PROFILE_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PROFILE_SETTINGS
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PUBLIC_TRIP_DETAILS
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SAVED_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SCAN_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SEARCH_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SEND_CONFIRMATION_CODE
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SEND_FORGET_PASSWORD_EMAIL
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SIGN_IN_BEFORE_UPDATE
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SIGN_IN_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SIGN_UP_SCREEN
@@ -54,7 +58,10 @@ import com.mobilebreakero.common_ui.navigation.NavigationRoutes.WELCOME_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.YOUR_POSTS_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.YOUR_TRIPS_SCREEN
 import com.mobilebreakero.details.DetailsScreen
+import com.mobilebreakero.details.PlacesDetailsTrips
 import com.mobilebreakero.details.TripDetailsScreen
+import com.mobilebreakero.details.components.AddTripJournal
+import com.mobilebreakero.details.publicTrips.PublicTripDetails
 import com.mobilebreakero.home.AddCommentScreen
 import com.mobilebreakero.home.HomeScreen
 import com.mobilebreakero.home.PostDetailsScreen
@@ -72,7 +79,6 @@ import com.mobilebreakero.profile.account.accountacess.updateEmail.EmailUpdateSe
 import com.mobilebreakero.profile.account.accountacess.updateusername.ChooseNewUserName
 import com.mobilebreakero.scan.ScanScreen
 import com.mobilebreakero.search.screen.SearchScreen
-import com.mobilebreakero.trips.screens.ChooseCoverScreen
 import com.mobilebreakero.trips.screens.addplaces.AddPlacesScreen
 import com.mobilebreakero.trips.screens.plan.CreateTripScreen
 import com.mobilebreakero.trips.screens.plan.PlanScreen
@@ -81,20 +87,19 @@ import com.mobilebreakero.welcome.WelcomeScreen
 
 private const val TransitionDuration = 600
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainNavHost(
     navController: NavHostController,
     startDestination: String,
 ) {
 
-    AnimatedNavHost(
+    NavHost(
         modifier = Modifier,
         navController = navController,
         startDestination = startDestination,
         enterTransition = {
             slideIntoContainer(
-                AnimatedContentScope.SlideDirection.Left,
+                AnimatedContentTransitionScope.SlideDirection.Left,
                 tween(TransitionDuration)
             )
         },
@@ -102,7 +107,7 @@ fun MainNavHost(
         popEnterTransition = { fadeIn(tween(TransitionDuration)) },
         popExitTransition = {
             slideOutOfContainer(
-                AnimatedContentScope.SlideDirection.Right,
+                AnimatedContentTransitionScope.SlideDirection.Right,
                 tween(TransitionDuration)
             )
         }
@@ -112,6 +117,9 @@ fun MainNavHost(
         }
         composable(route = START_SCREEN) {
             StartAuthScreen(navController = navController)
+        }
+        composable(route = SEND_FORGET_PASSWORD_EMAIL) {
+            SendForgetPassword(navController = navController)
         }
         composable(route = EMAIL_VERIFICATION_SCREEN) {
             EmailVerificationScreen(navController = navController)
@@ -171,8 +179,14 @@ fun MainNavHost(
         }
         composable(route = PLAN_CHECK_LIST) {
             val tripId = it.arguments?.getString("tripId", "")
+            val lastScreenRoute = navController.previousBackStackEntry?.destination?.route
             if (tripId != null) {
-                PlanCheckListScreen(navController = navController, tripId = tripId)
+                if (lastScreenRoute != null)
+                    PlanCheckListScreen(
+                        navController = navController,
+                        tripId = tripId,
+                        screenRoot = lastScreenRoute
+                    )
             }
         }
         composable(route = ADD_POST_SCREEN) {
@@ -189,8 +203,15 @@ fun MainNavHost(
         }
         composable(route = ADD_PLACES_SCREEN) {
             val tripId = it.arguments?.getString("tripId", "")
+            val lastScreenRoute = navController.previousBackStackEntry?.destination?.route
             if (tripId != null) {
-                AddPlacesScreen(navController = navController, tripId = tripId)
+                if (lastScreenRoute != null) {
+                    AddPlacesScreen(
+                        navController = navController,
+                        tripId = tripId,
+                        screenRoot = lastScreenRoute
+                    )
+                }
             }
         }
         composable(route = SAVED_SCREEN) {
@@ -214,11 +235,6 @@ fun MainNavHost(
         composable(route = CHOOSE_NEW_USERNAME) {
             ChooseNewUserName(navController = navController)
         }
-        composable(route = CHOOSE_COVER_SCREEN) {
-            val tripId = it.arguments?.getString("tripId", "")
-            ChooseCoverScreen(navController = navController, tripId = tripId ?: "")
-        }
-
         composable(route = DETAILS_SCREEN) { backStackEntry ->
             val locationId = backStackEntry.arguments?.getString("locationId")
             if (locationId != null) {
@@ -226,10 +242,27 @@ fun MainNavHost(
             }
         }
         composable(route = TRIP_DETAILS) { backStackEntry ->
-            val tripId = backStackEntry.arguments?.getString("tripId")
-            if (tripId != null) {
-                TripDetailsScreen(tripId)
-            }
+            val tripId = backStackEntry.arguments?.getString("tripId", "")
+            TripDetailsScreen(tripId ?: "", navController = navController)
+
+        }
+        composable(route = TRIP_DETAILS) { backStackEntry ->
+            val tripId = backStackEntry.arguments?.getString("tripId", "")
+            TripDetailsScreen(tripId ?: "", navController = navController)
+
+        }
+        composable(route = ADD_JOURNAL) { backStackEntry ->
+            val tripId = backStackEntry.arguments?.getString("tripId", "")
+            AddTripJournal(tripId = tripId ?: "", navController = navController)
+        }
+        composable(route = PUBLIC_TRIP_DETAILS) { backStackEntry ->
+            val tripId = backStackEntry.arguments?.getString("tripId", "")
+            PublicTripDetails(tripId = tripId ?: "", navController = navController)
+        }
+        composable(route = PLACES_DETAILS_SCREEN) { backStackEntry ->
+            val locationId = backStackEntry.arguments?.getString("locationId", "")
+            val tripId = backStackEntry.arguments?.getString("tripId", "")
+            PlacesDetailsTrips(tripId = tripId ?: "", locationId = locationId ?: "")
         }
 
     }

@@ -5,25 +5,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.mobilebreakero.domain.repo.updateUserResponse
-import com.mobilebreakero.domain.repo.userResponse
-import com.mobilebreakero.domain.usecase.firestore.FireStoreUseCase
+import com.mobilebreakero.domain.usecase.firestore.UserUseCase
 import com.mobilebreakero.domain.util.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @HiltViewModel
 class ProfileSettingsViewModel @Inject constructor(
-    private val fireStoreUseCase: FireStoreUseCase,
-    private val useCase: FireStoreUseCase
+    private val userUseCase: UserUseCase,
+    private val useCase: UserUseCase
 ) : ViewModel() {
 
     var updateProfilePhoto by mutableStateOf<updateUserResponse>(Response.Success(false))
@@ -32,7 +25,7 @@ class ProfileSettingsViewModel @Inject constructor(
     fun updatePhoto(id: String, photoUrl: String) {
         viewModelScope.launch {
             updateProfilePhoto = Response.Loading
-            updateProfilePhoto = fireStoreUseCase.updateUserPhotoUrl(id = id, photoUrl = photoUrl)
+            updateProfilePhoto = userUseCase.updateUserPhotoUrl(id = id, photoUrl = photoUrl)
         }
     }
 
@@ -42,7 +35,7 @@ class ProfileSettingsViewModel @Inject constructor(
     fun updateStatus(id: String, status: String) {
         viewModelScope.launch {
             updateUserStatus = Response.Loading
-            updateUserStatus = fireStoreUseCase.updateUserStatus(id = id, status = status)
+            updateUserStatus = userUseCase.updateUserStatus(id = id, status = status)
         }
     }
 
@@ -52,7 +45,7 @@ class ProfileSettingsViewModel @Inject constructor(
     fun updateLocation(id: String, location: String) {
         viewModelScope.launch {
             updateUserLocation = Response.Loading
-            updateUserLocation = fireStoreUseCase.updateUserLocation(id = id, location = location)
+            updateUserLocation = userUseCase.updateUserLocation(id = id, location = location)
         }
     }
 }

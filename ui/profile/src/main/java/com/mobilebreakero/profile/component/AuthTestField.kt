@@ -54,7 +54,6 @@ fun AuthTextField(
         shape = RoundedCornerShape(22.dp),
         colors = TextFieldDefaults.textFieldColors(
             containerColor = Color(0xFFEFEEEE),
-            textColor = Color.Black,
             disabledTextColor = Color.Transparent,
             focusedIndicatorColor = Color.Black,
             unfocusedIndicatorColor = Color.Transparent,
@@ -96,7 +95,6 @@ fun PasswordTextField(
         shape = RoundedCornerShape(22.dp),
         colors = TextFieldDefaults.textFieldColors(
             containerColor = Color(0xFFEFEEEE),
-            textColor = Color.Black,
             disabledTextColor = Color.Transparent,
             focusedIndicatorColor = Color.Black,
             unfocusedIndicatorColor = Color.Transparent,

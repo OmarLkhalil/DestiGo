@@ -17,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.mobilebreakero.auth.ui.common.components.MainViewModel
 import com.mobilebreakero.common_ui.components.DestiGoTopAppBar
@@ -49,7 +50,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             DestiGoTheme {
-                val navController = rememberAnimatedNavController()
+                val navController = rememberNavController()
 
                 val startDestination = if (isFirstLaunch) {
                     WELCOME_SCREEN

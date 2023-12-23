@@ -24,12 +24,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes
+import com.mobilebreakero.data.repoimpl.GenerateRandomIdNumber
+import com.mobilebreakero.domain.model.CheckList
 import com.mobilebreakero.trips.TripsViewModel
 import com.mobilebreakero.trips.components.CreateTripButton
 
@@ -37,8 +41,8 @@ import com.mobilebreakero.trips.components.CreateTripButton
 fun PlanCheckListScreen(
     navController: NavController,
     viewModel: TripsViewModel = hiltViewModel(),
-    tripId: String
-
+    tripId: String,
+    screenRoot: String
 ) {
     var chickListItems by remember { mutableStateOf(listOf("")) }
 
@@ -64,7 +68,8 @@ fun PlanCheckListScreen(
             CheckLitItem(text = item,
                 onTextChanged =
                 { newText ->
-                    chickListItems = chickListItems.toMutableList().apply { this[index] = newText }
+                    chickListItems =
+                        chickListItems.toMutableList().apply { this[index] = newText }
                 })
         }
 
@@ -88,8 +93,21 @@ fun PlanCheckListScreen(
                 .height(50.dp)
                 .width(320.dp),
             onClick = {
-                viewModel.addChickList(chickListItems, id = tripId)
-                navController.navigate("AddPlaces/${tripId}")
+                chickListItems.forEachIndexed { index, item ->
+                    viewModel.addChickList(
+                        id = tripId,
+                        itemName = item,
+                        checked = false,
+                        checkItemId = GenerateRandomIdNumber().toString()
+                    )
+                }
+                if (screenRoot.isEmpty()) {
+                    navController.navigate("AddPlaces/$tripId")
+                } else if (screenRoot == NavigationRoutes.TRIP_DETAILS) {
+                    navController.navigate("tripDetails/$tripId")
+                } else {
+                    navController.navigate("AddPlaces/$tripId")
+                }
             }
         )
 
@@ -108,7 +126,7 @@ fun CheckLitItem(text: String, onTextChanged: (String) -> Unit) {
         label = {
             Text(text = "My Passport")
         },
-        textStyle = androidx.compose.ui.text.TextStyle(
+        textStyle = TextStyle(
             color = Color.Black,
             fontSize = 14.sp,
             textAlign = TextAlign.Center
@@ -120,7 +138,6 @@ fun CheckLitItem(text: String, onTextChanged: (String) -> Unit) {
             .border(.7.dp, Color(0xFF4F80FF), shape = RoundedCornerShape(20.dp)),
         colors = TextFieldDefaults.textFieldColors(
             containerColor = Color.White,
-            textColor = Color.Black,
             disabledTextColor = Color.Transparent,
             focusedIndicatorColor = Color.Black,
             unfocusedIndicatorColor = Color.Transparent,

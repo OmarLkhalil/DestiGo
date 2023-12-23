@@ -94,9 +94,13 @@ fun SearchResultItem(
                 val results =
                     (photos as Response.Success<List<PhotoDataItem?>>).data.filter { it?.id.toString() == item.locationId }
                 VerticalPager(
-                    state = rememberPagerState(),
+                    state = rememberPagerState(
+                        initialPage = 0,
+                        initialPageOffsetFraction = 0f
+                    ) {
+                        results.size
+                    },
                     modifier = Modifier.fillMaxWidth(),
-                    pageCount = results.size
                 ) { page ->
                     val photoOfEachOne = results[page]?.images?.large?.url
 

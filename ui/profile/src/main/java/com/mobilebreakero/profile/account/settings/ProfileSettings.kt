@@ -51,7 +51,6 @@ import com.mobilebreakero.domain.util.DataUtils.user
 import com.mobilebreakero.profile.R
 import com.mobilebreakero.profile.component.ProfileImage
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileSettingsContent(
     navController: NavController,
@@ -86,7 +85,6 @@ fun ProfileSettingsContent(
     val firebaseUser = Firebase.auth.currentUser
 
 
-
     GetUserFromFireStore(
         user = { uId ->
             uId.id = firebaseUser?.uid
@@ -100,7 +98,6 @@ fun ProfileSettingsContent(
         newStatus = user.value.status ?: userStatus
         userLocation = user.value.location ?: newLocation
     }
-
 
     Box(
         modifier = Modifier
@@ -264,7 +261,7 @@ fun ProfileSettingsContent(
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4F80FF)),
                     onClick = {
                         if (user.value.id != null) {
-                            userLocation?.let {
+                            userLocation.let {
                                 viewModel.updateLocation(
                                     user.value.id!!,
                                     location = it

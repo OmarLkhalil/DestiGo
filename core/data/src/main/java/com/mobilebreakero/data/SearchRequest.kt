@@ -1,6 +1,5 @@
 package com.mobilebreakero.data
 
-import org.json.JSONObject
 
 
 data class TextSearchRequest(

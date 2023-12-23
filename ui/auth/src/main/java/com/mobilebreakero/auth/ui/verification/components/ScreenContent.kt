@@ -29,9 +29,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mobilebreakero.auth.ui.common.components.AuthContent
 import com.mobilebreakero.auth.ui.common.components.MainViewModel
 import com.mobilebreakero.auth.ui.signup.SignUpViewModel
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.INTERESTED_PLACES_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.START_SCREEN
 import com.mobilebreakero.domain.util.Utils.Companion.showMessage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -42,6 +44,7 @@ fun EmailVerificationScreenContent(
     sendvirIficationViewModel: SignUpViewModel = hiltViewModel(),
     viewModel: MainViewModel = hiltViewModel()
 ) {
+    AuthContent("Email Verification")
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -95,7 +98,7 @@ fun EmailVerificationScreenContent(
             fontWeight = FontWeight.Bold,
             modifier = Modifier.clickable {
                 viewModel.signOut()
-                navController.navigate(route = "StartAuthScreen")
+                navController.navigate(route = START_SCREEN)
             }
         )
 

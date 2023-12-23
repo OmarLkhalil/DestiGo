@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -41,6 +42,7 @@ fun CardsDisplay(
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
+        modifier = Modifier.height(380.dp)
     ) {
         itemsIndexed(items = items, itemContent = { index, item ->
             Card(

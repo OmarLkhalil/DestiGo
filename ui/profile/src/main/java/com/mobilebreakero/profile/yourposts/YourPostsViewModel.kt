@@ -11,7 +11,7 @@ import com.google.firebase.ktx.Firebase
 import com.mobilebreakero.domain.model.Post
 import com.mobilebreakero.domain.repo.postResponse
 import com.mobilebreakero.domain.repo.updatePostResponse
-import com.mobilebreakero.domain.usecase.firestore.post.PostUseCase
+import com.mobilebreakero.domain.usecase.firestore.PostUseCase
 import com.mobilebreakero.domain.util.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -27,6 +27,7 @@ import com.mobilebreakero.auth.ui.common.components.PasswordTextField
 import com.mobilebreakero.auth.ui.login.LoginViewModel
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SEND_CONFIRMATION_CODE
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SEND_FORGET_PASSWORD_EMAIL
 import com.mobilebreakero.domain.util.Utils.Companion.showMessage
 
 
@@ -75,7 +76,7 @@ fun SignInWithEmailAndPasswordScreenContent(
         text = "Forgot Password?",
         color = Color(0xff4F80FF),
         modifier = Modifier.clickable {
-            navController.navigate(SEND_CONFIRMATION_CODE)
+            navController.navigate(SEND_FORGET_PASSWORD_EMAIL)
         }
     )
 

@@ -23,18 +23,22 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.mobilebreakero.common_ui.R
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.ADD_COMMENT
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.ADD_JOURNAL
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.ADD_PLACES_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.CHOOSE_COVER_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.DETAILS_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PLACES_DETAILS_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PLAN_CHECK_LIST
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.POSTS_DETAILS
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PROFILE_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.PUBLIC_TRIP_DETAILS
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SCAN_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SIGN_IN_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.SIGN_UP_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.START_SCREEN
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.TRIPS_SCREEN
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.TRIP_DETAILS
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.WELCOME_SCREEN
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -108,6 +112,14 @@ fun TopBarTitle(navController: NavController) {
                 "Add New Comment"
             } else if (currentRoute == POSTS_DETAILS) {
                 "Post Details"
+            } else if (currentRoute == PUBLIC_TRIP_DETAILS) {
+                "Saved Trip Details"
+            } else if (currentRoute == TRIP_DETAILS) {
+                "Trip Details"
+            } else if (currentRoute == ADD_JOURNAL) {
+                "Trip Journal"
+            } else if (currentRoute == PLACES_DETAILS_SCREEN) {
+                "Place Details"
             } else {
                 currentRoute.toString()
             },

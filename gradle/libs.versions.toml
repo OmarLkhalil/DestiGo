@@ -7,7 +7,7 @@ androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 lifecycle-runtime-ktx = "2.6.1"
 activity-compose = "1.7.2"
-compose-bom = "2023.03.00"
+compose-bom = "2023.10.01"
 hilt = "2.47"
 hilt-navigation = "1.0.0"
 accompanist = "0.30.1"
@@ -15,7 +15,7 @@ constraintlayout = "2.1.4"
 kotlinparcelize = "1.8.10"
 coil = "2.4.0"
 ui-util = "1.4.3"
-navigation-compose = "2.6.0"
+navigation-compose = "2.7.6"
 compose-material = "1.4.3"
 retrofit = "2.9.0"
 ggson = "2.10.1"
@@ -25,7 +25,8 @@ coroutines = "1.7.2"
 animated-bar = "1.0.0"
 room = "2.5.2"
 appcompat = "1.6.1"
-material = "1.9.0"
+material = "1.11.0"
+material3 = "1.0.0-alpha07"
 firebase = "32.5.0"
 google = "4.3.15"
 analytics = "17.5.0"
@@ -47,7 +48,7 @@ ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-material3 = { group = "androidx.compose.material3", name = "material3" }
+material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
@@ -81,7 +82,7 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 google-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "google-location" }
 filament-android = { group = "com.google.ar.sceneform", name = "filament-android", version = "1.17.1" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage-ktx" }
-camerax = {group = "com.google.zxing", name = "core", version = "3.3.0"}
+camerax = { group = "com.google.zxing", name = "core", version = "3.3.0" }
 camera = { group = "androidx.camera", name = "camera-camera2", version = "1.1.0" }
 camerEmbedded = { group = "com.journeyapps", name = "zxing-android-embedded", version = "3.6.0" }
 cameracore = { group = "androidx.camera", name = "camera-core", version = "1.1.0" }

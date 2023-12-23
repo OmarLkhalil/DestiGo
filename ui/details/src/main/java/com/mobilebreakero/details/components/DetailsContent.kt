@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -45,7 +46,12 @@ import com.mobilebreakero.domain.model.PhotoDataItem
 @Composable
 fun DetailsContent(photos: List<PhotoDataItem?>, detailsResponse: DetailsResponse) {
 
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        photos.size
+    }
     val context = LocalContext.current
 
     Column(
@@ -57,9 +63,8 @@ fun DetailsContent(photos: List<PhotoDataItem?>, detailsResponse: DetailsRespons
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier.fillMaxWidth(),
-                pageCount = photos.size
             ) { page ->
-                val photo = photos[page]?.images?.large?.url
+                val photo = photos[page]?.images?.large?.url ?: ""
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -139,7 +144,7 @@ fun DetailsContent(photos: List<PhotoDataItem?>, detailsResponse: DetailsRespons
             Spacer(modifier = Modifier.height(20.dp))
         }
 
-        AmenitiesCard(title = "About", details = detailsResponse.amenities ?: listOf("")) {
+        AmenitiesCard(title = "Amenities", details = detailsResponse.amenities ?: listOf("")) {
             Spacer(modifier = Modifier.height(20.dp))
         }
 
@@ -160,10 +165,8 @@ fun ElevatedButton(
             .clip(RoundedCornerShape(10.dp))
             .background(Color(0xFF4F80FF))
             .height(40.dp)
-            .width(120.dp)
-            .clickable {
-                onClick()
-            }
+            .width(160.dp)
+            .clickable { onClick() }
     ) {
         Row(
             modifier = Modifier
@@ -181,7 +184,7 @@ fun ElevatedButton(
             Text(
                 text = title,
                 color = Color.White,
-                fontSize = 12.sp,
+                fontSize = 10.sp,
                 fontWeight = FontWeight.Bold
             )
         }

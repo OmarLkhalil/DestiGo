@@ -59,20 +59,15 @@ import com.mobilebreakero.domain.util.DataUtils
 fun AddPostCard(navController: NavController, viewModel: AddPostViewModel = hiltViewModel()) {
 
     var imageUri by remember { mutableStateOf<Uri?>(null) }
-
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         imageUri = uri
     }
-
     val uploadProgress by remember { mutableStateOf(0f) }
-
     val user = DataUtils.user
-
     var imageLink by remember { mutableStateOf("") }
     var isUploading by remember { mutableStateOf(false) }
-
     var selectedLocation by remember { mutableStateOf("Cairo, Egypt") }
     var isLocationClicked by remember { mutableStateOf(false) }
     var isAddPostSatus by remember { mutableStateOf(false) }
@@ -123,19 +118,6 @@ fun AddPostCard(navController: NavController, viewModel: AddPostViewModel = hilt
                 iconId = R.drawable.photo,
                 description = "Photo Icon",
                 text = "Upload Photo"
-            )
-
-            SubcomposeAsyncImage(
-                model = imageUri,
-                contentDescription = "Post Image",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(280.dp)
-                    .padding(12.dp)
-                    .clip(RoundedCornerShape(bottomEnd = 25.dp, bottomStart = 25.dp)),
-                loading = {
-                    LoadingIndicator()
-                }
             )
 
             PostOrCancelSection(navController = navController, onClick = {

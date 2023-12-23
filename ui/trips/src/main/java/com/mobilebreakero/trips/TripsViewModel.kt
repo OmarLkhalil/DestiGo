@@ -1,5 +1,6 @@
 package com.mobilebreakero.trips
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,12 +11,14 @@ import com.google.firebase.ktx.Firebase
 import com.mobilebreakero.domain.model.DataItem
 import com.mobilebreakero.domain.model.PhotoDataItem
 import com.mobilebreakero.domain.model.Trip
+import com.mobilebreakero.domain.model.TripsItem
 import com.mobilebreakero.domain.repo.addTripResponse
+import com.mobilebreakero.domain.repo.getPublicTripsResponse
 import com.mobilebreakero.domain.repo.getTripsResponse
 import com.mobilebreakero.domain.repo.updateTripResponse
 import com.mobilebreakero.domain.usecase.PhotoUseCase
 import com.mobilebreakero.domain.usecase.SearchPlacesUseCase
-import com.mobilebreakero.domain.usecase.firestore.trips.TripsUseCase
+import com.mobilebreakero.domain.usecase.firestore.TripsUseCase
 import com.mobilebreakero.domain.util.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,12 +53,40 @@ class TripsViewModel @Inject constructor(
                     val trips = result.data
                     tripsResult = trips
                     _tripsFlow.value = Response.Success(trips)
+                    Log.e("TripsViewModel", "getTrips success: $trips")
                 } else {
                     _tripsFlow.value = result
-
+                    Log.e("TripsViewModel", "getTrips loading: $result")
                 }
             } catch (e: Exception) {
                 _tripsFlow.value = Response.Failure(e)
+                Log.e("TripsViewModel", "getTrips error: $e")
+            }
+        }
+    }
+
+    private val _publicTripsFlow = MutableStateFlow<getPublicTripsResponse>(Response.Loading)
+    val publicTripsFlow: StateFlow<getPublicTripsResponse> get() = _publicTripsFlow
+
+    var publicTripResult by mutableStateOf(listOf<TripsItem>())
+
+    fun getPublicTrips(userId: String) {
+        viewModelScope.launch {
+            try {
+                val result = tripsUseCase.getPublicTrips(userId)
+                if (result is Response.Success) {
+                    val trips = result.data
+                    publicTripResult = trips
+                    _publicTripsFlow.value = Response.Success(trips)
+                    Log.e("TripsViewModel", "getPublicTrips: $trips")
+                } else {
+                    _publicTripsFlow.value = result
+                    Log.e("TripsViewModel", "getPublicTrips: $result")
+
+                }
+            } catch (e: Exception) {
+                _publicTripsFlow.value = Response.Failure(e)
+                Log.e("TripsViewModel", "getPublicTrips: $e")
             }
         }
     }
@@ -71,11 +102,21 @@ class TripsViewModel @Inject constructor(
     var addChickListResponse by mutableStateOf<updateTripResponse>(Response.Success(false))
         private set
 
-    fun addChickList(checkList: List<String>, id: String) {
+    fun addChickList(
+        itemName: String,
+        id: String,
+        checked: Boolean,
+        checkItemId: String
+    ) {
         viewModelScope.launch {
             try {
                 addChickListResponse = Response.Loading
-                addChickListResponse = tripsUseCase.chickList(checkList, id)
+                addChickListResponse = tripsUseCase.chickList(
+                    itemName = itemName,
+                    id = id,
+                    checked = checked,
+                    checkItemId = checkItemId
+                )
 
             } catch (
                 e: Exception
@@ -89,13 +130,13 @@ class TripsViewModel @Inject constructor(
     var addPlacesResponse by mutableStateOf<updateTripResponse>(Response.Success(false))
         private set
 
-    fun savePlaces(placeName: String, placeId: String, placePhoto: String, id: String) {
+    fun savePlaces(placeName: String, placeId: String, id: String, placeTripId: String) {
 
         viewModelScope.launch {
             try {
                 addPlacesResponse = Response.Loading
                 addPlacesResponse = tripsUseCase.places(
-                    placeName, placeId, placePhoto, id
+                    placeName, placeId, id, placeTripId
                 )
 
             } catch (

@@ -50,7 +50,7 @@ fun TopScreenImage(user: String, navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.7f))
+                .background(Color.Black.copy(alpha = 0.3f))
                 .clip(RoundedCornerShape(bottomEnd = 25.dp, bottomStart = 25.dp))
         )
         Text(

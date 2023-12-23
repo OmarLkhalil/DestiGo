@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.androidlibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.firebase)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlinKapt)
 }
@@ -88,4 +89,10 @@ dependencies {
     implementation(libs.paging.compose)
     implementation(libs.paging)
     implementation(libs.hilt.navigation.compose)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
+
+    implementation(libs.firebase.storage)
+
 }

@@ -3,6 +3,7 @@ package com.mobilebreakero.auth.ui.common.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,7 +18,10 @@ import com.mobilebreakero.auth.R
 fun AuthContent(text: String) {
     Image(
         painter = painterResource(id = R.drawable.logo),
-        contentDescription = "This is logo icon in auth screen"
+        contentDescription = "Logo",
+        modifier = Modifier
+            .height(100.dp)
+            .width(120.dp)
     )
     Spacer(modifier = Modifier.height(30.dp))
     Text(

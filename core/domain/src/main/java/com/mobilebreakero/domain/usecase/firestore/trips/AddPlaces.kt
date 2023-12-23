@@ -8,13 +8,13 @@ class AddPlaces @Inject constructor(
     private val repo: TripsRepo
 ) {
     suspend operator fun invoke(
-        placeName: String, placeId: String, placePhoto: String, id: String
+        placeName: String, placeId: String, id: String, placeTripId: String
     ) =
         repo.addPlaces(
             placeName = placeName,
             placeId = placeId,
-            placePhoto = placePhoto,
-            id = id
+            id = id,
+            placeTripId = placeTripId
         )
 
 }

@@ -20,7 +20,7 @@ fun WelcomePager(
     navController: NavController
 ) {
 
-    val pagerState = rememberPagerState()
+
     val coroutineScope = rememberCoroutineScope()
 
 
@@ -30,7 +30,12 @@ fun WelcomePager(
         R.drawable.memoirmakers,
         R.drawable.journeyquest
     )
-
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        images.size
+    }
     val titles = listOf(
         "Adventure",
         "WanderCompass",
@@ -47,7 +52,6 @@ fun WelcomePager(
     )
 
     HorizontalPager(
-        pageCount = images.size,
         state = pagerState,
         modifier = Modifier.fillMaxSize()
     ) {

@@ -48,7 +48,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mobilebreakero.common_ui.components.AnimateIcon
-import com.mobilebreakero.domain.model.TripPlace
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.TRIP_DETAILS
+import com.mobilebreakero.data.repoimpl.GenerateRandomIdNumber
 import com.mobilebreakero.domain.util.Response
 import com.mobilebreakero.trips.TripsViewModel
 import com.mobilebreakero.trips.screens.plan.selectedLocationpass
@@ -60,7 +61,8 @@ import kotlinx.coroutines.launch
 fun AddPlacesScreen(
     navController: NavController,
     viewModel: TripsViewModel = hiltViewModel(),
-    tripId: String
+    tripId: String,
+    screenRoot: String
 ) {
 
     var location by remember { mutableStateOf("") }
@@ -74,10 +76,10 @@ fun AddPlacesScreen(
     val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
     val coroutineScope = rememberCoroutineScope { ioDispatcher }
     val searchResults by viewModel.searchResult.collectAsState()
-
     var placeName by remember { mutableStateOf("") }
     var placeAddress by remember { mutableStateOf("") }
     var placePhoto by remember { mutableStateOf("") }
+    var placeTripId by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -105,7 +107,13 @@ fun AddPlacesScreen(
                 .height(50.dp)
                 .width(320.dp),
             onClick = {
-                navController.navigate("chooseCover/$tripId")
+                if (screenRoot.isEmpty()) {
+                    navController.navigate("chooseCover/$tripId")
+                } else if (screenRoot == TRIP_DETAILS) {
+                    navController.navigate("tripDetails/$tripId")
+                } else {
+                    navController.navigate("chooseCover/$tripId")
+                }
             },
             content = {
                 Text(text = "Next", fontSize = 12.sp, color = Color.White)
@@ -214,13 +222,13 @@ fun AddPlacesScreen(
                                                 if (result.name != null) result.name!! else ""
                                             placeAddress =
                                                 if (result.locationId != null) result.locationId!! else ""
-
+                                            placeTripId = GenerateRandomIdNumber().toString()
                                             try {
                                                 viewModel.savePlaces(
                                                     placeName,
                                                     placeAddress,
-                                                    placePhoto,
-                                                    tripId
+                                                    tripId,
+                                                    placeTripId
                                                 )
                                             } catch (e: Exception) {
                                                 Log.d("AddPlacesScreen", "Error: ${e.message}")
@@ -279,7 +287,6 @@ fun SearchTextField(
         shape = RoundedCornerShape(22.dp),
         colors = TextFieldDefaults.textFieldColors(
             containerColor = Color(0xFFEFEEEE),
-            textColor = Color.Black,
             disabledTextColor = Color.Transparent,
             focusedIndicatorColor = Color.Black,
             unfocusedIndicatorColor = Color.Transparent,

@@ -2,6 +2,7 @@ package com.mobilebreakero.trips.screens.plan
 
 
 import android.app.DatePickerDialog
+import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -46,6 +47,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mobilebreakero.common_ui.components.AuthButton
 import com.mobilebreakero.common_ui.components.MapView
+import com.mobilebreakero.common_ui.components.calculateEndDate
+import com.mobilebreakero.common_ui.navigation.NavigationRoutes.TRIPS_SCREEN
 import com.mobilebreakero.domain.model.Trip
 import com.mobilebreakero.domain.util.DataUtils
 import com.mobilebreakero.trips.TripsViewModel
@@ -75,7 +78,6 @@ fun CreateTripScreen(
     viewModel: TripsViewModel = hiltViewModel()
 ) {
 
-    val isDateClicked = remember { mutableStateOf(false) }
     var visitMyBros by remember { mutableStateOf("") }
     var selected by remember { mutableStateOf<TripFilters?>(null) }
     var travelReason by remember { mutableStateOf("") }
@@ -83,6 +85,8 @@ fun CreateTripScreen(
     var getGovernment by remember { mutableStateOf(selectedLocationpass) }
     var howLong by remember { mutableStateOf("") }
     var selectedDate by remember { mutableStateOf("11/12/2023") }
+    val isDateClicked = remember { mutableStateOf(false) }
+
     var endDate by remember { mutableStateOf("11/12/2023") }
     var tripCategory by remember { mutableStateOf(listOf("")) }
     val isLocationClicked = remember { mutableStateOf(false) }
@@ -125,7 +129,6 @@ fun CreateTripScreen(
                 .border(.7.dp, Color(0xFF4F80FF), shape = RoundedCornerShape(20.dp)),
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = Color.White,
-                textColor = Color.Black,
                 disabledTextColor = Color.Transparent,
                 focusedIndicatorColor = Color.Black,
                 unfocusedIndicatorColor = Color.Transparent,
@@ -185,7 +188,7 @@ fun CreateTripScreen(
                     ),
                     shape = RoundedCornerShape(20.dp),
                     elevation = FilterChipDefaults.filterChipElevation(
-                        defaultElevation = 5.dp
+                        elevation = 5.dp
                     )
                 )
             }
@@ -268,7 +271,6 @@ fun CreateTripScreen(
                 .border(.7.dp, Color(0xFF4F80FF), shape = RoundedCornerShape(20.dp)),
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = Color.White,
-                textColor = Color.Black,
                 disabledTextColor = Color.Transparent,
                 focusedIndicatorColor = Color.Black,
                 unfocusedIndicatorColor = Color.Transparent,
@@ -278,7 +280,7 @@ fun CreateTripScreen(
 
         Spacer(modifier = Modifier.height(15.dp))
 
-        CreateTripButton(text = "Next",
+        CreateTripButton(text = "Create",
             buttonColor = Color(0xff4F80FF),
             modifier = Modifier
                 .align(CenterHorizontally)
@@ -287,6 +289,7 @@ fun CreateTripScreen(
             onClick = {
                 endDate = calculateEndDate(selectedDate, howLong)
                 tripCategory = getCategoryBasedOnUserTravelReason(travelReason)
+                howLong = if (howLong == "") "0" else howLong
 
                 viewModel.addTripToFireStore(
                     Trip(
@@ -301,7 +304,8 @@ fun CreateTripScreen(
                         category = tripCategory
                     )
                 )
-                navController.navigate("planCheckList/${tripId}")
+                Toast.makeText(context, "Trip Created Successfully", Toast.LENGTH_SHORT).show()
+                navController.navigate(TRIPS_SCREEN)
                 selectedLocationpass = getGovernment
             }
         )
@@ -371,16 +375,6 @@ fun ShowDatePickerDialog(
             datePickerDialog.show()
         }
     }
-}
-
-fun calculateEndDate(startDate: String, duration: String): String {
-    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    val calendar = Calendar.getInstance()
-
-    calendar.time = sdf.parse(startDate) ?: Date()
-    calendar.add(Calendar.DAY_OF_MONTH, duration.toInt())
-
-    return sdf.format(calendar.time)
 }
 
 

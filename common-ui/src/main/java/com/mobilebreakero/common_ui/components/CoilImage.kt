@@ -13,9 +13,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -31,15 +36,18 @@ import coil.request.ImageRequest
 
 @Composable
 fun CoilImage(
-    data: String? = null,
+    data: Any? = null,
     contentDescription: String,
     modifier: Modifier,
     contentScale: ContentScale,
     onClick: () -> Unit,
     title: String? = null,
     desc: String? = null,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
+    saved: Boolean = false
 ) {
+
+    var isSaved by remember { mutableStateOf(saved) }
 
     Box(
         modifier = modifier
@@ -60,13 +68,13 @@ fun CoilImage(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.3f))
+                .background(Color.Black.copy(alpha = 0.2f))
         )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.Black.copy(alpha = 0.7f))
-                .height(70.dp)
+                .background(Color.Black.copy(alpha = 0.4f))
+                .height(83.dp)
                 .align(Alignment.BottomStart),
             verticalAlignment = CenterVertically,
             horizontalArrangement = Arrangement.Center
@@ -82,7 +90,7 @@ fun CoilImage(
                         modifier = Modifier
                             .padding(5.dp)
                             .align(CenterHorizontally),
-                        fontSize = 14.sp,
+                        fontSize = 12.sp,
                         color = Color.White
                     )
                 }
@@ -91,7 +99,7 @@ fun CoilImage(
                         text = desc,
                         modifier = Modifier
                             .align(CenterHorizontally),
-                        fontSize = 10.sp,
+                        fontSize = 8.sp,
                         color = Color.White
                     )
                 }
@@ -99,14 +107,21 @@ fun CoilImage(
 
         }
 
+        val icon = if (saved) {
+            Icons.Filled.FavoriteBorder
+        } else {
+            Icons.Outlined.FavoriteBorder
+        }
         Icon(
-            Icons.Filled.FavoriteBorder,
+            icon,
             tint = Color.White,
             contentDescription = "Favorite Icon",
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .size(30.dp)
+                .padding(end = 10.dp, top = 10.dp)
                 .clickable {
+                    isSaved = !isSaved
                     onFavoriteClick()
                 }
         )

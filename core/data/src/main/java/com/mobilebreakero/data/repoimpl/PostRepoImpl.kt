@@ -1,6 +1,7 @@
 package com.mobilebreakero.data.repoimpl
 
 import android.content.Context
+import android.util.Log
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.firestore.FieldValue
@@ -14,6 +15,9 @@ import com.mobilebreakero.domain.repo.postResponse
 import com.mobilebreakero.domain.repo.updatePostResponse
 import com.mobilebreakero.domain.util.Response
 import com.mobilebreakero.domain.util.getCollection
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -36,6 +40,7 @@ class PostRepoImpl @Inject constructor() : PostsRepo {
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override suspend fun likePost(
         postId: String,
         like: Int,
@@ -45,32 +50,43 @@ class PostRepoImpl @Inject constructor() : PostsRepo {
         return try {
             val db = FirebaseFirestore.getInstance()
             val postDocument = db.collection(Post.COLLECTION_NAME).document(postId)
+            Log.e("numberOfLikes", like.toString())
+            postDocument.update("numberOfLikes", like)
+                .addOnSuccessListener {
+                    val userDocument = db.collection("users").document(userId)
+                    userDocument.update("likedPosts", FieldValue.arrayUnion(postId))
+                        .addOnSuccessListener {
+                            Response.Success(true)
+                        }
+                        .addOnFailureListener {
+                            Response.Failure(it)
+                        }
+                    GlobalScope.launch {
+                        if (userId !in postDocument.get().await()
+                                .toObject(Post::class.java)!!.likedUserIds
+                        ) {
+                            postDocument.update("likedUserIds", FieldValue.arrayUnion(userId))
+                                .addOnSuccessListener {
+                                    Response.Success(true)
+                                }
+                                .addOnFailureListener {
+                                    Response.Failure(it)
+                                }
 
+                        } else {
+                            postDocument.update("likedUserIds", FieldValue.arrayRemove(userId))
+                                .addOnSuccessListener {
+                                    Response.Success(true)
+                                }
+                                .addOnFailureListener {
+                                    Response.Failure(it)
+                                }
 
-            db.runTransaction { transaction ->
-                val postSnapshot = transaction.get(postDocument)
-
-                if (postSnapshot.exists()) {
-                    val likedUserIds =
-                        postSnapshot.get("likedUserIds") as? List<String> ?: emptyList()
-
-                    val isLiked = likedUserIds.contains(userId)
-                    var likes = postSnapshot.get("numberOfLikes") as? Int ?: 0
-
-                    if (isLiked) {
-                        if (likes > 0)
-                            likes -= 1
-                        transaction.update(postDocument, "numberOfLikes", likes)
-                        transaction.update(postDocument, "likedUserIds", likedUserIds - userId)
-                    } else {
-                        likes += 1
-                        transaction.update(postDocument, "numberOfLikes", likes)
-                        transaction.update(postDocument, "likedUserIds", likedUserIds + userId)
+                        }
                     }
                 }
-                Response.Success(true)
-            }.await()
 
+            Response.Success(false)
         } catch (e: Exception) {
             Response.Failure(e)
         }

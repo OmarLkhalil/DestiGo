@@ -165,6 +165,10 @@ class FireStoreRepoImpl @Inject constructor() : FireStoreRepository {
         }
     }
 
+    /* here you get the collection which is a main datatype of the firestore as it deals with collections as tables
+                 Tables in a Database → Collections in Firestore
+                 Rows in a Table → Documents in a Collection
+                 Columns in a Table → Fields in a Document */
 
     override suspend fun updateUserSaved(id: String, saved: List<String>): updateUserResponse {
         return try {

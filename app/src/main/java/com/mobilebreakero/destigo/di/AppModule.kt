@@ -24,6 +24,8 @@ import com.mobilebreakero.domain.usecase.RecommendedPlaceUseCase
 import com.mobilebreakero.domain.usecase.RecommendedUseCase
 import com.mobilebreakero.domain.usecase.SearchPlacesUseCase
 import com.mobilebreakero.domain.usecase.SearchResultUseCase
+import com.mobilebreakero.domain.usecase.UpdatePublicTripDate
+import com.mobilebreakero.domain.usecase.UpdatePublicTripDays
 import com.mobilebreakero.domain.usecase.auth.AuthUseCase
 import com.mobilebreakero.domain.usecase.auth.CheckUserSignedInUseCase
 import com.mobilebreakero.domain.usecase.auth.CurrentUser
@@ -39,6 +41,7 @@ import com.mobilebreakero.domain.usecase.auth.SignOut
 import com.mobilebreakero.domain.usecase.auth.SignUpWithEmailAndPassword
 import com.mobilebreakero.domain.usecase.auth.UpdateEmail
 import com.mobilebreakero.domain.usecase.auth.UpdatePassword
+import com.mobilebreakero.domain.usecase.firestore.IsTripFinished
 import com.mobilebreakero.domain.usecase.firestore.user.AddUser
 import com.mobilebreakero.domain.usecase.firestore.UserUseCase
 import com.mobilebreakero.domain.usecase.firestore.user.GetUserById
@@ -66,6 +69,7 @@ import com.mobilebreakero.domain.usecase.firestore.trips.AddTrip
 import com.mobilebreakero.domain.usecase.firestore.trips.AddTripJournal
 import com.mobilebreakero.domain.usecase.firestore.trips.GetTrips
 import com.mobilebreakero.domain.usecase.firestore.TripsUseCase
+import com.mobilebreakero.domain.usecase.firestore.UpdateUserSaved
 import com.mobilebreakero.domain.usecase.firestore.trips.UpdatePhoto
 import com.mobilebreakero.domain.usecase.firestore.trips.DeleteTrip
 import com.mobilebreakero.domain.usecase.firestore.trips.GetPublicTrips
@@ -119,6 +123,7 @@ object AppModule {
         updateUserStatus = UpdateStatus(repo),
         updateUserInterestedPlaces = UpdateInterestedPlaces(repo),
         getInterestedPlaces = GetInterestedPlaces(repo),
+        updateUserSaved = UpdateUserSaved(repo),
     )
 
 
@@ -143,6 +148,7 @@ object AppModule {
         updateTripDate = UpdateTripDate(repo),
         updateTripDays = UpdateTripDays(repo),
         updateTripName = UpdateTripName(repo),
+        isTripFinished = IsTripFinished(repo)
     )
 
 
@@ -224,5 +230,15 @@ object AppModule {
     @Provides
     fun provideContext(@ApplicationContext context: Context): Context {
         return context
+    }
+
+    @Provides
+    fun provideUpdateDatePUseCase(repo: RecommendedTrips): UpdatePublicTripDate {
+        return UpdatePublicTripDate(repo)
+    }
+
+    @Provides
+    fun provideUpdateDaysPUseCase(repo: RecommendedTrips): UpdatePublicTripDays {
+        return UpdatePublicTripDays(repo)
     }
 }

@@ -101,7 +101,8 @@ dependencies {
     implementation(libs.hilt.navigation)
     implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
-
+    val lottieVersion = "6.0.0"
+    implementation ("com.airbnb.android:lottie-compose:$lottieVersion")
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)

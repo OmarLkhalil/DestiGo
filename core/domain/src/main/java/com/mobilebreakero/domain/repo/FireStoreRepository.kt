@@ -3,7 +3,9 @@ package com.mobilebreakero.domain.repo
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.mobilebreakero.domain.model.AppUser
+import com.mobilebreakero.domain.model.RecommendedPlaceItem
 import com.mobilebreakero.domain.model.Trip
+import com.mobilebreakero.domain.model.TripsItem
 import com.mobilebreakero.domain.util.Response
 import kotlinx.coroutines.flow.Flow
 
@@ -29,8 +31,17 @@ interface FireStoreRepository {
     suspend fun updateUserStatues(id: String, status: String): updateUserResponse
     suspend fun updateUserLocation(id: String, location: String): updateUserResponse
     suspend fun updateUserPhotoUrl(id: String, photoUrl: String): updateUserResponse
-    suspend fun updateUserInterestedPlaces(id: String, interestedPlaces: List<String>): updateUserResponse
-    suspend fun updateUserSaved(id: String, saved: List<String>): updateUserResponse
+    suspend fun updateUserInterestedPlaces(
+        id: String,
+        interestedPlaces: List<String>
+    ): updateUserResponse
+
+    suspend fun updateUserSaved(
+        id: String,
+        savePlaces: RecommendedPlaceItem? = null,
+        savedTrips: TripsItem? = null
+    ): updateUserResponse
+
     suspend fun getUserTripsBasedOnInterestedPlaces(id: String): tripsResponseInterested
 
 }

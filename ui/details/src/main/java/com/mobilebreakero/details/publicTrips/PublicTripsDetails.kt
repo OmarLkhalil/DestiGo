@@ -1,11 +1,8 @@
 package com.mobilebreakero.details.publicTrips
 
-import android.graphics.drawable.Icon
-import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -16,33 +13,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,31 +47,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.mobilebreakero.common_ui.components.GetUserFromFireStore
 import com.mobilebreakero.common_ui.components.LoadingIndicator
 import com.mobilebreakero.common_ui.components.calculateEndDate
-import com.mobilebreakero.details.DateTransformation
 import com.mobilebreakero.details.DetailsViewModel
 import com.mobilebreakero.details.R
 import com.mobilebreakero.details.components.ElevatedButton
 import com.mobilebreakero.details.components.ItemsChip
-import com.mobilebreakero.details.components.PlacesToVisit
-import com.mobilebreakero.details.components.TripCheckList
 import com.mobilebreakero.details.components.TripDetailsCard
-import com.mobilebreakero.details.components.TripImages
-import com.mobilebreakero.details.components.TripJournal
-import com.mobilebreakero.details.formatDate
-import com.mobilebreakero.details.loadProgress
-import com.mobilebreakero.details.uploadImageToStorage
-import com.mobilebreakero.domain.model.AppUser
-import com.mobilebreakero.domain.model.Trip
 import com.mobilebreakero.domain.model.TripsItem
 import com.mobilebreakero.domain.util.Response
-import kotlinx.coroutines.launch
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PublicTripDetails(
     tripId: String,
@@ -115,6 +90,7 @@ fun PublicTripDetails(
 
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PublicTripDetails(
     trip: TripsItem,
@@ -123,26 +99,14 @@ fun PublicTripDetails(
 ) {
 
     var isUpdatingTrip by remember { mutableStateOf(false) }
-    var tripNameUpdate by remember { mutableStateOf("") }
     var tripDaysUpdate by remember { mutableStateOf("") }
-    var tripDateUpdate by remember { mutableStateOf("") }
+    var selectedDate by remember { mutableStateOf("") }
+    val isDateClicked = remember { mutableStateOf(false) }
+    var tripDays by remember { mutableStateOf(trip.fullJourney?.numberOfDays ?: "0") }
 
     TripDetailsCard(title = trip.title ?: "Trip details", onEditClick = {
         isUpdatingTrip = true
     }, content = {
-
-        var imageUri by remember { mutableStateOf<Uri?>(null) }
-        val launcher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.GetContent()
-        ) { uri: Uri? ->
-            imageUri = uri
-        }
-
-        var currentProgress by remember { mutableFloatStateOf(0f) }
-        var newPhotoUrl by remember { mutableStateOf(trip.image) }
-        var imageLink by remember { mutableStateOf("") }
-        var isUploading by remember { mutableStateOf(false) }
-        val scope = rememberCoroutineScope()
 
         Column(
             modifier = Modifier
@@ -173,26 +137,40 @@ fun PublicTripDetails(
                 modifier = Modifier
                     .wrapContentSize()
             ) {
-
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .height(80.dp)
                         .horizontalScroll(rememberScrollState())
                 ) {
-                    ItemsChip(title = "From ${trip.fullJourney?.startDate ?: ""}") {
 
-                    }
-                    var endDate by remember { mutableStateOf("") }
-                    var newDays by remember { mutableStateOf("") }
-
-
-                    if (tripDateUpdate.isNotEmpty())
-                        LaunchedEffect(tripDateUpdate) {
-                            endDate = calculateEndDate(trip.fullJourney?.startDate ?: "", newDays)
+                    val fromDate =
+                        selectedDate.ifBlank {
+                            trip.fullJourney?.startDate
                         }
-                    else
-                        endDate = trip.fullJourney?.endDate ?: ""
+
+                    ItemsChip(title = "From $fromDate") {
+                        isDateClicked.value = true
+                    }
+
+                    var endDate by remember { mutableStateOf(trip.fullJourney?.endDate) }
+
+                    if (selectedDate.isNotBlank()) {
+                        endDate = calculateEndDate(selectedDate, tripDays)
+                        viewModel.updatePublicTripDatevm(
+                            id = trip.tripId,
+                            startDate = selectedDate,
+                            endDate = endDate,
+                        )
+                    } else if (tripDaysUpdate.isNotBlank()) {
+                        val startDate: String = trip.fullJourney?.startDate ?: ""
+                        endDate = calculateEndDate(startDate, tripDaysUpdate)
+                        viewModel.updatePublicTripDatevm(
+                            id = trip.tripId,
+                            startDate = selectedDate,
+                            endDate = endDate,
+                        )
+                    }
 
                     ItemsChip(title = "To $endDate") {
                     }
@@ -212,8 +190,7 @@ fun PublicTripDetails(
                 )
                 PublicPlacesToVisit(trip = trip, navController = navController)
                 Spacer(modifier = Modifier.height(10.dp))
-
-                PublicThingsToDo(trip = trip, navController = navController)
+                PublicThingsToDo(trip = trip)
             }
         }
 
@@ -227,46 +204,26 @@ fun PublicTripDetails(
                     Column(
                         verticalArrangement = spacedBy(10.dp),
                     ) {
-                        OutlinedTextField(
-                            value = tripNameUpdate,
-                            onValueChange = { tripNameUpdate = it },
-                            label = { Text("New trip name") }
-                        )
-                        OutlinedTextField(
-                            value = tripDateUpdate,
-                            visualTransformation = DateTransformation(),
-                            keyboardOptions = KeyboardOptions.Default.copy(
-                                keyboardType = KeyboardType.Number
-                            ),
-                            onValueChange = { tripDateUpdate = it },
-                            label = { Text("New trip start date") }
-                        )
-                        OutlinedTextField(
-                            value = tripDaysUpdate,
-                            onValueChange = { tripDaysUpdate = it },
-                            keyboardOptions = KeyboardOptions.Default.copy(
-                                keyboardType = KeyboardType.Number
-                            ),
-                            label = { Text("New trip stay days ") }
-                        )
+                        tripDaysUpdate.let {
+                            OutlinedTextField(
+                                value = it,
+                                onValueChange = { tripDaysUpdate = it },
+                                keyboardOptions = KeyboardOptions.Default.copy(
+                                    keyboardType = KeyboardType.Number
+                                ),
+                                label = { Text("Choose Stay days") }
+                            )
+                        }
                     }
                 },
                 confirmButton = {
                     Button(
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4F80FF)),
                         onClick = {
-                            if (tripNameUpdate.isNotEmpty()) {
-                                viewModel.updateTripName(tripNameUpdate, trip.tripId)
-                            }
-                            if (tripDateUpdate.isNotEmpty()) {
-                                val formattedDate = formatDate(tripDateUpdate)
-                                if (formattedDate != null) {
-                                    viewModel.updateTripDate(formattedDate, trip.tripId)
-                                }
-                            }
-                            if (tripDaysUpdate.isNotEmpty()) {
-                                viewModel.updateTripDays(tripDaysUpdate, trip.tripId)
-                            }
+                            viewModel.updatePublicTripDayvm(
+                                days = tripDaysUpdate,
+                                id = trip.tripId
+                            )
                             isUpdatingTrip = false
                         }
                     ) {
@@ -275,11 +232,26 @@ fun PublicTripDetails(
                 }
             )
         }
+
+        if (isDateClicked.value) {
+            ShowDatePickerDialog(
+                selectedDate = selectedDate,
+                onDateSelected = {
+                    selectedDate = it
+                    isDateClicked.value = false
+                    viewModel.updateTripDate(
+                        id = trip.tripId,
+                        date = selectedDate
+                    )
+                }
+            )
+        }
+
     })
 }
 
 @Composable
-fun PublicThingsToDo(trip: TripsItem, navController: NavController) {
+fun PublicThingsToDo(trip: TripsItem) {
     Box(
         modifier = Modifier
             .wrapContentWidth()

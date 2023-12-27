@@ -10,13 +10,14 @@ import com.mobilebreakero.domain.model.PhotoDataItem
 import com.mobilebreakero.domain.model.Trip
 import com.mobilebreakero.domain.model.TripsItem
 import com.mobilebreakero.domain.repo.getPublicTripDetailsResponse
-import com.mobilebreakero.domain.repo.getPublicTripsResponse
 import com.mobilebreakero.domain.repo.getTripDetailsResponse
 import com.mobilebreakero.domain.repo.updatePlacesResponse
 import com.mobilebreakero.domain.repo.updateTripResponse
 import com.mobilebreakero.domain.usecase.DetailsUseCase
 import com.mobilebreakero.domain.usecase.GetPublicTripsUseCase
 import com.mobilebreakero.domain.usecase.PhotoUseCase
+import com.mobilebreakero.domain.usecase.UpdatePublicTripDate
+import com.mobilebreakero.domain.usecase.UpdatePublicTripDays
 import com.mobilebreakero.domain.usecase.firestore.TripsUseCase
 import com.mobilebreakero.domain.util.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +31,9 @@ class DetailsViewModel @Inject constructor(
     private val photoUseCase: PhotoUseCase,
     private val detailsUseCase: DetailsUseCase,
     private val tripsUseCase: TripsUseCase,
-    private val getPublicTripsUseCase: GetPublicTripsUseCase
+    private val getPublicTripsUseCase: GetPublicTripsUseCase,
+    private val updatePublicTripDays: UpdatePublicTripDays,
+    private val updatePublicTripDate: UpdatePublicTripDate
 ) : ViewModel() {
 
     var addPhotoResponse by mutableStateOf<updateTripResponse>(Response.Success(false))
@@ -231,6 +234,42 @@ class DetailsViewModel @Inject constructor(
                 publicTripDetailsResponse.value = result
             } catch (e: Exception) {
                 publicTripDetailsResponse.value = Response.Failure(e)
+            }
+        }
+    }
+
+    var updatePublicTripDateResponse =
+        MutableStateFlow<Response<Boolean>>(Response.Success(false))
+        private set
+
+    fun updatePublicTripDatevm(startDate: String? = null, endDate: String? = null, id: String) {
+        viewModelScope.launch {
+            try {
+                updatePublicTripDateResponse.value = Response.Loading
+                val result =
+                    updatePublicTripDate(startDate = startDate, endDate = endDate, tripId = id)
+                updatePublicTripDateResponse.value = result
+            } catch (e: Exception) {
+                updatePublicTripDateResponse.value = Response.Failure(e)
+            }
+        }
+    }
+
+    var updatePublicTripDayResponse =
+        MutableStateFlow<Response<Boolean>>(Response.Success(false))
+        private set
+
+    fun updatePublicTripDayvm(days: String, id: String) {
+        viewModelScope.launch {
+            try {
+                updatePublicTripDayResponse.value = Response.Loading
+                val result = updatePublicTripDays.updatePublicTripDate(
+                    days = days,
+                    tripId = id
+                )
+                updatePublicTripDayResponse.value = result
+            } catch (e: Exception) {
+                updatePublicTripDayResponse.value = Response.Failure(e)
             }
         }
     }

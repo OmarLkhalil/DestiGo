@@ -1,5 +1,7 @@
 package com.mobilebreakero.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -87,6 +89,7 @@ import com.mobilebreakero.welcome.WelcomeScreen
 
 private const val TransitionDuration = 600
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainNavHost(
     navController: NavHostController,

@@ -20,10 +20,7 @@ fun WelcomePager(
     navController: NavController
 ) {
 
-
     val coroutineScope = rememberCoroutineScope()
-
-
     val images: List<Int> = listOf(
         R.drawable.adventure,
         R.drawable.wandercompass,

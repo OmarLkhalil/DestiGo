@@ -11,9 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +23,7 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -44,7 +42,8 @@ fun CoilImage(
     title: String? = null,
     desc: String? = null,
     onFavoriteClick: () -> Unit,
-    saved: Boolean = false
+    saved: Boolean = false,
+    icon: ImageVector? = null
 ) {
 
     var isSaved by remember { mutableStateOf(saved) }
@@ -107,23 +106,20 @@ fun CoilImage(
 
         }
 
-        val icon = if (saved) {
-            Icons.Filled.FavoriteBorder
-        } else {
-            Icons.Outlined.FavoriteBorder
+        icon?.let {
+            Icon(
+                icon,
+                tint = Color.White,
+                contentDescription = "Favorite Icon",
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .size(30.dp)
+                    .padding(end = 10.dp, top = 10.dp)
+                    .clickable {
+                        isSaved = !isSaved
+                        onFavoriteClick()
+                    }
+            )
         }
-        Icon(
-            icon,
-            tint = Color.White,
-            contentDescription = "Favorite Icon",
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .size(30.dp)
-                .padding(end = 10.dp, top = 10.dp)
-                .clickable {
-                    isSaved = !isSaved
-                    onFavoriteClick()
-                }
-        )
     }
 }

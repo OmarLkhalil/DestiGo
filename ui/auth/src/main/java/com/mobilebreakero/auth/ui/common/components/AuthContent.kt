@@ -1,6 +1,7 @@
 package com.mobilebreakero.auth.ui.common.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -16,18 +17,14 @@ import com.mobilebreakero.auth.R
 
 @Composable
 fun AuthContent(text: String) {
-    Image(
-        painter = painterResource(id = R.drawable.logo),
-        contentDescription = "Logo",
-        modifier = Modifier
-            .height(100.dp)
-            .width(120.dp)
-    )
-    Spacer(modifier = Modifier.height(30.dp))
-    Text(
-        text = text,
-        fontSize = 26.sp,
-        fontWeight = FontWeight.Bold
-    )
-    Spacer(modifier = Modifier.height(30.dp))
+    Column {
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Logo",
+            modifier = Modifier
+                .height(100.dp)
+                .width(120.dp)
+        )
+        Spacer(modifier = Modifier.height(30.dp))
+    }
 }

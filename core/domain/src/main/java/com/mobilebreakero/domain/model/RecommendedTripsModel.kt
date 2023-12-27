@@ -30,6 +30,7 @@ data class TripsItem(
     val tripType: String = "publicTrip",
 
     val tripId: String,
+    val isSaved: Boolean = false,
 
     @field:SerializedName("category")
     val category: String? = null,
@@ -68,7 +69,7 @@ data class FullJourney(
     val sleep: String? = null,
 
     @field:SerializedName("number_of_days")
-    val numberOfDays: Int? = null,
+    val numberOfDays: String? = null,
 
     @field:SerializedName("activities")
     val activities: List<String?>? = null,
@@ -77,7 +78,7 @@ data class FullJourney(
     val eat: String? = null,
 
     @field:SerializedName("start_date")
-    val startDate: String? = null
+    var startDate: String? = null
 )
 
 data class PlacesToVisitItem(

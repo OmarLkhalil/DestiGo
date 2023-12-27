@@ -3,10 +3,13 @@ package com.mobilebreakero.data.repoimpl
 import android.util.Log
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObjects
 import com.mobilebreakero.domain.model.AppUser
+import com.mobilebreakero.domain.model.RecommendedPlaceItem
 import com.mobilebreakero.domain.model.Trip
+import com.mobilebreakero.domain.model.TripsItem
 import com.mobilebreakero.domain.repo.FireStoreRepository
 import com.mobilebreakero.domain.repo.addUserResponse
 import com.mobilebreakero.domain.repo.tripsResponseInterested
@@ -165,16 +168,20 @@ class FireStoreRepoImpl @Inject constructor() : FireStoreRepository {
         }
     }
 
-    /* here you get the collection which is a main datatype of the firestore as it deals with collections as tables
-                 Tables in a Database → Collections in Firestore
-                 Rows in a Table → Documents in a Collection
-                 Columns in a Table → Fields in a Document */
-
-    override suspend fun updateUserSaved(id: String, saved: List<String>): updateUserResponse {
+    override suspend fun updateUserSaved(
+        id: String,
+        savePlaces: RecommendedPlaceItem?,
+        savedTrips: TripsItem?
+    ): updateUserResponse {
         return try {
             val userCollection = getCollection(AppUser.COLLECTION_NAME)
             val userDoc = userCollection.document(id)
-            userDoc.update("saved", saved)
+            if (savePlaces != null) {
+                userDoc.update("savedPlaces", FieldValue.arrayUnion(savePlaces))
+            }
+            if (savedTrips != null) {
+                userDoc.update("savedTrips", FieldValue.arrayUnion(savedTrips))
+            }
             Response.Success(true)
         } catch (e: Exception) {
             Response.Failure(e)

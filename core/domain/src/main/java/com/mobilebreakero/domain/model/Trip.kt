@@ -16,7 +16,7 @@ data class Trip(
     var tripImages: List<TripPhotos>? = null,
     var tripJournal: List<TripJournal>? = null,
     var category: List<String>? = null,
-    var isFinished: Boolean? = null,
+    var finished: Boolean? = null,
     var isSaved: Boolean? = null,
 ) {
     companion object {

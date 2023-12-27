@@ -10,7 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -24,19 +28,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mobilebreakero.interestedplaces.R
+
 
 @Composable
 fun InterestsSection(
-    painter: Int,
     contentDescription: String,
-    title: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-    isSelected: Boolean
+    item: InterestsItem
 ) {
 
-    val isItemSelected = remember { mutableStateOf(isSelected) }
+    val isItemSelected = remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     Card(
@@ -52,20 +53,23 @@ fun InterestsSection(
                 .fillMaxSize()
                 .clickable {
                     if (selectedItemsList.size < 3) {
-                        onClick()
+                        selectedItemsList.add(item)
                         isItemSelected.value = !isItemSelected.value
                     } else {
+                        selectedItemsList.removeLast()
                         isItemSelected.value = false
-                        Toast.makeText(
-                            context,
-                            "You can only choose 3 interests",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast
+                            .makeText(
+                                context,
+                                "You can only choose 3 interests",
+                                Toast.LENGTH_SHORT
+                            )
+                            .show()
                     }
                 }
         ) {
             Image(
-                painter = painterResource(id = painter),
+                painter = painterResource(id = item.icon),
                 contentDescription = contentDescription,
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier.fillMaxSize()
@@ -77,21 +81,22 @@ fun InterestsSection(
                     .padding(12.dp),
                 contentAlignment = Alignment.BottomCenter
             ) {
-                Text(title, style = TextStyle(color = Color.White, fontSize = 20.sp))
+                Text(item.title, style = TextStyle(color = Color.White, fontSize = 20.sp))
             }
 
             val imageRes = if (isItemSelected.value) {
-                painterResource(id = R.drawable.filledchoosed)
+                Icons.Filled.CheckCircle
             } else {
-                painterResource(id = R.drawable.outlinedchoose)
+                Icons.Outlined.CheckCircle
             }
 
-            Image(
-                painter = imageRes,
+            Icon(
+                imageVector = imageRes,
                 contentDescription = "choose",
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .size(30.dp)
+                    .size(30.dp),
+                tint = Color.White
             )
         }
     }

@@ -24,6 +24,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
@@ -106,8 +109,6 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    var isTripSaved by remember { mutableStateOf(false) }
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -170,7 +171,11 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                         modifier = Modifier
                             .padding(10.dp)
                     ) {
-                        Text(text = "Let's Go!", fontSize = 11.sp, color = Color.Black)
+                        Text(
+                            text = "Let's create the first Trip Plan",
+                            fontSize = 11.sp,
+                            color = Color.Black
+                        )
                     }
                 }
             }
@@ -184,6 +189,12 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
             Spacer(modifier = Modifier.height(5.dp))
             LazyRow {
                 items(userRecommended.size) { index ->
+                    var isTripSaved by remember {
+                        mutableStateOf(
+                            userRecommended[index]?.isSaved ?: false
+                        )
+                    }
+
                     userRecommended[index]?.title?.let {
                         userRecommended[index]?.reasonForTravel?.let { it1 ->
                             ForYouItem(
@@ -195,7 +206,13 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                                     showTripsBottomSheet = true
                                 },
                                 isSaved = isTripSaved,
+                                icon = if (isTripSaved) {
+                                    Icons.Filled.FavoriteBorder
+                                } else {
+                                    Icons.Outlined.FavoriteBorder
+                                },
                                 onSaveCLick = {
+                                    isTripSaved = !isTripSaved
                                     viewModel.savePublicTrips(
                                         trip = TripsItem(
                                             id = userRecommended[index]?.id,
@@ -203,6 +220,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                                             tripId = GenerateRandomIdNumber().toString(),
                                             title = userRecommended[index]?.title,
                                             image = userRecommended[index]?.image,
+                                            isSaved = isTripSaved,
                                             fullJourney = userRecommended[index]?.fullJourney,
                                             placesToVisit = userRecommended[index]?.placesToVisit,
                                             description = userRecommended[index]?.description,
@@ -283,6 +301,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
             Spacer(modifier = Modifier.height(5.dp))
             LazyRow {
                 items(userRecommendedPlaces.size) { index ->
+                    val item = userRecommendedPlaces[index]
                     userRecommendedPlaces[index]?.name?.let {
                         userRecommendedPlaces[index]?.category?.let { it1 ->
                             ForYouItem(
@@ -293,7 +312,13 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                                     selectedPlacesItemIndex = index
                                     showPlacesBottomSheet = true
                                 },
-                                onSaveCLick = {}
+                                onSaveCLick = {
+                                    viewModel.updateSaves(
+                                        user.value.id ?: "",
+                                        item,
+                                        null
+                                    )
+                                }
                             )
                         }
                     }

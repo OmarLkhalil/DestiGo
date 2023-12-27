@@ -3,22 +3,23 @@ package com.mobilebreakero.destigo
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.mobilebreakero.auth.ui.common.components.MainViewModel
 import com.mobilebreakero.common_ui.components.DestiGoTopAppBar
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.EMAIL_VERIFICATION_SCREEN
@@ -29,6 +30,8 @@ import com.mobilebreakero.destigo.ui.theme.DestiGoTheme
 import com.mobilebreakero.home.components.BottomNavigation
 import com.mobilebreakero.navigation.MainNavHost
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -38,36 +41,52 @@ class MainActivity : ComponentActivity() {
     private val FIRST_LAUNCH_KEY = "FirstLaunch"
     private val REQUEST_LOCATION_PERMISSION = 129
     private val REQUEST_CAMERA_PERMISSION = 232
+    private val splashDuration = 2500L
     private val viewModel by viewModels<MainViewModel>()
+    private lateinit var navController: NavHostController
+    private lateinit var startDestination: String
+    private lateinit var tripManager: TripManager
 
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val prefs = getSharedPreferences(FIRST_LAUNCH_PREFS, Context.MODE_PRIVATE)
         val isFirstLaunch = prefs.getBoolean(FIRST_LAUNCH_KEY, true)
 
-
         setContent {
-            DestiGoTheme {
-                val navController = rememberNavController()
+            SplashScreen()
+            navController = rememberNavController()
 
-                val startDestination = if (isFirstLaunch) {
+        }
+        tripManager = TripManager(viewModel = viewModel)
+
+        lifecycleScope.launch {
+            tripManager.start()
+
+            delay(splashDuration)
+
+            setContent {
+                startDestination = if (isFirstLaunch) {
                     WELCOME_SCREEN
                 } else {
                     authState()
                 }
 
-                Scaffold(
-                    topBar = { DestiGoTopAppBar(navController) },
-                    bottomBar = { BottomNavigation(navController) }
-                ) { pv ->
-                    Box(modifier = Modifier.padding(pv)) {
-                        MainNavHost(navController, startDestination)
+                DestiGoTheme {
+
+                    Scaffold(
+                        topBar = { DestiGoTopAppBar(navController) },
+                        bottomBar = { BottomNavigation(navController) }
+                    ) { pv ->
+                        Box(modifier = Modifier.padding(pv)) {
+                            MainNavHost(navController, startDestination)
+                        }
                     }
                 }
             }
         }
+
 
         if (isFirstLaunch) {
             val editor = prefs.edit()
@@ -89,6 +108,11 @@ class MainActivity : ComponentActivity() {
                 REQUEST_CAMERA_PERMISSION
             )
         }
+    }
+
+    override fun onDestroy() {
+        tripManager.cancelTimer()
+        super.onDestroy()
     }
 
     private fun requestPermission() {

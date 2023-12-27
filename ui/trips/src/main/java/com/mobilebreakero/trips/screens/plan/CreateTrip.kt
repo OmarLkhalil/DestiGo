@@ -1,7 +1,6 @@
 package com.mobilebreakero.trips.screens.plan
 
 
-import android.app.DatePickerDialog
 import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
@@ -25,8 +24,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,16 +44,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mobilebreakero.common_ui.components.AuthButton
 import com.mobilebreakero.common_ui.components.MapView
+import com.mobilebreakero.common_ui.components.ShowDatePickerDialog
 import com.mobilebreakero.common_ui.components.calculateEndDate
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.TRIPS_SCREEN
 import com.mobilebreakero.domain.model.Trip
 import com.mobilebreakero.domain.util.DataUtils
 import com.mobilebreakero.trips.TripsViewModel
 import com.mobilebreakero.trips.components.CreateTripButton
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 
 enum class TripFilters {
@@ -289,7 +283,9 @@ fun CreateTripScreen(
             onClick = {
                 endDate = calculateEndDate(selectedDate, howLong)
                 tripCategory = getCategoryBasedOnUserTravelReason(travelReason)
-                howLong = if (howLong == "") "0" else howLong
+                howLong = howLong.ifBlank {
+                    "0"
+                }
 
                 viewModel.addTripToFireStore(
                     Trip(
@@ -301,7 +297,8 @@ fun CreateTripScreen(
                         name = visitMyBros,
                         duration = howLong,
                         endDate = endDate,
-                        category = tripCategory
+                        category = tripCategory,
+                        finished = false
                     )
                 )
                 Toast.makeText(context, "Trip Created Successfully", Toast.LENGTH_SHORT).show()
@@ -333,48 +330,6 @@ fun CreateTripScreen(
         })
     }
 
-}
-
-@Composable
-fun ShowDatePickerDialog(
-    selectedDate: String,
-    onDateSelected: (String) -> Unit
-) {
-    val context = LocalContext.current
-    val datePickerDialog = remember {
-        DatePickerDialog(
-            context,
-            { _, year, month, dayOfMonth ->
-                val formattedDate = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-                    .format(Calendar.getInstance().apply {
-                        set(year, month, dayOfMonth)
-                    }.time)
-                onDateSelected(formattedDate)
-            },
-            Calendar.getInstance().get(Calendar.YEAR),
-            Calendar.getInstance().get(Calendar.MONTH),
-            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-        )
-    }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            if (datePickerDialog.isShowing) {
-                datePickerDialog.dismiss()
-            }
-        }
-    }
-
-    LaunchedEffect(selectedDate) {
-        if (!datePickerDialog.isShowing) {
-            datePickerDialog.updateDate(
-                Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.MONTH),
-                Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-            )
-            datePickerDialog.show()
-        }
-    }
 }
 
 

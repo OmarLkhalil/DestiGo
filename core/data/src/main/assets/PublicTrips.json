@@ -24,7 +24,7 @@
       "full_journey": {
         "start_date": "2023-05-01",
         "end_date": "2023-05-07",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Luxurious beachfront villa",
         "eat": "Local seafood delicacies",
         "activities": [
@@ -58,7 +58,7 @@
       "full_journey": {
         "start_date": "2023-07-10",
         "end_date": "2023-07-18",
-        "number_of_days": 9,
+        "number_of_days": "7",
         "sleep": "Tented camps under the stars",
         "eat": "Authentic African cuisine",
         "activities": [
@@ -92,7 +92,7 @@
       "full_journey": {
         "start_date": "2023-09-20",
         "end_date": "2023-09-26",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Traditional Ryokan",
         "eat": "Kaiseki cuisine",
         "activities": [
@@ -126,7 +126,7 @@
       "full_journey": {
         "start_date": "2023-11-15",
         "end_date": "2023-11-21",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Cozy cabins with panoramic views",
         "eat": "Traditional Icelandic cuisine",
         "activities": [
@@ -160,7 +160,7 @@
       "full_journey": {
         "start_date": "2023-08-10",
         "end_date": "2023-08-16",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Traditional Riad",
         "eat": "Moroccan delicacies",
         "activities": [
@@ -194,7 +194,7 @@
       "full_journey": {
         "start_date": "2023-04-01",
         "end_date": "2023-04-07",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Cozy mountain cabins",
         "eat": "Alpine cuisine",
         "activities": [
@@ -228,7 +228,7 @@
       "full_journey": {
         "start_date": "2023-06-15",
         "end_date": "2023-06-21",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Beachfront resort",
         "eat": "Fresh seafood by the sea",
         "activities": [
@@ -262,7 +262,7 @@
       "full_journey": {
         "start_date": "2023-09-01",
         "end_date": "2023-09-07",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Charming boutique hotel",
         "eat": "Michelin-starred dining experiences",
         "activities": [
@@ -295,7 +295,7 @@
       "full_journey": {
         "start_date": "2023-11-10",
         "end_date": "2023-11-16",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Iconic luxury hotels",
         "eat": "Fine dining with panoramic views",
         "activities": [
@@ -329,7 +329,7 @@
       "full_journey": {
         "start_date": "2023-12-01",
         "end_date": "2023-12-07",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Balinese luxury villas",
         "eat": "Traditional Balinese cuisine",
         "activities": [
@@ -363,7 +363,7 @@
       "full_journey": {
         "start_date": "2024-01-15",
         "end_date": "2024-01-21",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Glass igloos under the Northern Lights",
         "eat": "Lappish delicacies",
         "activities": [
@@ -397,7 +397,7 @@
       "full_journey": {
         "start_date": "2024-03-05",
         "end_date": "2024-03-12",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Historical boutique hotel",
         "eat": "Authentic Italian cuisine",
         "activities": [
@@ -431,7 +431,7 @@
       "full_journey": {
         "start_date": "2024-05-10",
         "end_date": "2024-05-16",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Eco-friendly lodges in the heart of nature",
         "eat": "Fresh local cuisine",
         "activities": [
@@ -465,7 +465,7 @@
       "full_journey": {
         "start_date": "2024-08-20",
         "end_date": "2024-08-26",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "High-tech capsule hotel",
         "eat": "Sushi and ramen delights",
         "activities": [
@@ -499,7 +499,7 @@
       "full_journey": {
         "start_date": "2024-06-01",
         "end_date": "2024-06-07",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Luxury yacht with ocean views",
         "eat": "Fresh Mediterranean cuisine",
         "activities": [
@@ -533,7 +533,7 @@
       "full_journey": {
         "start_date": "2024-09-15",
         "end_date": "2024-09-21",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Boutique hotel in the heart of the city",
         "eat": "Michelin-starred Catalan dishes",
         "activities": [
@@ -567,7 +567,7 @@
       "full_journey": {
         "start_date": "2025-02-10",
         "end_date": "2025-02-16",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Luxury safari lodges",
         "eat": "Safari-inspired cuisine",
         "activities": [
@@ -601,7 +601,7 @@
       "full_journey": {
         "start_date": "2025-04-20",
         "end_date": "2025-04-26",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Alpine chalets with panoramic views",
         "eat": "Local Kiwi cuisine",
         "activities": [
@@ -635,7 +635,7 @@
       "full_journey": {
         "start_date": "2025-07-01",
         "end_date": "2025-07-07",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Overwater bungalow with direct access to the ocean",
         "eat": "Fresh seafood and tropical fruits",
         "activities": [
@@ -669,7 +669,7 @@
       "full_journey": {
         "start_date": "2025-09-15",
         "end_date": "2025-09-21",
-        "number_of_days": 7,
+        "number_of_days": "7",
         "sleep": "Historical lodges with mountain views",
         "eat": "Peruvian cuisine with Andean flavors",
         "activities": [

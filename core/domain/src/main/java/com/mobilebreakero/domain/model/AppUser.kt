@@ -7,7 +7,6 @@ data class AppUser(
     var email: String? = null,
     var status: String? = "no status added",
     var location: String? = "no location added",
-    var saved: List<String>? = listOf(),
     var savedPlaces: List<RecommendedPlaceItem>? = listOf(),
     var savedTrips: List<RecommendedTripsModel>? = listOf(),
     var interestedPlaces: List<String>? = listOf(),

@@ -45,6 +45,7 @@ fun SearchResultsList(
         }
 
         items(results.size) { index ->
+
             results[index]?.let {
                 SearchResultItem(
                     item = it,

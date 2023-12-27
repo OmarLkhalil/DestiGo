@@ -17,6 +17,7 @@ import com.mobilebreakero.domain.repo.getTripsResponse
 import com.mobilebreakero.domain.repo.postDetailsResponse
 import com.mobilebreakero.domain.repo.postResponse
 import com.mobilebreakero.domain.repo.updatePostResponse
+import com.mobilebreakero.domain.repo.updateUserResponse
 import com.mobilebreakero.domain.usecase.RecommendedPlaceUseCase
 import com.mobilebreakero.domain.usecase.RecommendedUseCase
 import com.mobilebreakero.domain.usecase.firestore.UserUseCase
@@ -181,6 +182,24 @@ class HomeViewModel @Inject constructor(
             try {
                 val result = recommendedPlaceUseCase.getRecommendationPlaces(userInterests)
                 userRecommendationsPlaces = result
+            } catch (e: Exception) {
+                Log.e("HomeViewModel", "Error getting recommendations: $e")
+            }
+        }
+    }
+
+    var updateUserSaved by mutableStateOf<updateUserResponse>(Response.Success(false))
+        private set
+
+    fun updateSaves(
+        id: String,
+        savePlaces: RecommendedPlaceItem? = null,
+        savedTrips: TripsItem? = null
+    ) {
+        viewModelScope.launch {
+            try {
+                val result = userUseCase.updateUserSaved(id, savePlaces, savedTrips)
+                updateUserSaved = result
             } catch (e: Exception) {
                 Log.e("HomeViewModel", "Error getting recommendations: $e")
             }

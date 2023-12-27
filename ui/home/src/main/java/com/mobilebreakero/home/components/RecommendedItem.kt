@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.mobilebreakero.common_ui.components.CoilImage
@@ -21,7 +22,8 @@ fun ForYouItem(
     image: String? = "https://egypttimetravel.com/wp-content/uploads/2020/06/Cairo.jpg",
     onSaveCLick: () -> Unit,
     onItemClick: () -> Unit,
-    isSaved: Boolean = false
+    isSaved: Boolean = false,
+    icon : ImageVector? = null
 ) {
 
     Box(
@@ -42,7 +44,8 @@ fun ForYouItem(
             title = title,
             desc = desc,
             onFavoriteClick = { onSaveCLick() },
-            saved = isSaved
+            saved = isSaved,
+            icon = icon
         )
 
     }

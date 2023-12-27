@@ -91,4 +91,5 @@ interface TripsRepo {
         tripId: String
     ): updateTripResponse
 
+    suspend fun isTripFinished(tripId: String, finished: Boolean): updateTripResponse
 }

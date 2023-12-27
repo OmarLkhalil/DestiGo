@@ -61,7 +61,14 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun sendPasswordResetEmail(email: String) = try {
-        auth.sendPasswordResetEmail(email).await()
+        val userDoc = getCollection(AppUser.COLLECTION_NAME)
+        val user = userDoc.whereEqualTo("email", email).get().await()
+        if (user.isEmpty) {
+            Failure(Exception("Email not found"))
+        } else {
+            auth.sendPasswordResetEmail(email).await()
+            Success(true)
+        }
         Success(true)
     } catch (e: Exception) {
         Failure(e)
@@ -146,7 +153,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun updateEmail(email: String): UpdateEmailResponse {
         return try {
-            if (auth.currentUser?.email == email) {
+            if (email.lowercase().trim() == auth.currentUser?.email?.lowercase()?.trim()) {
                 auth.currentUser?.verifyBeforeUpdateEmail(email)?.await()
                 if (auth.currentUser?.isEmailVerified == false) {
                     auth.currentUser?.sendEmailVerification()?.await()
@@ -168,25 +175,26 @@ class AuthRepositoryImpl @Inject constructor(
         confirmationCode: Int
     ): SendResetPasswordResponse {
         return try {
-            val host = "smtp.gmail.com"
-            val port = 587
-            val username = "destigo6@gmail.com"
-            val password = "qkehaeuxwqkjewsa"
+            if (email.lowercase().trim() == auth.currentUser?.email?.lowercase()?.trim()) {
+                val host = "smtp.gmail.com"
+                val port = 587
+                val username = "destigo6@gmail.com"
+                val password = "qkehaeuxwqkjewsa"
 
-            val props = Properties()
-            props["mail.smtp.auth"] = "true"
-            props["mail.smtp.starttls.enable"] = "true"
-            props["mail.smtp.host"] = host
-            props["mail.smtp.port"] = port
+                val props = Properties()
+                props["mail.smtp.auth"] = "true"
+                props["mail.smtp.starttls.enable"] = "true"
+                props["mail.smtp.host"] = host
+                props["mail.smtp.port"] = port
 
-            val session = Session.getDefaultInstance(props, null)
+                val session = Session.getDefaultInstance(props, null)
 
-            val message = MimeMessage(session)
-            message.setFrom(InternetAddress(username))
-            message.addRecipient(Message.RecipientType.TO, InternetAddress(email))
-            message.subject = "Resetting Password for DestiGo Application"
-            message.setText(
-                """
+                val message = MimeMessage(session)
+                message.setFrom(InternetAddress(username))
+                message.addRecipient(Message.RecipientType.TO, InternetAddress(email))
+                message.subject = "Resetting Password for DestiGo Application"
+                message.setText(
+                    """
             Hello,
             
             Someone has requested to reset the password.
@@ -195,18 +203,21 @@ class AuthRepositoryImpl @Inject constructor(
             
             If you did not request it, please ignore this message.
             """.trimIndent()
-            )
+                )
 
-            val transport = session.getTransport("smtp")
+                val transport = session.getTransport("smtp")
 
-            val result = withContext(Dispatchers.IO) {
-                transport.connect(host, username, password)
-                transport.sendMessage(message, message.allRecipients)
-                transport.close()
-                Success(true)
+                val result = withContext(Dispatchers.IO) {
+                    transport.connect(host, username, password)
+                    transport.sendMessage(message, message.allRecipients)
+                    transport.close()
+                    Success(true)
+                }
+
+                result
+            } else {
+                Failure(Exception("Email is the same as the current one \n please enter a different email"))
             }
-
-            result
         } catch (e: Exception) {
             Failure(e)
         }

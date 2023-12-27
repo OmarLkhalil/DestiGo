@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
@@ -37,14 +36,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.OffsetMapping
-import androidx.compose.ui.text.input.TransformedText
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -61,14 +55,12 @@ import com.mobilebreakero.details.components.TripCheckList
 import com.mobilebreakero.details.components.TripDetailsCard
 import com.mobilebreakero.details.components.TripImages
 import com.mobilebreakero.details.components.TripJournal
+import com.mobilebreakero.details.publicTrips.ShowDatePickerDialog
 import com.mobilebreakero.domain.model.Trip
 import com.mobilebreakero.domain.util.DataUtils
 import com.mobilebreakero.domain.util.Response
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 
 @Composable
@@ -78,7 +70,7 @@ fun TripDetailsScreen(
     navController: NavController
 ) {
 
-    LaunchedEffect(key1 = viewModel) {
+    LaunchedEffect(tripId) {
         viewModel.getTripDetailsResult(tripId)
     }
 
@@ -112,7 +104,6 @@ fun TripDetails(
     var isUpdatingTrip by remember { mutableStateOf(false) }
     var tripNameUpdate by remember { mutableStateOf("") }
     var tripDaysUpdate by remember { mutableStateOf("") }
-    var tripDateUpdate by remember { mutableStateOf("") }
 
     TripDetailsCard(title = trip.name ?: "Trip details", onEditClick = {
         isUpdatingTrip = true
@@ -130,6 +121,10 @@ fun TripDetails(
         var imageLink by remember { mutableStateOf("") }
         var isUploading by remember { mutableStateOf(false) }
         val scope = rememberCoroutineScope()
+
+        var selectedDate by remember { mutableStateOf("") }
+        val isDateClicked = remember { mutableStateOf(false) }
+        var tripDays by remember { mutableStateOf(trip.duration ?: "") }
 
         Column(
             modifier = Modifier
@@ -206,27 +201,35 @@ fun TripDetails(
                         .height(80.dp)
                         .horizontalScroll(rememberScrollState())
                 ) {
-                    ItemsChip(title = "From ${trip.startDate ?: ""}") {
 
-                    }
-
-                    var endDate by remember { mutableStateOf("") }
-                    var newDays by remember { mutableStateOf("") }
-
-                    if (tripDaysUpdate.isNotEmpty()) {
-                        newDays = tripDaysUpdate
-                    } else {
-                        newDays = trip.duration ?: ""
-                    }
-                    if (tripDateUpdate.isNotEmpty())
-                        LaunchedEffect(tripDateUpdate) {
-                            endDate = calculateEndDate(trip.startDate ?: "", newDays)
+                    val fromDate =
+                        if (selectedDate != "") {
+                            selectedDate
+                        } else {
+                            trip.startDate
                         }
-                    else
-                        endDate = trip.endDate ?: ""
+
+                    ItemsChip(title = "From $fromDate") {
+                        isDateClicked.value = true
+                    }
+
+                    var endDate by remember { mutableStateOf(trip.endDate) }
+
+                    if (selectedDate.isNotBlank()) {
+                        endDate = calculateEndDate(selectedDate, tripDays)
+                    } else if (tripDaysUpdate.isNotBlank()) {
+                        val startDate: String = trip.startDate ?: ""
+                        endDate = calculateEndDate(startDate, tripDaysUpdate)
+                    }
+
+                    if (tripDaysUpdate.isNotBlank()) {
+                        tripDays = tripDaysUpdate
+                        endDate = calculateEndDate(startDate = trip.startDate ?: "", tripDaysUpdate)
+                    }
 
                     ItemsChip(title = "To $endDate") {
                     }
+
                 }
 
                 Text(
@@ -288,15 +291,6 @@ fun TripDetails(
                             label = { Text("New trip name") }
                         )
                         OutlinedTextField(
-                            value = tripDateUpdate,
-                            visualTransformation = DateTransformation(),
-                            keyboardOptions = KeyboardOptions.Default.copy(
-                                keyboardType = KeyboardType.Number
-                            ),
-                            onValueChange = { tripDateUpdate = it },
-                            label = { Text("New trip start date") }
-                        )
-                        OutlinedTextField(
                             value = tripDaysUpdate,
                             onValueChange = { tripDaysUpdate = it },
                             keyboardOptions = KeyboardOptions.Default.copy(
@@ -313,13 +307,8 @@ fun TripDetails(
                             if (tripNameUpdate.isNotEmpty()) {
                                 viewModel.updateTripName(tripNameUpdate, trip.id ?: "")
                             }
-                            if (tripDateUpdate.isNotEmpty()) {
-                                val formattedDate = formatDate(tripDateUpdate)
-                                if (formattedDate != null) {
-                                    viewModel.updateTripDate(formattedDate, trip.id ?: "")
-                                }
-                            }
                             if (tripDaysUpdate.isNotEmpty()) {
+
                                 viewModel.updateTripDays(tripDaysUpdate, trip.id ?: "")
                             }
                             isUpdatingTrip = false
@@ -329,6 +318,19 @@ fun TripDetails(
                     }
                 }
             )
+        }
+
+        if (isDateClicked.value) {
+            ShowDatePickerDialog(
+                selectedDate = selectedDate,
+                onDateSelected = {
+                    selectedDate = it
+                    isDateClicked.value = false
+                    viewModel.updateTripDate(
+                        id = trip.id ?: "",
+                        date = selectedDate
+                    )
+                })
         }
     })
 }
@@ -368,67 +370,4 @@ suspend fun loadProgress(updateProgress: (Float) -> Unit) {
         updateProgress(i.toFloat() / 100)
         delay(100)
     }
-}
-
-class DateTransformation : VisualTransformation {
-    override fun filter(text: AnnotatedString): TransformedText {
-        return dateFilter(text)
-    }
-}
-
-fun formatDate(userInput: String): String? {
-    val inputFormat = SimpleDateFormat("MMddyyyy", Locale.getDefault())
-    val outputFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-
-    return try {
-        val parsedDate = inputFormat.parse(userInput)
-        parsedDate?.let { outputFormat.format(it) }
-    } catch (e: ParseException) {
-        userInput
-    }
-}
-
-fun formatMonthDisplay(input: String): String {
-    return if (input.isNotEmpty()) {
-        val monthString = input.substring(0, minOf(input.length, 2))
-        val month = monthString.toIntOrNull()
-
-        if (month != null && month in 1..12) {
-            input
-        } else {
-            "12" + input.substring(2)
-        }
-    } else {
-        input
-    }
-}
-
-
-fun dateFilter(text: AnnotatedString): TransformedText {
-    val trimmed = if (text.text.length >= 8) text.text.substring(0..7) else text.text
-    var out = ""
-    for (i in trimmed.indices) {
-        out += trimmed[i]
-        if (i % 2 == 1 && i < 4) out += "/"
-    }
-
-    val numberOffsetTranslator = object : OffsetMapping {
-        override fun originalToTransformed(offset: Int): Int {
-            if (offset <= 1) return offset
-            if (offset <= 3) return offset + 1
-            if (offset <= 8) return offset + 2
-            return 10
-        }
-
-        override fun transformedToOriginal(offset: Int): Int {
-            if (offset <= 2) return offset
-            if (offset <= 5) return offset - 1
-            if (offset <= 10) return offset - 2
-            return 8
-        }
-    }
-
-    val formattedText = formatMonthDisplay(out)
-
-    return TransformedText(AnnotatedString(formattedText), numberOffsetTranslator)
 }

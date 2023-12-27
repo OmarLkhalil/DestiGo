@@ -1,6 +1,5 @@
 package com.mobilebreakero.details
 
-import android.util.Log
 import androidx.compose.animation.core.EaseInOut
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -36,7 +35,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,8 +58,6 @@ fun PlacesDetailsTrips(
 ) {
 
     LaunchedEffect(key1 = Unit) {
-        Log.d("Details", "locationId: $locationId")
-        Log.d("Details", "tripId: $tripId")
         viewModel.getPhoto(locationId)
         viewModel.getDetails(locationId)
         viewModel.getTripDetailsResult(tripId)
@@ -139,7 +135,6 @@ fun PlacesTripDetailsContent(
     ) {
         photos.size
     }
-    val context = LocalContext.current
 
     Column(
         modifier = Modifier

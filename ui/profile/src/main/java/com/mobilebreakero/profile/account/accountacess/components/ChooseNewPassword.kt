@@ -32,6 +32,7 @@ import com.mobilebreakero.common_ui.components.AuthButton
 import com.mobilebreakero.profile.R
 import com.mobilebreakero.profile.component.AuthTextField
 import com.mobilebreakero.profile.account.accountacess.updatepassword.PasswordResetViewModel
+import com.mobilebreakero.profile.component.PasswordTextField
 
 
 @Composable
@@ -43,8 +44,8 @@ fun UpdatePasswordContent(
     cancelText: String,
     cancelNav: String,
     navController: NavController,
-    onClick : (String) -> Unit
-    ) {
+    onClick: (String) -> Unit
+) {
 
     val passwordOrEmail = remember { mutableStateOf("") }
 
@@ -80,9 +81,9 @@ fun UpdatePasswordContent(
 
         Spacer(modifier = Modifier.height(22.dp))
 
-        AuthTextField(text = passwordOrEmail.value, onValueChange = {
+        PasswordTextField(onValueChange = {
             passwordOrEmail.value = it
-        }, label = textField)
+        })
 
         Spacer(modifier = Modifier.height(33.dp))
 

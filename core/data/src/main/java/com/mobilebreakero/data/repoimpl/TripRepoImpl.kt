@@ -324,4 +324,15 @@ class TripRepoImpl @Inject constructor() : TripsRepo {
             Response.Failure(e)
         }
     }
+
+    override suspend fun isTripFinished(tripId: String, finished: Boolean): updateTripResponse {
+        return try {
+            val tripCollection = getCollection(Trip.COLLECTION_NAME)
+            val tripDoc = tripCollection.document(tripId)
+            tripDoc.update("finished", finished)
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
 }

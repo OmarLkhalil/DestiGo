@@ -38,32 +38,13 @@ fun VerticalGrid() {
             items = interests,
             itemContent = { index, interest ->
                 InterestsSection(
-                    painter = interest.icon,
                     contentDescription = interest.title,
-                    title = interest.title,
                     modifier = Modifier.padding(3.dp),
-                    onClick = {
-                        if (selectedItemsList.size < 3) {
-                            interest.isSelected = !interest.isSelected
-                            if (interest.isSelected) {
-                                selectedItemsList.add(interest)
-                                selectedItemsNames.add(interest.title)
-                            } else {
-                                selectedItemsList.remove(interest)
-                                selectedItemsNames.remove(interest.title)
-                            }
-                        } else {
-                            interest.isSelected = false
-                            if (selectedItemsList.contains(interest)) {
-                                selectedItemsList.remove(interest)
-                            }
-                        }
-                    },
-                    isSelected = interest.isSelected
+                    item = interest
                 )
             }
         )
     }
 }
 
-data class InterestsItem(val icon: Int, val title: String, var isSelected: Boolean = false)
+data class InterestsItem(val icon: Int, val title: String)

@@ -29,6 +29,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -50,6 +51,8 @@ import com.mobilebreakero.domain.model.AppUser
 import com.mobilebreakero.domain.util.DataUtils.user
 import com.mobilebreakero.profile.R
 import com.mobilebreakero.profile.component.ProfileImage
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileSettingsContent(
@@ -66,7 +69,7 @@ fun ProfileSettingsContent(
         imageUri = uri
     }
 
-    val uploadProgress by remember { mutableStateOf(0f) }
+    var uploadProgress by remember { mutableStateOf(0f) }
 
     val userStatus by remember { mutableStateOf("Iam a software engineer") }
     val newLocation by remember { mutableStateOf("Cairo, Egypt") }
@@ -84,6 +87,7 @@ fun ProfileSettingsContent(
 
     val firebaseUser = Firebase.auth.currentUser
 
+    val scope = rememberCoroutineScope()
 
     GetUserFromFireStore(
         user = { uId ->
@@ -165,12 +169,12 @@ fun ProfileSettingsContent(
         if (imageUri != null) {
             isUploading = true
             uploadImageToStorage(imageUri) { downloadUrl, isSuccessful ->
-                isUploading = false
                 if (isSuccessful as Boolean) {
                     imageLink = downloadUrl
                     newPhotoUrl = imageLink
                     viewModel.updatePhoto(user.value.id!!, imageLink)
                     imageUri = null
+                    isUploading = false
                 }
             }
         }
@@ -240,6 +244,23 @@ fun ProfileSettingsContent(
             }
         )
     }
+    LaunchedEffect(isUploading) {
+        scope.launch {
+            loadProgress { progress ->
+                uploadProgress = progress
+            }
+        }
+    }
+
+    if (isUploading) {
+        LinearProgressIndicator(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            color = Color.Blue,
+            progress = uploadProgress
+        )
+    }
 
     if (isChangingLocation) {
         AlertDialog(
@@ -304,5 +325,12 @@ fun uploadImageToStorage(uri: Uri?, onComplete: (String, Any?) -> Unit) {
         } else {
             onComplete("", false)
         }
+    }
+}
+
+suspend fun loadProgress(updateProgress: (Float) -> Unit) {
+    for (i in 1..100) {
+        updateProgress(i.toFloat() / 100)
+        delay(100)
     }
 }

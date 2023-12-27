@@ -3,14 +3,17 @@ package com.mobilebreakero.data.repoimpl
 import android.content.Context
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
 import com.google.gson.Gson
 import com.mobilebreakero.domain.model.RecommendedPlaceItem
 import com.mobilebreakero.domain.model.RecommendedPlaces
 import com.mobilebreakero.domain.model.RecommendedTripsModel
+import com.mobilebreakero.domain.model.Trip
 import com.mobilebreakero.domain.model.TripsItem
 import com.mobilebreakero.domain.repo.RecommendedTrips
 import com.mobilebreakero.domain.util.Response
 import com.mobilebreakero.domain.util.await
+import com.mobilebreakero.domain.util.getCollection
 import java.io.InputStreamReader
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -81,6 +84,40 @@ class RecommededImple @Inject constructor(
                     .document(tripId).get().await()
             val trip = tripDoc.toObject(TripsItem::class.java)
             Response.Success(trip)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
+
+    override suspend fun updatePublicTripDate(
+        tripId: String,
+        startDate: String?,
+        endDate: String?
+    ): Response<Boolean> {
+        return try {
+            val tripCollection = getCollection(TripsItem.COLLECTION_NAME)
+            val tripDoc = tripCollection.document(tripId)
+            if (startDate != null) {
+                tripDoc.update("fullJourney.startDate", startDate)
+            }
+
+            if (endDate != null) {
+                tripDoc.update("fullJourney.endDate", endDate)
+            }
+
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
+    }
+
+    override suspend fun updatePublicTripDays(tripId: String, days: String): Response<Boolean> {
+        return try {
+            val tripCollection = getCollection(TripsItem.COLLECTION_NAME)
+            val tripDoc = tripCollection.document(tripId)
+            tripDoc.update("fullJourney.days", days)
+
+            Response.Success(true)
         } catch (e: Exception) {
             Response.Failure(e)
         }

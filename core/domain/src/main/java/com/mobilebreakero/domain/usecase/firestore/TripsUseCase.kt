@@ -36,5 +36,6 @@ data class TripsUseCase(
     val savePublicTrips: AddPublicTrips,
     val updateTripDate: UpdateTripDate,
     val updateTripDays: UpdateTripDays,
-    val updateTripName: UpdateTripName
+    val updateTripName: UpdateTripName,
+    val isTripFinished: IsTripFinished
 )

@@ -22,15 +22,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,19 +43,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.compose.SubcomposeAsyncImage
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.mobilebreakero.addpost.R
 import com.mobilebreakero.addpost.viewmodel.AddPostViewModel
-import com.mobilebreakero.common_ui.components.LoadingIndicator
 import com.mobilebreakero.common_ui.components.getUserLocation
 import com.mobilebreakero.common_ui.navigation.NavigationRoutes.HOME_SCREEN
 import com.mobilebreakero.domain.model.Post
 import com.mobilebreakero.domain.util.DataUtils
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddPostCard(navController: NavController, viewModel: AddPostViewModel = hiltViewModel()) {
 
@@ -64,7 +64,7 @@ fun AddPostCard(navController: NavController, viewModel: AddPostViewModel = hilt
     ) { uri: Uri? ->
         imageUri = uri
     }
-    val uploadProgress by remember { mutableStateOf(0f) }
+    var uploadProgress by remember { mutableStateOf(0f) }
     val user = DataUtils.user
     var imageLink by remember { mutableStateOf("") }
     var isUploading by remember { mutableStateOf(false) }
@@ -72,6 +72,7 @@ fun AddPostCard(navController: NavController, viewModel: AddPostViewModel = hilt
     var isLocationClicked by remember { mutableStateOf(false) }
     var isAddPostSatus by remember { mutableStateOf(false) }
     var newStatus by remember { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
 
     Box(
         modifier = Modifier
@@ -124,10 +125,8 @@ fun AddPostCard(navController: NavController, viewModel: AddPostViewModel = hilt
                 if (imageUri != null && !isUploading) {
                     isUploading = true
                     uploadImageToStorage(imageUri) { downloadUrl, isSuccessful ->
-                        isUploading = false
                         if (isSuccessful as Boolean) {
                             imageLink = downloadUrl
-
                             val post = Post(
                                 id = GenerateRandomIdNumber().toString(),
                                 userId = user?.id,
@@ -139,16 +138,26 @@ fun AddPostCard(navController: NavController, viewModel: AddPostViewModel = hilt
                             )
                             viewModel.addPost(post)
                             imageUri = null
+                            isUploading = false
                             navController.navigate(HOME_SCREEN)
                         }
                     }
                 }
             })
+            LaunchedEffect(isUploading) {
+                scope.launch {
+                    loadProgress { progress ->
+                        uploadProgress = progress
+                    }
+                }
+            }
+
             if (isUploading) {
                 LinearProgressIndicator(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),
+                    color = Color.Blue,
                     progress = uploadProgress
                 )
             }
@@ -307,5 +316,12 @@ fun ScreenButton(
         border = border
     ) {
         Text(text = text, fontSize = 18.sp, color = textColor!!)
+    }
+}
+
+suspend fun loadProgress(updateProgress: (Float) -> Unit) {
+    for (i in 1..100) {
+        updateProgress(i.toFloat() / 100)
+        delay(100)
     }
 }

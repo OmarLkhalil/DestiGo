@@ -43,9 +43,6 @@ fun GreetingSection(
                 text = "you can choose up to 3 interests",
                 style = MaterialTheme.typography.bodySmall
             )
-
         }
-
     }
 }
-

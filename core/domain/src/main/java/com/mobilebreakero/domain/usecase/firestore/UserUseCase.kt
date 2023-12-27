@@ -20,4 +20,5 @@ data class UserUseCase(
     val updateUserStatus: UpdateStatus,
     val updateUserInterestedPlaces: UpdateInterestedPlaces,
     val getInterestedPlaces: GetInterestedPlaces,
+    val updateUserSaved: UpdateUserSaved
 )

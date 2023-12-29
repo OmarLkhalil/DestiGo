@@ -76,7 +76,7 @@ firebase-product = { group = "com.google.firebase", name = "firebase-analytics",
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore" }
 google-services = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "google-services" }
-javaMail = { group = "com.sun.mail", name = "android-mail", version = "1.6.0" }
+javaMail = { group = "com.sun.mail", name = "android-mail", version = "1.6.7" }
 javaActivation = { group = "com.sun.mail", name = "android-activation", version = "1.6.0" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 google-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "google-location" }

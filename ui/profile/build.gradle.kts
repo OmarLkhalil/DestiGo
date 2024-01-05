@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(project(mapOf("path" to ":core:domain")))
+    implementation(project(mapOf("path" to ":ui:home")))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -69,6 +70,7 @@ dependencies {
     implementation(libs.hilt.navigation)
     implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
+
     // Coil
     implementation(project(mapOf("path" to ":common-ui")))
     implementation(platform(libs.firebase.bom))

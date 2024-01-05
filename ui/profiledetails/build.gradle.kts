@@ -2,14 +2,13 @@
 plugins {
     alias(libs.plugins.androidlibrary)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.kotlinKapt)
-    alias(libs.plugins.firebase)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlinKapt)
 }
 
 android {
-    namespace = "com.mobilebreakero.navigation"
-    compileSdk = 33
+    namespace = "com.example.profiledetails"
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
@@ -50,6 +49,16 @@ android {
 dependencies {
 
     implementation(libs.core.ktx)
+    implementation(libs.appcompat)
+    implementation(libs.material)
+    implementation(project(":core:domain"))
+    implementation(project(mapOf("path" to ":common-ui")))
+    implementation(project(mapOf("path" to ":ui:home")))
+    implementation(project(mapOf("path" to ":ui:profile")))
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
@@ -57,42 +66,18 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
-    implementation(project(mapOf("path" to ":core:domain")))
-    implementation(project(mapOf("path" to ":ui:home")))
-    implementation(project(mapOf("path" to ":ui:profile")))
-    implementation(project(mapOf("path" to ":ui:scan")))
-    implementation(project(mapOf("path" to ":ui:trips")))
-    implementation(project(mapOf("path" to ":ui:addPost")))
-    implementation(project(mapOf("path" to ":ui:details")))
-    implementation(project(mapOf("path" to ":ui:auth")))
-    implementation(project(mapOf("path" to ":ui:search")))
-    implementation(project(mapOf("path" to ":ui:Interestedplaces")))
-    implementation(project(mapOf("path" to ":ui:welcome")))
-    implementation(project(mapOf("path" to ":core:data")))
-    implementation(project(mapOf("path" to ":common-ui")))
-    implementation(project(mapOf("path" to ":ui:profiledetails")))
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.ui.test.junit4)
-    debugImplementation(libs.ui.tooling)
-    debugImplementation(libs.ui.test.manifest)
     implementation(libs.accompanist.navigationAnimation)
-
-    // navigation
-    implementation(libs.navigation.compose)
+    implementation(libs.animated.navigation.bar)
+    implementation(libs.coil.compose)
 
     // firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
 
-    // hilt
+    //hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)
     implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
-
-
 }

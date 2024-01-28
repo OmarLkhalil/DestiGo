@@ -1,0 +1,44 @@
+name: Auto Commit and Push
+
+on:
+  push:
+    branches:
+      - main  # Adjust the branch name as needed
+
+jobs:
+  auto_commit_and_push:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+
+    - name: Build and test (replace with your build commands)
+      run: gradlew build  # Use 'gradlew' instead of './gradlew' on Windows
+
+    - name: Run script
+      run: |
+        :: Extract commit hash to use as a unique branch name
+        set branch_name=auto-commit-%RANDOM%-%TIME:~6,5%
+
+        :: Create a new branch and switch to it
+        git checkout -b "%branch_name%"
+
+        :: Add and commit changes
+        git add .
+        git commit -m "Automated commit and push to branch: %branch_name%"
+
+        :: Push to the new branch
+        git push origin "%branch_name%"
+
+        :: Clear cache (replace with your cache clearing command)
+        gradlew clean
+
+        :: Switch back to the original branch
+        git checkout -

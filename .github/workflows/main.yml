@@ -3,7 +3,7 @@ name: Auto Commit and Push
 on:
   push:
     branches:
-      - main  # Adjust the branch name as needed
+      - update  
 
 jobs:
   auto_commit_and_push:

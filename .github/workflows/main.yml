@@ -3,7 +3,7 @@ name: Auto Commit and Push
 on:
   push:
     branches:
-      - update  
+      - update 
 
 jobs:
   auto_commit_and_push:
@@ -20,7 +20,7 @@ jobs:
         java-version: '11'
 
     - name: Build and test (replace with your build commands)
-      run: gradlew build  # Use 'gradlew' instead of './gradlew' on Windows
+      run: gradle build  # Use 'gradle' instead of 'gradlew' on Windows
 
     - name: Run script
       run: |
@@ -38,7 +38,7 @@ jobs:
         git push origin "%branch_name%"
 
         :: Clear cache (replace with your cache clearing command)
-        gradlew clean
+        gradle clean
 
         :: Switch back to the original branch
         git checkout -
